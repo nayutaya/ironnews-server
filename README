@@ -1,1 +1,10 @@
 ironnews-server
+
+setup
+
+rake gems
+rake gems:install
+rake db:migrate
+
+rake db:fixtures:load
+ruby script/server
