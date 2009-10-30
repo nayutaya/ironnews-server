@@ -1,5 +1,8 @@
-class HomeController < ApplicationController
-  def index
-  end
 
+# ホーム
+class HomeController < ApplicationController
+  # GET /
+  def index
+    # TODO: テストせよ
+  end
 end
