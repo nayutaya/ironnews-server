@@ -8,8 +8,6 @@ class CreateUsers < ActiveRecord::Migration
       t.datetime :updated_at, :null => false
       # ユーザ名
       t.string   :name,       :null => false, :limit => 40
-      # ニックネーム
-      t.string   :nickname,   :null => true,  :limit => 40
     end
   end
 
