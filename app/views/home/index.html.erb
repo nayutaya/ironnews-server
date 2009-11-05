@@ -1,2 +1,12 @@
 <h1>Home#index</h1>
 <p>Find me in app/views/home/index.html.erb</p>
+
+<table border="1">
+ <%- @articles.each { |article| -%>
+  <tr>
+   <td><%=h article.id %></td>
+   <td><%= link_to(h(article.title), "http://" + article.host + article.path) %></td>
+   <td><%=h article.created_at %></td>
+  </tr>
+ <%- } -%>
+</table>
