@@ -22,7 +22,7 @@ Rails::Initializer.run do |config|
   config.gem "mongrel"
   config.gem "nayutaya-kagemusha", :lib => "kagemusha", :version => ">= 0.1.0", :source => "http://gemcutter.org"
   config.gem "nayutaya-wsse", :lib => "wsse", :version => ">= 0.0.1", :source => "http://gemcutter.org"
-  config.gem "mislav-will_paginate", :version => ">= 2.3.11", :lib => "will_paginate", :source => "http://gems.github.com"
+  config.gem "will_paginate", :version => ">= 2.3.11", :source => "http://gemcutter.org"
   config.gem "locale", :version => ">= 2.0.4"
   config.gem "locale_rails", :version => ">= 2.0.4"
   config.gem "gettext", :version => ">= 2.0.4"
