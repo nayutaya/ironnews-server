@@ -15,6 +15,7 @@ class Article < ActiveRecord::Base
   TitleMaxLength =  200
   HostMaxLength  =  100
   PathMaxLength  = 2000
+  HostPattern    = /\A[a-z\d\-]+(\.[a-z\d\-]+)*(:\d+)?\z/
 
   # TODO: [関連] Taggingモデルとの関連を追加
 
@@ -24,5 +25,5 @@ class Article < ActiveRecord::Base
   validates_length_of :title, :maximum => TitleMaxLength, :allow_blank => true
   validates_length_of :host,  :maximum => HostMaxLength,  :allow_blank => true
   validates_length_of :path,  :maximum => PathMaxLength,  :allow_blank => true
-  # TODO: [検証] hostに含まれる英字は小文字であること
+  validates_format_of :host, :with => HostPattern, :allow_blank => true
 end

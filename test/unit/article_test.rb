@@ -75,4 +75,19 @@ class ArticleTest < ActiveSupport::TestCase
       assert_equal(expected, @basic.valid?, value.chars.to_a.size)
     }
   end
+
+  test "validates_format_of :host" do
+    [
+      ["www.asahi.com", true ],
+      ["mainichi.jp",   true ],
+      ["www.47news.jp", true ],
+      ["abcdef-ghijklm.nopqrst-uvwxyz",    true ],
+      ["nopqrs-tuvwxyz.abcdefg-hijklm",    true ],
+      ["0123456789.0123456789:0123456789", true ],
+      ["WWW.ASAHI.COM", false],
+    ].each { |value, expected|
+      @basic.host = value
+      assert_equal(expected, @basic.valid?, value)
+    }
+  end
 end
