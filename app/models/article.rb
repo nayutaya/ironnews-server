@@ -12,7 +12,6 @@
 
 # 記事
 class Article < ActiveRecord::Base
-  # TODO: テストデータを追加
   # TODO: [関連] Taggingモデルとの関連を追加
   # TODO: [検証] titleが存在すること
   # TODO: [検証] hostが存在すること

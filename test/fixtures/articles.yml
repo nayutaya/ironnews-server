@@ -10,10 +10,32 @@
 #  path       :string(200)   not null, index_articles_on_host_and_path(unique)
 #
 
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+asahi1:
+  created_at: 2009-01-01 00:00:00
+  title: "大阪環状線が再開　店舗火災で一時全線運転見合わせ"
+  host: "www.asahi.com"
+  path: "/national/update/1031/OSK200910310079.html"
 
-# one:
-#   column: value
-#
-# two:
-#   column: value
+asahi2:
+  created_at: 2009-01-01 00:00:00
+  title: "都営新宿線、人身事故で一時運転見合わせ"
+  host: "www.asahi.com"
+  path: "/national/update/1031/TKY200910310252.html"
+
+asahi3:
+  created_at: 2009-01-01 00:00:00
+  title: "乗用車が建物に激突、男女４人死亡　高松"
+  host: "www.asahi.com"
+  path: "/national/update/1105/OSK200911050001.html"
+
+mainichi1:
+  created_at: 2009-01-01 00:00:00
+  title: "ＪＲ東京駅突き落とし：裁判員裁判で初、精神鑑定医を尋問へ－－東京地裁"
+  host: "mainichi.jp"
+  path: "/select/jiken/archive/news/2009/11/05/20091105ddm041040070000c.html"
+
+mainichi2:
+  created_at: 2009-01-01 00:00:00
+  title: "関西電力：美浜原発１号機、５０年運転は可能　評価書提出"
+  host: "mainichi.jp"
+  path: "/select/today/news/20091105k0000e040017000c.html"
