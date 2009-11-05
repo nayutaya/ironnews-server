@@ -42,4 +42,37 @@ class ArticleTest < ActiveSupport::TestCase
     @basic.path = ""
     assert_equal(false, @basic.valid?)
   end
+
+  test "validates_length_of :title" do
+    [
+      ["あ" *   1, true ],
+      ["あ" * 200, true ],
+      ["あ" * 201, false],
+    ].each { |value, expected|
+      @basic.title = value
+      assert_equal(expected, @basic.valid?, value.chars.to_a.size)
+    }
+  end
+
+  test "validates_length_of :host" do
+    [
+      ["a" *   1, true ],
+      ["a" * 100, true ],
+      ["a" * 101, false],
+    ].each { |value, expected|
+      @basic.host = value
+      assert_equal(expected, @basic.valid?, value.chars.to_a.size)
+    }
+  end
+
+  test "validates_length_of :path" do
+    [
+      ["a" *    1, true ],
+      ["a" * 2000, true ],
+      ["a" * 2001, false],
+    ].each { |value, expected|
+      @basic.path = value
+      assert_equal(expected, @basic.valid?, value.chars.to_a.size)
+    }
+  end
 end

@@ -17,8 +17,8 @@ class Article < ActiveRecord::Base
   validates_presence_of :title
   validates_presence_of :host
   validates_presence_of :path
-  # TODO: [検証] titleが200文字以下であること
-  # TODO: [検証] hostが100文字以下であること
-  # TODO: [検証] pathが2000文字以下であること
+  validates_length_of :title, :maximum =>  200, :allow_blank => true
+  validates_length_of :host,  :maximum =>  100, :allow_blank => true
+  validates_length_of :path,  :maximum => 2000, :allow_blank => true
   # TODO: [検証] hostに含まれる英字は小文字であること
 end
