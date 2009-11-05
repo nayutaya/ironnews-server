@@ -32,4 +32,8 @@ class HomeController < ApplicationController
 
     redirect_to(:action => "index")
   end
+
+  def view
+    @article_ids = params[:article_ids].split(/,/).map(&:to_i)
+  end
 end
