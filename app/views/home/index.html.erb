@@ -10,3 +10,20 @@
   </li>
  <%- } -%>
 </ul>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+
+var moveToNextArticle = function() {
+  console.debug("next");
+};
+var moveToPrevArticle = function() {
+console.debug("prev");
+};
+
+  $(document).bind("keydown", "j", moveToNextArticle);
+  $(document).bind("keydown", "k", moveToPrevArticle);
+});
+
+</script>
