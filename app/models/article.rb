@@ -12,13 +12,17 @@
 
 # 記事
 class Article < ActiveRecord::Base
+  TitleMaxLength =  200
+  HostMaxLength  =  100
+  PathMaxLength  = 2000
+
   # TODO: [関連] Taggingモデルとの関連を追加
 
   validates_presence_of :title
   validates_presence_of :host
   validates_presence_of :path
-  validates_length_of :title, :maximum =>  200, :allow_blank => true
-  validates_length_of :host,  :maximum =>  100, :allow_blank => true
-  validates_length_of :path,  :maximum => 2000, :allow_blank => true
+  validates_length_of :title, :maximum => TitleMaxLength, :allow_blank => true
+  validates_length_of :host,  :maximum => HostMaxLength,  :allow_blank => true
+  validates_length_of :path,  :maximum => PathMaxLength,  :allow_blank => true
   # TODO: [検証] hostに含まれる英字は小文字であること
 end
