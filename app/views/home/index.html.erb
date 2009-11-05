@@ -35,13 +35,13 @@ $(document).ready(function() {
     var index = getArticleIndex(currentElement);
     if ( index == null ) return null;
     if ( index >= articles.length - 1 ) return null;
-    return $(articles[index + 1]);
+    return articles[index + 1];
   };
   var getPrevArticleItemElement = function(currentElement) {
     var index = getArticleIndex(currentElement);
     if ( index == null ) return null;
     if ( index <= 0 ) return null;
-    return $(articles[index - 1]);
+    return articles[index - 1];
   };
 
   var moveToNextArticle = function() {
@@ -67,7 +67,7 @@ $(document).ready(function() {
     $(current).toggleClass("pinned");
   };
   var openPinnedArticles = function() {
-    $("ul.articles li.selected a").each(function() {
+    $("ul.articles li.pinned a").each(function() {
       console.debug(this.href);
     });
   };

@@ -1,0 +1,32 @@
+
+ul.articles
+{
+  padding: 0px;
+  list-style: none;
+}
+ul.articles li
+{
+  padding: 0px 0px 0px 20px;
+}
+ul.articles li.cursor
+{
+  background-image: url(/images/bullet_go.png);
+  background-repeat: no-repeat;
+  background-position: center left;
+}
+ul.articles li.pinned
+{
+}
+ul.articles li a
+{
+  display: block;
+  padding: 0px 0px 0px 20px;
+  line-height: 18px;
+  font-size: 13px;
+  background-repeat: no-repeat;
+  background-position: center left;
+}
+ul.articles li.pinned a
+{
+  background-color: #F0F0FF;
+}
