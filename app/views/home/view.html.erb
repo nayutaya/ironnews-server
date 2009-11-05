@@ -1,4 +1,15 @@
 
 <h1>閲覧</h1>
 
-<%= debug @article_ids %>
+<script type="text/javascript">
+  var articleIds = <%= @article_ids.to_json %>;
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    var url = "http://www.google.co.jp";
+    $("#frame").attr("src", url);
+  });
+</script>
+
+<iframe id="frame" src="" width="800" height="600" frameborder="0" />

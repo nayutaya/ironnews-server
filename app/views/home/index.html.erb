@@ -12,7 +12,7 @@
  <%- @articles.each { |article| -%>
   <li class="article">
    <%= link_to(h(article.title), article.url,
-         :id    => "article_#{article.id}",
+         :id    => "article-#{article.id}",
          :title => article.created_at.strftime("%Y年%m月%d日%H時%M分: ") + article.title) %>
   </li>
  <%- } -%>
@@ -26,6 +26,19 @@ $(document).ready(function() {
   $("ul.articles li a").each(function() {
     var favicon = "http://favicon.hatena.ne.jp/?url=" + encodeURIComponent(this.href);
     $(this).css("background-image", "url(" + favicon + ")");
+  });
+
+  var getArticleIdFromAnchorElement = function(anchor) {
+    return (/^article-(\d+)$/.exec(anchor.id)||[])[1];
+  };
+
+  $("ul.articles li a").each(function() {
+      var articleId = getArticleIdFromAnchorElement(this);
+      if ( articleId != null )
+      {
+        var path = "/view/" + articleId;
+        this.href = path;
+      }
   });
 
   var articles = $("ul.articles li");
@@ -74,9 +87,17 @@ $(document).ready(function() {
     $(current).toggleClass("pinned");
   };
   var openPinnedArticles = function() {
+    var articleIds = [];
     $("ul.articles li.pinned a").each(function() {
       console.debug(this.href);
+      var articleId = getArticleIdFromAnchorElement(this);
+      articleIds.push(articleId);
     });
+    if ( articleIds.length > 0 )
+    {
+      var path = "/view/" + articleIds.join(",");
+      var win = window.open(path);
+    }
   };
 
   $(document).bind("keydown", "j", moveToNextArticle);
