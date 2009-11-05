@@ -8,6 +8,9 @@ class ArticleTest < ActiveSupport::TestCase
       :title => "title",
       :host  => "host",
       :path  => "path")
+
+    @asahi1    = articles(:asahi1)
+    @mainichi1 = articles(:mainichi1)
   end
 
   #
@@ -89,5 +92,18 @@ class ArticleTest < ActiveSupport::TestCase
       @basic.host = value
       assert_equal(expected, @basic.valid?, value)
     }
+  end
+
+  #
+  # インスタンスメソッド
+  #
+
+  test "url" do
+    assert_equal(
+      "http://" + @asahi1.host + @asahi1.path,
+      @asahi1.url)
+    assert_equal(
+      "http://" + @mainichi1.host + @mainichi1.path,
+      @mainichi1.url)
   end
 end

@@ -26,4 +26,8 @@ class Article < ActiveRecord::Base
   validates_length_of :host,  :maximum => HostMaxLength,  :allow_blank => true
   validates_length_of :path,  :maximum => PathMaxLength,  :allow_blank => true
   validates_format_of :host, :with => HostPattern, :allow_blank => true
+
+  def url
+    return "http://" + self.host + self.path
+  end
 end
