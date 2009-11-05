@@ -22,32 +22,49 @@ $(document).ready(function() {
   });
 
   var articles = $("ul.articles li");
-  //articles.addClass("unselected");
   $(articles[0]).addClass("cursor");
 
+  var getCurrentArticleItemElement = function() {
+    return $("ul.articles li.cursor")[0];
+  };
+  var getArticleIndex = function(itemElement) {
+    var index = articles.get().indexOf(itemElement);
+    return (index >= 0 ? index : null);
+  };
+  var getNextArticleItemElement = function(currentElement) {
+    var index = getArticleIndex(currentElement);
+    if ( index == null ) return null;
+    if ( index >= articles.length - 1 ) return null;
+    return $(articles[index + 1]);
+  };
+  var getPrevArticleItemElement = function(currentElement) {
+    var index = getArticleIndex(currentElement);
+    if ( index == null ) return null;
+    if ( index <= 0 ) return null;
+    return $(articles[index - 1]);
+  };
+
   var moveToNextArticle = function() {
-    var current = $("ul.articles li.cursor")[0];
-    var index   = articles.get().indexOf(current);
-    if ( index >= 0 && index < articles.length - 1 )
+    var current = getCurrentArticleItemElement();
+    var next    = getNextArticleItemElement(current);
+    if ( next != null )
     {
-      var next = articles[index + 1];
       $(current).removeClass("cursor");
       $(next).addClass("cursor");
     }
   };
   var moveToPrevArticle = function() {
-    var current = $("ul.articles li.cursor")[0];
-    var index   = articles.get().indexOf(current);
-    if ( index >= 0 && index > 0 )
+    var current = getCurrentArticleItemElement();
+    var prev    = getPrevArticleItemElement(current);
+    if ( prev != null )
     {
-      var next = articles[index - 1];
       $(current).removeClass("cursor");
-      $(next).addClass("cursor");
+      $(prev).addClass("cursor");
     }
   };
-  var togglePinCurrentArticle = function() {
-    var current = $("ul.articles li.cursor")[0];
-    $(current).toggleClass("selected");
+  var togglePinOfArticle = function() {
+    var current = getCurrentArticleItemElement();
+    $(current).toggleClass("pinned");
   };
   var openPinnedArticles = function() {
     $("ul.articles li.selected a").each(function() {
@@ -57,7 +74,7 @@ $(document).ready(function() {
 
   $(document).bind("keydown", "j", moveToNextArticle);
   $(document).bind("keydown", "k", moveToPrevArticle);
-  $(document).bind("keydown", "p", togglePinCurrentArticle);
+  $(document).bind("keydown", "p", togglePinOfArticle);
   $(document).bind("keydown", "o", openPinnedArticles);
 });
 
