@@ -12,7 +12,7 @@ ul.articles li.cursor
 {
   background-image: url(/images/bullet_go.png);
   background-repeat: no-repeat;
-  background-position: center left;
+  background-position: top left;
 }
 ul.articles li.pinned
 {
@@ -24,7 +24,7 @@ ul.articles li a
   line-height: 18px;
   font-size: 13px;
   background-repeat: no-repeat;
-  background-position: center left;
+  background-position: top left;
 }
 ul.articles li.pinned a
 {

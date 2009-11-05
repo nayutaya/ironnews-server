@@ -1,7 +1,14 @@
 
 <h1>鉄ニュース</h1>
 
-<ul class="articles">
+<div>
+ <%- form_tag(:action => "add") { -%>
+  <%= text_field(:form, :url, :size => 50) %>
+  <%= submit_tag("追加") %>
+ <%- } -%>
+</div>
+
+<ul class="articles" style="width: 300px;">
  <%- @articles.each { |article| -%>
   <li class="article">
    <%= link_to(h(article.title), article.url,
