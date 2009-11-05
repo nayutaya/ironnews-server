@@ -7,7 +7,6 @@
 #  created_at :datetime      not null
 #  updated_at :datetime      not null
 #  name       :string(40)    not null
-#  nickname   :string(40)    
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
