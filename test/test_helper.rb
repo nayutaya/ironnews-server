@@ -1,6 +1,14 @@
+
 ENV["RAILS_ENV"] = "test"
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
+
+begin
+  require "win32console" if /win32/ =~ RUBY_PLATFORM
+  require "redgreen"
+rescue LoadError
+  # nop
+end
 
 class ActiveSupport::TestCase
   # Transactional fixtures accelerate your tests by wrapping each test method
