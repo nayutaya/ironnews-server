@@ -9,6 +9,8 @@ class CreateUsers < ActiveRecord::Migration
       # ユーザ名
       t.string   :name,       :null => false, :limit => 40
     end
+
+    add_index :users, :name, :unique => true
   end
 
   def self.down

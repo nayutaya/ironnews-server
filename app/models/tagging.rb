@@ -5,18 +5,14 @@
 #
 #  id         :integer       not null, primary key
 #  created_at :datetime      not null
-#  user_id    :integer       not null
-#  article_id :integer       not null
-#  tag_id     :integer       not null
+#  user_id    :integer       not null, index_taggings_on_user_id_and_article_id_and_tag_id(unique) index_taggings_on_user_id
+#  article_id :integer       not null, index_taggings_on_user_id_and_article_id_and_tag_id(unique) index_taggings_on_article_id
+#  tag_id     :integer       not null, index_taggings_on_user_id_and_article_id_and_tag_id(unique) index_taggings_on_tag_id
 #
 
 # 記事タグ
 class Tagging < ActiveRecord::Base
   # TODO: テストデータを追加
-  # TODO: [DB] user_idにインデックスを追加
-  # TODO: [DB] article_idにインデックスを追加
-  # TODO: [DB] tag_idにインデックスを追加
-  # TODO: [DB] [user_id, artcle_id, tag_id]にユニークインデックスを追加
   # TODO: [関連] Userモデルとの関連を追加
   # TODO: [関連] Articleモデルとの関連を追加
   # TODO: [関連] Tagモデルとの関連を追加

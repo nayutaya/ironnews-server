@@ -5,9 +5,9 @@
 #
 #  id         :integer       not null, primary key
 #  created_at :datetime      not null
-#  user_id    :integer       not null
-#  article_id :integer       not null
-#  tag_id     :integer       not null
+#  user_id    :integer       not null, index_taggings_on_user_id_and_article_id_and_tag_id(unique) index_taggings_on_user_id
+#  article_id :integer       not null, index_taggings_on_user_id_and_article_id_and_tag_id(unique) index_taggings_on_article_id
+#  tag_id     :integer       not null, index_taggings_on_user_id_and_article_id_and_tag_id(unique) index_taggings_on_tag_id
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

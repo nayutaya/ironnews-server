@@ -6,7 +6,7 @@
 #  id         :integer       not null, primary key
 #  created_at :datetime      not null
 #  updated_at :datetime      not null
-#  name       :string(40)    not null
+#  name       :string(40)    not null, index_users_on_name(unique)
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

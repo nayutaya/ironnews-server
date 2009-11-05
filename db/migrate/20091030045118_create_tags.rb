@@ -7,6 +7,8 @@ class CreateTags < ActiveRecord::Migration
       # タグ名
       t.string   :name,       :null => false, :limit => 50
     end
+
+    add_index :tags, :name, :unique => true
   end
 
   def self.down

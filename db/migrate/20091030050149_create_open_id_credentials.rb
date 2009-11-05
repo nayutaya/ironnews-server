@@ -11,6 +11,9 @@ class CreateOpenIdCredentials < ActiveRecord::Migration
       # ログイン日時
       t.datetime :loggedin_at,  :null => true
     end
+
+    add_index :open_id_credentials, :user_id
+    add_index :open_id_credentials, :identity_url, :unique => true
   end
 
   def self.down

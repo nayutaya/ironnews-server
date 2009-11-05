@@ -11,6 +11,11 @@ class CreateTaggings < ActiveRecord::Migration
       # タグID
       t.integer  :tag_id,     :null => false
     end
+
+    add_index :taggings, :user_id
+    add_index :taggings, :article_id
+    add_index :taggings, :tag_id
+    add_index :taggings, [:user_id, :article_id, :tag_id], :unique => true
   end
 
   def self.down

@@ -11,6 +11,8 @@ class CreateArticles < ActiveRecord::Migration
       # URLパス部
       t.string   :path,       :null => false, :limit => 200
     end
+
+    add_index :articles, [:host, :path], :unique => true
   end
 
   def self.down

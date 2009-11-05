@@ -6,8 +6,8 @@
 #  id         :integer       not null, primary key
 #  created_at :datetime      not null
 #  title      :string(200)   not null
-#  host       :string(100)   not null
-#  path       :string(200)   not null
+#  host       :string(100)   not null, index_articles_on_host_and_path(unique)
+#  path       :string(200)   not null, index_articles_on_host_and_path(unique)
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
