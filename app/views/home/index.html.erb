@@ -96,7 +96,9 @@ $(document).ready(function() {
     if ( articleIds.length > 0 )
     {
       var path = "/view/" + articleIds.join(",");
+console.debug(path);
       var win = window.open(path);
+console.debug(win);
     }
   };
 

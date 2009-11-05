@@ -3,13 +3,50 @@
 
 <script type="text/javascript">
   var articleIds = <%= @article_ids.to_json %>;
+  var articleDB  = {};
 </script>
 
 <script type="text/javascript">
   $(document).ready(function() {
+    /*
     var url = "http://www.google.co.jp";
     $("#frame").attr("src", url);
+    */
+
+    var frame = $("#frame");
+    var current = 0;
+
+    var showArticle = function(id) {
+      var url = articleDB[id].url;
+      if ( /www\.asahi\.com/.test(url) ) url += "#HeadLine";
+      else if ( /mainichi\.jp/.test(url) ) url += "#MainBody";
+      frame.attr("src", url);
+    };
+
+    $("#next").click(function() {
+      if ( current < articleIds.length - 1 )
+      {
+        current += 1;
+        showArticle(articleIds[current]);
+      }
+      else
+      {
+        alert("最後の記事です");
+      }
+    });
+
+    $.ajax({
+      type: "GET",
+      url: "/home/get_info",
+      data: {"article_ids": articleIds.join(",")},
+      dataType: "jsonp",
+      success: function(data){
+        articleDB = data;
+        showArticle(articleIds[0]);
+      },
+    });
   });
 </script>
 
+<div id="next">次の記事を表示</div>
 <iframe id="frame" src="" width="800" height="600" frameborder="0" />
