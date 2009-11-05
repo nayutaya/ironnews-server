@@ -1,9 +1,9 @@
 
 <h1>鉄ニュース</h1>
 
-<ul>
+<ul class="articles">
  <%- @articles.each { |article| -%>
-  <li>
+  <li class="article">
    <%= link_to(h(article.title), article.url,
          :id    => "article_#{article.id}",
          :title => article.created_at.strftime("%Y年%m月%d日%H時%M分: ") + article.title) %>
@@ -15,15 +15,50 @@
 
 $(document).ready(function() {
 
-var moveToNextArticle = function() {
-  console.debug("next");
-};
-var moveToPrevArticle = function() {
-console.debug("prev");
-};
+  // a要素にfaviconを追加
+  $("ul.articles li a").each(function() {
+    var favicon = "http://favicon.hatena.ne.jp/?url=" + encodeURIComponent(this.href);
+    $(this).css("background-image", "url(" + favicon + ")");
+  });
+
+  var articles = $("ul.articles li");
+  //articles.addClass("unselected");
+  $(articles[0]).addClass("cursor");
+
+  var moveToNextArticle = function() {
+    var current = $("ul.articles li.cursor")[0];
+    var index   = articles.get().indexOf(current);
+    if ( index >= 0 && index < articles.length - 1 )
+    {
+      var next = articles[index + 1];
+      $(current).removeClass("cursor");
+      $(next).addClass("cursor");
+    }
+  };
+  var moveToPrevArticle = function() {
+    var current = $("ul.articles li.cursor")[0];
+    var index   = articles.get().indexOf(current);
+    if ( index >= 0 && index > 0 )
+    {
+      var next = articles[index - 1];
+      $(current).removeClass("cursor");
+      $(next).addClass("cursor");
+    }
+  };
+  var togglePinCurrentArticle = function() {
+    var current = $("ul.articles li.cursor")[0];
+    $(current).toggleClass("selected");
+  };
+  var openPinnedArticles = function() {
+    $("ul.articles li.selected a").each(function() {
+      console.debug(this.href);
+    });
+  };
 
   $(document).bind("keydown", "j", moveToNextArticle);
   $(document).bind("keydown", "k", moveToPrevArticle);
+  $(document).bind("keydown", "p", togglePinCurrentArticle);
+  $(document).bind("keydown", "o", openPinnedArticles);
 });
 
 </script>
