@@ -13,9 +13,10 @@
 # 記事
 class Article < ActiveRecord::Base
   # TODO: [関連] Taggingモデルとの関連を追加
-  # TODO: [検証] titleが存在すること
-  # TODO: [検証] hostが存在すること
-  # TODO: [検証] pathが存在すること
+
+  validates_presence_of :title
+  validates_presence_of :host
+  validates_presence_of :path
   # TODO: [検証] titleが200文字以下であること
   # TODO: [検証] hostが100文字以下であること
   # TODO: [検証] pathが2000文字以下であること
