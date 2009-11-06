@@ -98,11 +98,29 @@ $(document).ready(function() {
       var win = window.open(path);
     }
   };
+  var setPinOfAllArticles = function() {
+    if ( confirm("すべての記事にピンを設定します。よろしいですか？") )
+    {
+      $("ul.articles li").each(function() {
+        $(this).addClass("pinned");
+      });
+    }
+  };
+  var clearPinOfAllArticles = function() {
+    if ( confirm("すべての記事のピンを解除します。よろしいですか？") )
+    {
+      $("ul.articles li.pinned").each(function() {
+        $(this).removeClass("pinned");
+      });
+    }
+  };
 
   $(document).bind("keydown", {combi: "j", disableInInput: true}, moveToNextArticle);
   $(document).bind("keydown", {combi: "k", disableInInput: true}, moveToPrevArticle);
   $(document).bind("keydown", {combi: "p", disableInInput: true}, togglePinOfArticle);
   $(document).bind("keydown", {combi: "o", disableInInput: true}, openPinnedArticles);
+  $(document).bind("keydown", {combi: "a", disableInInput: true}, setPinOfAllArticles);
+  $(document).bind("keydown", {combi: "c", disableInInput: true}, clearPinOfAllArticles);
 });
 
 </script>
