@@ -89,23 +89,20 @@ $(document).ready(function() {
   var openPinnedArticles = function() {
     var articleIds = [];
     $("ul.articles li.pinned a").each(function() {
-      console.debug(this.href);
       var articleId = getArticleIdFromAnchorElement(this);
       articleIds.push(articleId);
     });
     if ( articleIds.length > 0 )
     {
       var path = "/view/" + articleIds.join(",");
-console.debug(path);
       var win = window.open(path);
-console.debug(win);
     }
   };
 
-  $(document).bind("keydown", "j", moveToNextArticle);
-  $(document).bind("keydown", "k", moveToPrevArticle);
-  $(document).bind("keydown", "p", togglePinOfArticle);
-  $(document).bind("keydown", "o", openPinnedArticles);
+  $(document).bind("keydown", {combi: "j", disableInInput: true}, moveToNextArticle);
+  $(document).bind("keydown", {combi: "k", disableInInput: true}, moveToPrevArticle);
+  $(document).bind("keydown", {combi: "p", disableInInput: true}, togglePinOfArticle);
+  $(document).bind("keydown", {combi: "o", disableInInput: true}, openPinnedArticles);
 });
 
 </script>
