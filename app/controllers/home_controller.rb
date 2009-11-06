@@ -20,7 +20,7 @@ class HomeController < ApplicationController
         :host  => uri.host + (uri.port != 80 ? uri.port.to_s : ""),
         :path  => uri.path)
 
-      api_url = "http://ironnews-helper2.appspot.com/hatena/bookmark/get_title?url1=" + CGI.escape(article.url)
+      api_url = "http://v2.latest.ironnews-helper2.appspot.com/hatena-bookmark/get-title?url1=" + CGI.escape(article.url)
       open(api_url) { |io|
         json = io.read
         ret  = ActiveSupport::JSON.decode(json)
