@@ -16,7 +16,9 @@ class Tagging < ActiveRecord::Base
   # TODO: [関連] Userモデルとの関連を追加
   # TODO: [関連] Articleモデルとの関連を追加
   # TODO: [関連] Tagモデルとの関連を追加
-  # TODO: [検証] user_idが存在すること
-  # TODO: [検証] article_idが存在すること
-  # TODO: [検証] tag_idが存在すること
+
+  validates_presence_of :user_id
+  validates_presence_of :article_id
+  validates_presence_of :tag_id
+  # TODO: [検証] [user_id, article_id, tag_id]が一意であること
 end
