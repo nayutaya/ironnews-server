@@ -41,4 +41,16 @@ class TagTest < ActiveSupport::TestCase
       assert_equal(expected, @basic.valid?, value.chars.to_a.size)
     }
   end
+
+  test "validates_format_of :name" do
+    [
+      ["あいうえお",         true ],
+      [("0".."9").to_a.join, true ],
+      [("a".."z").to_a.join, true ],
+      [("A".."Z").to_a.join, false],
+    ].each { |value, expected|
+      @basic.name = value
+      assert_equal(expected, @basic.valid?, value)
+    }
+  end
 end
