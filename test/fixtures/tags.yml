@@ -8,10 +8,10 @@
 #  name       :string(50)    not null, index_tags_on_name(unique)
 #
 
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+rail:
+  created_at: 2009-01-01 00:00:00
+  name: "鉄道"
 
-# one:
-#   column: value
-#
-# two:
-#   column: value
+norail:
+  created_at: 2009-01-01 00:00:00
+  name: "非鉄"

@@ -13,8 +13,8 @@ class Tag < ActiveRecord::Base
   NameMaxLength = 50 # chars
   NamePattern   = /\A[^A-Z]*\z/
 
-  # TODO: テストデータを追加
   # TODO: [関連] Taggingモデルとの関連を追加
+  # TODO: [検証] nameが一意であること
 
   validates_presence_of :name
   validates_length_of :name, :maximum => NameMaxLength, :allow_blank => true
