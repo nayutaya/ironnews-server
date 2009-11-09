@@ -12,8 +12,7 @@
 
 # 記事タグ
 class Tagging < ActiveRecord::Base
-  # TODO: テストデータを追加
-  # TODO: [関連] Userモデルとの関連を追加
+  belongs_to :user
   # TODO: [関連] Articleモデルとの関連を追加
   # TODO: [関連] Tagモデルとの関連を追加
 

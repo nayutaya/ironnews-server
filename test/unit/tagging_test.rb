@@ -14,7 +14,15 @@ class TaggingTest < ActiveSupport::TestCase
   # 関連
   #
 
-  # TODO: 関連を実装せよ
+  test "belongs_to :user" do
+    assert_equal(
+      users(:yuya),
+      taggings(:yuya_asahi1_rail).user)
+
+    assert_equal(
+      users(:risa),
+      taggings(:risa_asahi1_rail).user)
+  end
 
   #
   # 検証
