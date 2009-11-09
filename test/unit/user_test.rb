@@ -33,7 +33,8 @@ class UserTest < ActiveSupport::TestCase
 
   test "validates_length_of :name" do
     [
-      ["a" *  1, true ],
+      ["a" *  3, false],
+      ["a" *  4, true ],
       ["a" * 40, true ],
       ["a" * 41, false],
     ].each { |value, expected|
@@ -44,11 +45,16 @@ class UserTest < ActiveSupport::TestCase
 
   test "validates_format_of :name" do
     [
-      [("0".."9").to_a.join, true ],
-      [("a".."z").to_a.join, true ],
-      [("A".."Z").to_a.join, true ],
-      ["abc_",               true ],
-      ["あいうえお",         false],
+      ["a0123456789",                true ],
+      ["abcdefghijklmnopqrstuvwxyz", true ],
+      ["ABCDEFGHIJKLMNOPQRSTUVWXYZ", true ],
+      ["aa_a",                       true ],
+      ["aaa_",                       true ],
+      ["aa0a",                       true ],
+      ["aaa0",                       true ],
+      ["_aaa",                       false],
+      ["0aaa",                       false],
+      ["あいうえお",                 false],
     ].each { |value, expected|
       @basic.name = value
       assert_equal(expected, @basic.valid?, value)
