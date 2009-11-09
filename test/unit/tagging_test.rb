@@ -34,6 +34,16 @@ class TaggingTest < ActiveSupport::TestCase
       taggings(:risa_asahi2_nonrail).article)
   end
 
+  test "belongs_to :tag" do
+    assert_equal(
+      tags(:rail),
+      taggings(:yuya_asahi1_rail).tag)
+
+    assert_equal(
+      tags(:nonrail),
+      taggings(:risa_asahi2_nonrail).tag)
+  end
+
   #
   # 検証
   #

@@ -14,7 +14,7 @@
 class Tagging < ActiveRecord::Base
   belongs_to :user
   belongs_to :article
-  # TODO: [関連] Tagモデルとの関連を追加
+  belongs_to :tag
 
   validates_presence_of :user_id
   validates_presence_of :article_id

@@ -12,6 +12,6 @@ rail:
   created_at: 2009-01-01 00:00:00
   name: "鉄道"
 
-norail:
+nonrail:
   created_at: 2009-01-01 00:00:00
   name: "非鉄"

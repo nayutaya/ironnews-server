@@ -12,7 +12,24 @@ class TagTest < ActiveSupport::TestCase
   # 関連
   #
 
-  # TODO: 関連を実装せよ
+  test "has_many :taggings" do
+    expected = [
+      taggings(:yuya_asahi1_rail),
+      taggings(:yuya_asahi2_rail),
+      taggings(:risa_asahi1_rail),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      tags(:rail).taggings.all.sort_by(&:id))
+
+    expected = [
+      taggings(:yuya_asahi3_nonrail),
+      taggings(:risa_asahi2_nonrail),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      tags(:nonrail).taggings.all.sort_by(&:id))
+  end
 
   #
   # 検証
