@@ -10,10 +10,32 @@
 #  tag_id     :integer       not null, index_taggings_on_user_id_and_article_id_and_tag_id(unique) index_taggings_on_tag_id
 #
 
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+yuya_asahi1_rail:
+  created_at: 2009-01-01 00:00:00
+  user_id: 0 # yuya
+  article_id: 0 # asahi1
+  tag_id: 0 # rail
 
-# one:
-#   column: value
-#
-# two:
-#   column: value
+yuya_asahi2_rail:
+  created_at: 2009-01-01 00:00:00
+  user_id: 0 # yuya
+  article_id: 1 # asahi2
+  tag_id: 0 # rail
+
+yuya_asahi3_nonrail:
+  created_at: 2009-01-01 00:00:00
+  user_id: 0 # yuya
+  article_id: 2 # asahi3
+  tag_id: 1 # nonrail
+
+risa_asahi1_rail:
+  created_at: 2009-01-01 00:00:00
+  user_id: 1 # risa
+  article_id: 0 # asahi1
+  tag_id: 0 # rail
+
+risa_asahi2_nonrail:
+  created_at: 2009-01-01 00:00:00
+  user_id: 1 # risa
+  article_id: 1 # asahi2
+  tag_id: 1 # nonrail
