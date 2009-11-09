@@ -13,7 +13,7 @@
 # 記事タグ
 class Tagging < ActiveRecord::Base
   belongs_to :user
-  # TODO: [関連] Articleモデルとの関連を追加
+  belongs_to :article
   # TODO: [関連] Tagモデルとの関連を追加
 
   validates_presence_of :user_id

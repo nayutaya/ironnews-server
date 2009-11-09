@@ -21,7 +21,17 @@ class TaggingTest < ActiveSupport::TestCase
 
     assert_equal(
       users(:risa),
-      taggings(:risa_asahi1_rail).user)
+      taggings(:risa_asahi2_nonrail).user)
+  end
+
+  test "belongs_to :article" do
+    assert_equal(
+      articles(:asahi1),
+      taggings(:yuya_asahi1_rail).article)
+
+    assert_equal(
+      articles(:asahi2),
+      taggings(:risa_asahi2_nonrail).article)
   end
 
   #

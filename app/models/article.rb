@@ -17,7 +17,7 @@ class Article < ActiveRecord::Base
   PathMaxLength  = 2000
   HostPattern    = /\A[a-z\d\-]+(\.[a-z\d\-]+)*(:\d+)?\z/
 
-  # TODO: [関連] Taggingモデルとの関連を追加
+  has_many :taggings
 
   validates_presence_of :title
   validates_presence_of :host
