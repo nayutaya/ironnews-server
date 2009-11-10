@@ -5,9 +5,9 @@ class TaggingTest < ActiveSupport::TestCase
   def setup
     @klass = Tagging
     @basic = @klass.new(
-      :user_id    => 1,
-      :article_id => 1,
-      :tag_id     => 1)
+      :user_id    => users(:yuya).id,
+      :article_id => articles(:asahi1).id,
+      :tag_id     => tags(:nonrail).id)
   end
 
   #
@@ -72,15 +72,32 @@ class TaggingTest < ActiveSupport::TestCase
   end
 
   test "validates_uniqueness_of :tag_id, :scope => [:user_id, :article_id], on create" do
-    @basic.user_id    = users(:yuya).id
-    @basic.article_id = articles(:asahi1).id
-    @basic.tag_id     = tags(:rail).id
-    assert_equal(false, @basic.valid?)
+    [
+      [users(:risa), articles(:asahi2), tags(:rail),    true ],
+      [users(:yuya), articles(:asahi3), tags(:rail),    true ],
+      [users(:yuya), articles(:asahi2), tags(:nonrail), true ],
+      [users(:yuya), articles(:asahi2), tags(:rail),    false],
+    ].each_with_index { |(user, article, tag, expected), index|
+      @basic.user    = user
+      @basic.article = article
+      @basic.tag     = tag
+      assert_equal(expected, @basic.valid?, index.to_s)
+    }
   end
 
   test "validates_uniqueness_of :tag_id, :scope => [:user_id, :article_id], on update" do
-    taggings = taggings(:yuya_asahi2_rail)
-    taggings.article_id = articles(:asahi1).id
-    assert_equal(false, taggings.valid?)
+    [
+      [users(:risa), articles(:asahi2), tags(:rail),    true ],
+      [users(:yuya), articles(:asahi3), tags(:rail),    true ],
+      [users(:yuya), articles(:asahi2), tags(:nonrail), true ],
+      [users(:yuya), articles(:asahi2), tags(:rail),    true ],
+      [users(:yuya), articles(:asahi1), tags(:rail),    false],
+    ].each_with_index { |(user, article, tag, expected), index|
+      taggings = taggings(:yuya_asahi2_rail)
+      taggings.user    = user
+      taggings.article = article
+      taggings.tag     = tag
+      assert_equal(expected, taggings.valid?, index.to_s)
+    }
   end
 end
