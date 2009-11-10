@@ -96,19 +96,33 @@ class TagTest < ActiveSupport::TestCase
 
   test "self.normalize" do
     [
-      ["  a  b  ", "ab"],
-      ["\ta\tb\t", "ab"],
-      ["\ra\rb\r", "ab"],
-      ["\na\nb\n", "ab"],
-      ["　a　b　", "ab"],
-      ["//a//b//", "ab"],
-      [",,a,,b,,", "ab"],
+      ["  A  B  ", "ab"],
+      ["\tA\tB\t", "ab"],
+      ["\rA\rB\r", "ab"],
+      ["\nA\nB\n", "ab"],
+      ["　A　B　", "ab"],
+      ["//A//B//", "ab"],
+      [",,A,,B,,", "ab"],
       ["ABCDEFGHIJKLM", "abcdefghijklm"],
       ["NOPQRSTUVWXYZ", "nopqrstuvwxyz"],
       ["ＡＢＣＤＥ",    "ＡＢＣＤＥ"],
       ["あいうえお",    "あいうえお"],
     ].each { |value, expected|
       assert_equal(expected, @klass.normalize(value), value)
+    }
+  end
+
+  test "self.split" do
+    [
+      ["  A  B  ", %w[A B]],
+      ["\tA\tB\t", %w[A B]],
+      ["\rA\rB\r", %w[A B]],
+      ["\nA\nB\n", %w[A B]],
+      ["　A　B　", %w[A B]],
+      ["//A//B//", %w[A B]],
+      [",,A,,B,,", %w[A B]],
+    ].each { |value, expected|
+      assert_equal(expected, @klass.split(value), value)
     }
   end
 end

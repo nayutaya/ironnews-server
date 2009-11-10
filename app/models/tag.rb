@@ -12,6 +12,7 @@
 class Tag < ActiveRecord::Base
   NameMaxLength = 50 # chars
   NamePattern   = /\A[^A-Z]*\z/
+  Separator     = /[\s\/,　]+/
 
   has_many :taggings
 
@@ -20,7 +21,11 @@ class Tag < ActiveRecord::Base
   validates_format_of :name, :with => NamePattern, :allow_blank => true
   validates_uniqueness_of :name
 
-  def self.normalize(value)
-    return value.downcase.gsub(/[\s\/,　]+/, "")
+  def self.normalize(name)
+    return name.downcase.gsub(Separator, "")
+  end
+
+  def self.split(names)
+    return names.split(Separator).reject(&:empty?)
   end
 end
