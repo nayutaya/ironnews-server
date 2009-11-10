@@ -70,4 +70,21 @@ class TagTest < ActiveSupport::TestCase
       assert_equal(expected, @basic.valid?, value)
     }
   end
+
+  test "validates_uniqueness_of :name, on create" do
+    name = tags(:rail).name
+    assert_not_nil(@klass.find_by_name(name))
+
+    @basic.name = name
+    assert_equal(false, @basic.valid?)
+  end
+
+  test "validates_uniqueness_of :name, on update" do
+    name = tags(:nonrail).name
+    assert_not_nil(@klass.find_by_name(name))
+
+    tag = tags(:rail)
+    tag.name = name
+    assert_equal(false, tag.valid?)
+  end
 end

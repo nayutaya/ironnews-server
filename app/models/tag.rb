@@ -18,5 +18,5 @@ class Tag < ActiveRecord::Base
   validates_presence_of :name
   validates_length_of :name, :maximum => NameMaxLength, :allow_blank => true
   validates_format_of :name, :with => NamePattern, :allow_blank => true
-  # TODO: [検証] nameが一意であること
+  validates_uniqueness_of :name
 end
