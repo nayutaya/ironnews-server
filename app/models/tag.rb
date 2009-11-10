@@ -28,4 +28,17 @@ class Tag < ActiveRecord::Base
   def self.split(names)
     return names.split(Separator).reject(&:empty?)
   end
+
+  def self.get(name, options = {})
+    options = options.dup
+    create = (options.delete(:create) != false)
+    raise(ArgumentError) unless options.empty?
+
+    normalized_name = self.normalize(name)
+    if create
+      return self.find_or_create_by_name(normalized_name)
+    else
+      return self.find_by_name(normalized_name)
+    end
+  end
 end

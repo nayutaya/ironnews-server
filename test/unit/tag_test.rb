@@ -125,4 +125,38 @@ class TagTest < ActiveSupport::TestCase
       assert_equal(expected, @klass.split(value), value)
     }
   end
+
+  test "self.get, already exists" do
+    tag1 = @klass.get(@rail.name)
+    assert_equal(@rail.id, tag1.id)
+    tag2 = @klass.get(@rail.name, :create => false)
+    assert_equal(@rail.id, tag2.id)
+  end
+
+  test "self.get, not exists" do
+    tag1, tag2 = nil
+    assert_difference("#{@klass}.count", +1) {
+      tag1 = @klass.get("TAG")
+    }
+    assert_equal("tag", tag1.name)
+
+    assert_difference("#{@klass}.count", 0) {
+      tag2 = @klass.get("tag")
+    }
+    assert_equal(tag2.id, tag1.id)
+  end
+
+  test "self.get, not exists but not create" do
+    tag1 = nil
+    assert_difference("#{@klass}.count", 0) {
+      tag1 = @klass.get("TAG", :create => false)
+    }
+    assert_equal(nil, tag1)
+  end
+
+  test "self.get, invalid parameter" do
+    assert_raise(ArgumentError) {
+      @klass.get("tag", :invalid => true)
+    }
+  end
 end
