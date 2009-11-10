@@ -89,4 +89,26 @@ class TagTest < ActiveSupport::TestCase
     @rail.name = name
     assert_equal(false, @rail.valid?)
   end
+
+  #
+  # クラスメソッド
+  #
+
+  test "self.normalize" do
+    [
+      ["  a  b  ", "ab"],
+      ["\ta\tb\t", "ab"],
+      ["\ra\rb\r", "ab"],
+      ["\na\nb\n", "ab"],
+      ["　a　b　", "ab"],
+      ["//a//b//", "ab"],
+      [",,a,,b,,", "ab"],
+      ["ABCDEFGHIJKLM", "abcdefghijklm"],
+      ["NOPQRSTUVWXYZ", "nopqrstuvwxyz"],
+      ["ＡＢＣＤＥ",    "ＡＢＣＤＥ"],
+      ["あいうえお",    "あいうえお"],
+    ].each { |value, expected|
+      assert_equal(expected, @klass.normalize(value), value)
+    }
+  end
 end

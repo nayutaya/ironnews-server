@@ -19,4 +19,8 @@ class Tag < ActiveRecord::Base
   validates_length_of :name, :maximum => NameMaxLength, :allow_blank => true
   validates_format_of :name, :with => NamePattern, :allow_blank => true
   validates_uniqueness_of :name
+
+  def self.normalize(value)
+    return value.downcase.gsub(/[\s\/,　]+/, "")
+  end
 end
