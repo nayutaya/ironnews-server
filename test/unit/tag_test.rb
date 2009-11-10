@@ -6,6 +6,9 @@ class TagTest < ActiveSupport::TestCase
     @klass = Tag
     @basic = @klass.new(
       :name => "name")
+
+    @rail    = tags(:rail)
+    @nonrail = tags(:nonrail)
   end
 
   #
@@ -20,7 +23,7 @@ class TagTest < ActiveSupport::TestCase
     ]
     assert_equal(
       expected.sort_by(&:id),
-      tags(:rail).taggings.all.sort_by(&:id))
+      @rail.taggings.all.sort_by(&:id))
 
     expected = [
       taggings(:yuya_asahi3_nonrail),
@@ -28,7 +31,7 @@ class TagTest < ActiveSupport::TestCase
     ]
     assert_equal(
       expected.sort_by(&:id),
-      tags(:nonrail).taggings.all.sort_by(&:id))
+      @nonrail.taggings.all.sort_by(&:id))
   end
 
   #
@@ -72,7 +75,7 @@ class TagTest < ActiveSupport::TestCase
   end
 
   test "validates_uniqueness_of :name, on create" do
-    name = tags(:rail).name
+    name = @rail.name
     assert_not_nil(@klass.find_by_name(name))
 
     @basic.name = name
@@ -80,11 +83,10 @@ class TagTest < ActiveSupport::TestCase
   end
 
   test "validates_uniqueness_of :name, on update" do
-    name = tags(:nonrail).name
+    name = @nonrail.name
     assert_not_nil(@klass.find_by_name(name))
 
-    tag = tags(:rail)
-    tag.name = name
-    assert_equal(false, tag.valid?)
+    @rail.name = name
+    assert_equal(false, @rail.valid?)
   end
 end
