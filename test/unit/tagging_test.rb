@@ -70,4 +70,17 @@ class TaggingTest < ActiveSupport::TestCase
     @basic.tag_id = nil
     assert_equal(false, @basic.valid?)
   end
+
+  test "validates_uniqueness_of :tag_id, :scope => [:user_id, :article_id], on create" do
+    @basic.user_id    = users(:yuya).id
+    @basic.article_id = articles(:asahi1).id
+    @basic.tag_id     = tags(:rail).id
+    assert_equal(false, @basic.valid?)
+  end
+
+  test "validates_uniqueness_of :tag_id, :scope => [:user_id, :article_id], on update" do
+    taggings = taggings(:yuya_asahi2_rail)
+    taggings.article_id = articles(:asahi1).id
+    assert_equal(false, taggings.valid?)
+  end
 end

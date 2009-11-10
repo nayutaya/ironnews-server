@@ -19,5 +19,5 @@ class Tagging < ActiveRecord::Base
   validates_presence_of :user_id
   validates_presence_of :article_id
   validates_presence_of :tag_id
-  # TODO: [検証] [user_id, article_id, tag_id]が一意であること
+  validates_uniqueness_of :tag_id, :scope => [:user_id, :article_id]
 end
