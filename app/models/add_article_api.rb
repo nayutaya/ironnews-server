@@ -26,11 +26,9 @@ class AddArticleApi < ActiveForm
       },
     }
 
-    article = Article.new
-    article.title = title
-    article.host  = URI.parse(url).host
-    article.path  = URI.parse(url).path
-    article.save!
+    Article.create!(
+      :title => title,
+      :url   => url)
 
     return result
   end
