@@ -23,14 +23,14 @@ class UserTest < ActiveSupport::TestCase
     ]
     assert_equal(
       expected.sort_by(&:id),
-      @yuya.open_id_credentials.all.sort_by(&:id))
+      @yuya.open_id_credentials.sort_by(&:id))
 
     expected = [
       open_id_credentials(:shinya_example),
     ]
     assert_equal(
       expected.sort_by(&:id),
-      @shinya.open_id_credentials.all.sort_by(&:id))
+      @shinya.open_id_credentials.sort_by(&:id))
   end
 
   test "has_many :taggings" do
@@ -41,7 +41,7 @@ class UserTest < ActiveSupport::TestCase
     ]
     assert_equal(
       expected.sort_by(&:id),
-      @yuya.taggings.all.sort_by(&:id))
+      @yuya.taggings.sort_by(&:id))
 
     expected = [
       taggings(:risa_asahi1_rail),
@@ -49,7 +49,7 @@ class UserTest < ActiveSupport::TestCase
     ]
     assert_equal(
       expected.sort_by(&:id),
-      @risa.taggings.all.sort_by(&:id))
+      @risa.taggings.sort_by(&:id))
   end
 
   #

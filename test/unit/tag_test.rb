@@ -23,7 +23,7 @@ class TagTest < ActiveSupport::TestCase
     ]
     assert_equal(
       expected.sort_by(&:id),
-      @rail.taggings.all.sort_by(&:id))
+      @rail.taggings.sort_by(&:id))
 
     expected = [
       taggings(:yuya_asahi3_nonrail),
@@ -31,7 +31,7 @@ class TagTest < ActiveSupport::TestCase
     ]
     assert_equal(
       expected.sort_by(&:id),
-      @nonrail.taggings.all.sort_by(&:id))
+      @nonrail.taggings.sort_by(&:id))
   end
 
   #
