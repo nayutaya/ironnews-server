@@ -14,20 +14,8 @@ class HomeController < ApplicationController
     url = (params[:form] || {})[:url]
 
     unless url.blank?
-      uri = URI.parse(url)
-      article = Article.new(
-        :title => "-",
-        :host  => uri.host + (uri.port != 80 ? uri.port.to_s : ""),
-        :path  => uri.path)
-
-      api_url = "http://v2.latest.ironnews-helper2.appspot.com/hatena-bookmark/get-title?url1=" + CGI.escape(article.url)
-      open(api_url) { |io|
-        json = io.read
-        ret  = ActiveSupport::JSON.decode(json)
-        article.title = ret[1]["title"]
-      }
-
-      article.save!
+      api = AddArticleApi.new(:url1 => url)
+      api.execute
     end
 
     redirect_to(:action => "index")
