@@ -14,22 +14,22 @@ class AddArticleApi < ActiveForm
   end
 
   def execute
-    url   = self.url1
-    title = self.class.get_title(url)
-
     result = {
       :success => true,
-      :result  => {
-        1 => {
-          :url   => url,
-          :title => title,
-        },
-      },
+      :result  => {},
     }
 
-    Article.create!(
-      :title => title,
-      :url   => url)
+    self.urls.each { |num, url|
+      title = self.class.get_title(url)
+      result[:result][num] = {
+        :url  => url,
+        :title => title,
+      }
+
+      Article.create!(
+        :title => title,
+        :url   => url)
+    }
 
     return result
   end

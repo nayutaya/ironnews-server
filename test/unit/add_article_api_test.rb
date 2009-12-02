@@ -64,6 +64,32 @@ class AddArticleApiTest < ActiveSupport::TestCase
     assert_equal(url1,   article.url)
   end
 
+  test "execute, 2" do
+    url1   = "http://www.asahi.com/national/update/1202/TKY200912020353.html"
+    title1 = "asahi.com（朝日新聞社）：リンゼイさん殺害の疑い　沈黙の市橋容疑者を再逮捕　 - 社会"
+    url2   = "http://www.asahi.com/politics/update/1202/TKY200912020359.html"
+    title2 = "asahi.com（朝日新聞社）：「連立３党合意に普天間入ってない」　官房長官、会見で - 政治"
+
+    form = @klass.new
+    form.url1 = url1
+    form.url2 = url2
+
+    result = nil
+    assert_difference("Article.count", +2) {
+      result = form.execute
+    }
+
+    expected = {
+      1 => {:url => url1, :title => title1},
+      2 => {:url => url2, :title => title2},
+    }
+    assert_equal(expected, result[:result])
+
+    article = Article.first(:order => "articles.id DESC")
+    assert_equal(title2, article.title)
+    assert_equal(url2,   article.url)
+  end
+
   test "urls, full" do
     @form.attributes = {
       :url1 => "a",
