@@ -7,10 +7,10 @@ class AddArticleApi < ActiveForm
   column :url2, :type => :text
 
   def self.get_title(url)
-    api_url = "http://v2.latest.ironnews-helper2.appspot.com/hatena-bookmark/get-title?url1=" + CGI.escape(url)
+    api_url = "http://v3.latest.ironnews-helper2.appspot.com/hatena-bookmark/get-title?url1=" + CGI.escape(url)
     json = open(api_url) { |io| io.read }
     obj  = ActiveSupport::JSON.decode(json)
-    return obj[1]["title"]
+    return obj["1"]["title"]
   end
 
   def execute
