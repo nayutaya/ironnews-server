@@ -14,7 +14,7 @@
 class OpenIdCredential < ActiveRecord::Base
   IdentityUrlMaxLength = 200
 
-  # TODO: [関連] Userモデルとの関連を追加
+  belongs_to :user
 
   validates_presence_of :user_id
   validates_presence_of :identity_url

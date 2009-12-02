@@ -13,6 +13,20 @@ class OpenIdCredentialTest < ActiveSupport::TestCase
   end
 
   #
+  # 関連
+  #
+
+  test "belongs_to :user" do
+    assert_equal(
+      users(:yuya),
+      @yuya_livedoor.user)
+
+    assert_equal(
+      users(:shinya),
+      @shinya_example.user)
+  end
+
+  #
   # 検証
   #
 

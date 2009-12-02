@@ -15,8 +15,8 @@ class User < ActiveRecord::Base
   NamePattern1 = /\A[A-Za-z0-9_]+\z/
   NamePattern2 = /\A[^0-9_]/
 
+  has_many :open_id_credentials
   has_many :taggings
-  # TODO: [関連] OpenIdCredentialモデルとの関連を追加
 
   validates_presence_of :name
   validates_length_of :name, :in => NameLength, :allow_blank => true

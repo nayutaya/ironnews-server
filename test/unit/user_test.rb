@@ -7,13 +7,31 @@ class UserTest < ActiveSupport::TestCase
     @basic = @klass.new(
       :name => "name")
 
-    @yuya = users(:yuya)
-    @risa = users(:risa)
+    @yuya   = users(:yuya)
+    @shinya = users(:shinya)
+    @risa   = users(:risa)
   end
 
   #
   # 関連
   #
+
+  test "has_many :open_id_credentials" do
+    expected = [
+      open_id_credentials(:yuya_livedoor),
+      open_id_credentials(:yuya_mixi),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @yuya.open_id_credentials.all.sort_by(&:id))
+
+    expected = [
+      open_id_credentials(:shinya_example),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @shinya.open_id_credentials.all.sort_by(&:id))
+  end
 
   test "has_many :taggings" do
     expected = [
