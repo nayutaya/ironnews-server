@@ -15,6 +15,7 @@ class AddArticleApiTest < ActiveSupport::TestCase
   test "columns" do
     [
       [:url1, nil, "1", "1"],
+      [:url2, nil, "1", "1"],
     ].each { |name, default, set_value, get_value|
       form = @klass.new
       assert_equal(default, form.__send__(name))
@@ -64,9 +65,13 @@ class AddArticleApiTest < ActiveSupport::TestCase
   end
 
   test "urls, full" do
-    @form.url1 = "a"
+    @form.attributes = {
+      :url1 => "a",
+      :url2 => "b",
+    }
     expected = [
       [1, "a"],
+      [2, "b"],
     ]
     assert_equal(expected, @form.urls)
   end
