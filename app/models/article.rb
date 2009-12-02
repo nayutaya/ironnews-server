@@ -30,4 +30,11 @@ class Article < ActiveRecord::Base
   def url
     return "http://" + self.host + self.path
   end
+
+  def url=(value)
+    uri = URI.parse(value)
+    self.host = uri.host + (uri.port == URI::HTTP.default_port ? "" : ":#{uri.port}")
+    self.path = uri.path
+    return value
+  end
 end

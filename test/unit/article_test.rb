@@ -122,4 +122,18 @@ class ArticleTest < ActiveSupport::TestCase
       "http://" + @mainichi1.host + @mainichi1.path,
       @mainichi1.url)
   end
+
+  test "url=" do
+    [
+      ["http://example.jp/",          "example.jp",       "/"],
+      ["http://example.com/foo",      "example.com",      "/foo"],
+      ["http://example.org:80/bar",   "example.org",      "/bar"],
+      ["http://example.net:8080/baz", "example.net:8080", "/baz"],
+    ].each { |url, host, path|
+      record = @klass.new
+      record.url = url
+      assert_equal(host, record.host, url)
+      assert_equal(path, record.path, url)
+    }
+  end
 end
