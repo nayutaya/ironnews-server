@@ -4,6 +4,7 @@ require 'test_helper'
 class AddArticleApiTest < ActiveSupport::TestCase
   def setup
     @klass = AddArticleApi
+    @form  = @klass.new
     @basic = @klass.new
   end
 
@@ -60,5 +61,17 @@ class AddArticleApiTest < ActiveSupport::TestCase
     article = Article.first(:order => "articles.id DESC")
     assert_equal(title1, article.title)
     assert_equal(url1,   article.url)
+  end
+
+  test "urls, full" do
+    @form.url1 = "a"
+    expected = [
+      [1, "a"],
+    ]
+    assert_equal(expected, @form.urls)
+  end
+
+  test "urls, empty" do
+    assert_equal([], @form.urls)
   end
 end

@@ -32,4 +32,10 @@ class AddArticleApi < ActiveForm
 
     return result
   end
+
+  def urls
+    result = []
+    result << [1, self.url1] unless self.url1.blank?
+    return result
+  end
 end
