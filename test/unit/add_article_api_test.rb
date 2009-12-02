@@ -35,15 +35,30 @@ class AddArticleApiTest < ActiveSupport::TestCase
   #
 
   test "execute" do
-    api = @klass.new
+    url1   = "http://www.asahi.com/national/update/1202/SEB200912020015.html"
+    title1 = "asahi.com（朝日新聞社）：母の故郷に１億円「ふるさと納税」　福岡の８０歳 - 社会"
+
+    form = @klass.new
+    form.url1 = url1
 
     result = nil
     assert_difference("Article.count", +1) {
-      result = api.execute
+      result = form.execute
     }
+
     expected = {
       :success => true,
+      :result  => {
+        1 => {
+          :url   => url1,
+          :title => title1,
+        },
+      }
     }
     assert_equal(expected, result)
+
+    article = Article.first(:order => "articles.id DESC")
+    assert_equal(title1, article.title)
+    assert_equal(url1,   article.url)
   end
 end
