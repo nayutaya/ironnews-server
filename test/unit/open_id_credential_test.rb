@@ -7,6 +7,9 @@ class OpenIdCredentialTest < ActiveSupport::TestCase
     @basic = @klass.new(
       :user_id      => users(:yuya).id,
       :identity_url => "http://example.jp/identity_url")
+
+    @yuya_livedoor  = open_id_credentials(:yuya_livedoor)
+    @shinya_example = open_id_credentials(:shinya_example)
   end
 
   #
@@ -46,5 +49,15 @@ class OpenIdCredentialTest < ActiveSupport::TestCase
       @basic.identity_url = value
       assert_equal(expected, @basic.valid?, value)
     }
+  end
+
+  test "validates_uniqueness_of :identity_url, on create" do
+    @basic.identity_url = @yuya_livedoor.identity_url
+    assert_equal(false, @basic.valid?)
+  end
+
+  test "validates_uniqueness_of :identity_url, on update" do
+    @yuya_livedoor.identity_url = @shinya_example.identity_url
+    assert_equal(false, @yuya_livedoor.valid?)
   end
 end
