@@ -12,10 +12,15 @@
 
 # OpenIDログイン情報
 class OpenIdCredential < ActiveRecord::Base
+  IdentityUrlMaxLength = 200
+
   # TODO: テストデータを追加
+
   # TODO: [関連] Userモデルとの関連を追加
-  # TODO: [検証] user_idが存在すること
-  # TODO: [検証] identity_urlが存在すること
-  # TODO: [検証] identity_urlが200文字以下であること
-  # TODO: [検証] identity_urlがURLとして正しいこと
+
+  validates_presence_of :user_id
+  validates_presence_of :identity_url
+  validates_length_of :identity_url, :maximum => IdentityUrlMaxLength, :allow_nil => true
+  validates_format_of :identity_url, :with => URI.regexp(%w[http https]), :allow_nil => true
+  # TODO: [検証] identity_urlが一意であること
 end
