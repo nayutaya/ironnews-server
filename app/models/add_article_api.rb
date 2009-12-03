@@ -9,10 +9,9 @@ class AddArticleApi < ActiveForm
 
   def self.suppress_parameter(params)
     params = params.dup
-    params.delete(:controller)
-    params.delete(:action)
-    params.delete(:commit)
-    params.delete(:authenticity_token)
+    [:controller, :action, :commit, :authenticity_token].each { |key|
+      params.delete(key)
+    }
     return params
   end
 
