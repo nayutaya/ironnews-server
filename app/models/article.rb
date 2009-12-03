@@ -39,9 +39,7 @@ class Article < ActiveRecord::Base
   end
 
   def url=(value)
-    uri = URI.parse(value)
-    self.host = uri.host + (uri.port == URI::HTTP.default_port ? "" : ":#{uri.port}")
-    self.path = uri.path
+    self.host, self.path = self.class.split_host_path(value)
     return value
   end
 end
