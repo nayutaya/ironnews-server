@@ -139,7 +139,7 @@ class UserTest < ActiveSupport::TestCase
   test "create_unique_api_token, duplication" do
     dup_token1 = @yuya.api_token
     dup_token2 = @shinya.api_token
-    uniq_token = "f" * 32
+    uniq_token = "f" * @klass::ApiTokenLength
     tokens = [dup_token1, dup_token2, uniq_token]
 
     musha = Kagemusha.new(@klass)

@@ -12,10 +12,11 @@
 
 # ユーザ
 class User < ActiveRecord::Base
-  NameLength   = 4..40 # chars
-  NamePattern1 = /\A[a-z0-9_]+\z/
-  NamePattern2 = /\A[a-z]/
-  ApiTokenPattern = /\A[0-9a-f]{32}\z/
+  NameLength      = 4..40 # chars
+  NamePattern1    = /\A[a-z0-9_]+\z/
+  NamePattern2    = /\A[a-z]/
+  ApiTokenLength  = 32
+  ApiTokenPattern = /\A[0-9a-f]{#{ApiTokenLength}}\z/
 
   has_many :open_id_credentials
   has_many :taggings
