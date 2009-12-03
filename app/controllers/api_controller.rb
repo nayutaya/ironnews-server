@@ -17,28 +17,29 @@ class ApiController < ApplicationController
 
   private
 
-  def authentication
-    user = User.find_by_id(session[:user_id])
-    return true if user
+  def authenticate_by_cookie
+    user_id = session[:user_id]
+    return nil if user_id.blank?
+    return User.find_by_id(user_id)
+  end
 
-    # FIXME: createdの範囲を限定
-    # FIXME: リピート攻撃に対処
+  # FIXME: createdの範囲を限定
+  # FIXME: リピート攻撃に対処
+  def authenticate_by_wsse
     wsse = request.env["HTTP_X_WSSE"]
+    return nil if wsse.blank?
     token = Wsse::UsernameToken.parse(wsse)
-    if token
-      user = User.find_by_name(token.username)
-      unless user
-        return false
-      end
-      
-      username = user.name
-      password = user.api_token
-      if Wsse::Authenticator.authenticate?(token, username, password)
-        return true
-      end
-    end
+    return nil unless token
+    user = User.find_by_name(token.username)   
+    return nil unless user
+    return nil unless Wsse::Authenticator.authenticate?(token, user.name, user.api_token)
+    return user
+  end
 
-    return false
+  def authentication
+    @user   = authenticate_by_cookie
+    @user ||= authenticate_by_wsse
+    return !!@user
   end
 
   def render_json(obj)
