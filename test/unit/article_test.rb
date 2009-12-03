@@ -111,6 +111,23 @@ class ArticleTest < ActiveSupport::TestCase
   end
 
   #
+  # クラスメソッド
+  #
+
+  test "self.split_host_path" do
+    [
+      ["http://example.jp/",          ["example.jp",       "/"]],
+      ["http://example.com/foo",      ["example.com",      "/foo"]],
+      ["http://example.org:80/bar",   ["example.org",      "/bar"]],
+      ["http://example.net:8080/baz", ["example.net:8080", "/baz"]],
+    ].each { |value, expected|
+      assert_equal(
+        expected,
+        @klass.split_host_path(value))
+    }
+  end
+
+  #
   # インスタンスメソッド
   #
 
