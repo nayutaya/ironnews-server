@@ -140,6 +140,18 @@ class ArticleTest < ActiveSupport::TestCase
     }
   end
 
+  test "self.find_by_url" do
+    assert_equal(
+      @asahi1.id,
+      @klass.find_by_url(@asahi1.url).id)
+    assert_equal(
+      @mainichi1.id,
+      @klass.find_by_url(@mainichi1.url).id)
+    assert_equal(
+      nil,
+      @klass.find_by_url("http://example.jp/"))
+  end
+
   #
   # インスタンスメソッド
   #

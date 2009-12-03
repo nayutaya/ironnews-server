@@ -40,6 +40,11 @@ class Article < ActiveRecord::Base
     return [host + port, path]
   end
 
+  def self.find_by_url(url)
+    host, path = self.split_host_path(url)
+    return self.find_by_host_and_path(host, path)
+  end
+
   def url
     return self.class.join_host_path(self.host, self.path)
   end
