@@ -42,10 +42,11 @@ class AddArticleApiTest < ActiveSupport::TestCase
       :action             => "b",
       :commit             => "c",
       :authenticity_token => "d",
-      :url1               => "e",
+      :callback           => "e",
+      :url1               => "f",
     }
     expected = {
-      :url1 => "e"
+      :url1 => "f",
     }
     assert_equal(expected, @klass.suppress_parameter(params))
   end
