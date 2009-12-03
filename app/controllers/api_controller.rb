@@ -6,6 +6,12 @@ class ApiController < ApplicationController
   end
 
   def add_article
+    user = User.find_by_id(session[:user_id])
+    unless user
+      render(:text => "error", :status => 401)
+      return
+    end
+    
     api = AddArticleApi.from(params)
     render_json(api.execute)
   end

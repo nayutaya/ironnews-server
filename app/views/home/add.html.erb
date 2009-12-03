@@ -39,6 +39,7 @@
         error: function (data) {
           console.debug(data);
           if ( data.status == 500 ) alert("サーバでエラーが発生しました。");
+          else if ( data.status == 401 ) alert("ログインしてください。");
         }//,
       });
 
