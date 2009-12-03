@@ -28,6 +28,9 @@
           var item = $("<div/>");
 
           $("<div/>")
+            .text(result["1"]["article_id"])
+            .appendTo(item);
+          $("<div/>")
             .text(result["1"]["title"])
             .appendTo(item);
           $("<div/>")
