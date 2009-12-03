@@ -34,9 +34,7 @@ class AddArticleApi < ActiveForm
     }
 
     self.urls.each { |num, url|
-      host = URI.parse(url).host
-      path = URI.parse(url).path
-      article = Article.find_by_host_and_path(host, path)
+      article = Article.find_by_url(url)
 
       if article
         title = article.title
