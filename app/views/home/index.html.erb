@@ -10,13 +10,6 @@
  <%= link_to(h("ログアウト"), :action => "logout") %>
 </div>
 
-<div>
- <%- form_tag(:action => "add") { -%>
-  <%= text_field_tag(:url1, "", :size => 50) %>
-  <%= submit_tag("追加") %>
- <%- } -%>
-</div>
-
 <ul class="articles" style="width: 300px;">
  <%- @articles.each { |article| -%>
   <li class="article">

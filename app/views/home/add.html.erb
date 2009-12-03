@@ -23,6 +23,18 @@
         success: function (data) {
           console.debug("success");
           console.debug(data);
+
+          var result = data["result"];         
+          var item = $("<div />");
+
+          $("<div />")
+            .text(result["1"]["title"])
+            .appendTo(item);
+          $("<div />")
+            .text(result["1"]["url"])
+            .appendTo(item);
+
+          item.appendTo("#result");
         }
       });
 
@@ -34,3 +46,6 @@
     */
   });
 </script>
+
+<div id="result">
+</div>
