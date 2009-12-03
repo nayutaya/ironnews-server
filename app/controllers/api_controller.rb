@@ -1,16 +1,13 @@
 
 # API
 class ApiController < ApplicationController
+  before_filter :authentication, :only => [:add_article]
+
   def index
     redirect_to(:controller => "home")
   end
 
-  def add_article
-    unless authentication
-      render(:text => "error", :status => 401)
-      return
-    end
-    
+  def add_article   
     api = AddArticleApi.from(params)
     render_json(api.execute)
   end
@@ -39,7 +36,11 @@ class ApiController < ApplicationController
   def authentication
     @user   = authenticate_by_cookie
     @user ||= authenticate_by_wsse
-    return !!@user
+    return true if @user
+
+    render(:text => "Unauthorized", :status => 401)
+
+    return false
   end
 
   def render_json(obj)
