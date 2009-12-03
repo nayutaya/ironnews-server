@@ -116,4 +116,17 @@ class UserTest < ActiveSupport::TestCase
       assert_equal(expected, @basic.valid?, value)
     }
   end
+
+  #
+  # クラスメソッド
+  #
+
+  test "create_api_token" do
+    assert_match(
+      @klass::ApiTokenPattern,
+      @klass.create_api_token)
+    assert_not_equal(
+      @klass.create_api_token,
+      @klass.create_api_token)
+  end
 end

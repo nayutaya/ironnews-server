@@ -26,4 +26,10 @@ class User < ActiveRecord::Base
   validates_format_of :name, :with => NamePattern1, :allow_blank => true
   validates_format_of :name, :with => NamePattern2, :allow_blank => true
   validates_format_of :api_token, :with => ApiTokenPattern, :allow_blank => true
+  # FIXME: nameの一意性を検証
+  # FIXME: api_tokenの一意性を検証
+
+  def self.create_api_token
+    return 32.times.map { rand(16).to_s(16) }.join
+  end
 end
