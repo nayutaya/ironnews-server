@@ -1,6 +1,8 @@
 
+<h1>記事の追加</h1>
+
 <form action="#" id="add-form">
-  <input type="text" name="url1" id="url1" value="" size="50" />
+  <input type="text" name="url1" id="url1" value="" size="100" />
   <button type="submit">登録</button>
 </form>
 
@@ -10,40 +12,39 @@
       console.debug("submit");
 
       var url1 = $("#url1").val();
-      var url = "/api/add?url1=" + url1;
-      console.debug(url);
 
       $.ajax({
-        dataType: "jsonp",
+        url: "/api/add_article",
         data: {
           url1: url1//,
         },
         cache: true,
-        url: "/api/add_article",
+        dataType: "jsonp",
         success: function (data) {
           console.debug("success");
           console.debug(data);
 
           var result = data["result"];         
-          var item = $("<div />");
+          var item = $("<div/>");
 
-          $("<div />")
+          $("<div/>")
             .text(result["1"]["title"])
             .appendTo(item);
-          $("<div />")
+          $("<div/>")
             .text(result["1"]["url"])
             .appendTo(item);
 
           item.appendTo("#result");
-        }
+        },
+        error: function (data) {
+          console.debug(data);
+          if ( data.status == 500 ) alert("サーバでエラーが発生しました。");
+          else if ( data.status == 401 ) alert("ログインしてください。");
+        }//,
       });
 
       return false;
     });
-    /*
-    $("#add-button").click(function() {
-    });
-    */
   });
 </script>
 

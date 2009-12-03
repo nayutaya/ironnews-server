@@ -6,11 +6,35 @@ class ApiController < ApplicationController
   end
 
   def add_article
+    unless authentication
+      render(:text => "error", :status => 401)
+      return
+    end
+    
     api = AddArticleApi.from(params)
     render_json(api.execute)
   end
 
   private
+
+  def authentication
+    user = User.find_by_id(session[:user_id])
+    return true if user
+
+    # FIXME: createdの範囲を限定
+    # FIXME: リピート攻撃に対処
+    wsse = request.env["HTTP_X_WSSE"]
+    token = Wsse::UsernameToken.parse(wsse)
+    if token
+      username = "foo"
+      password = "bar"
+      if Wsse::Authenticator.authenticate?(token, username, password)
+        return true
+      end
+    end
+
+    return false
+  end
 
   def render_json(obj)
     callback = params[:callback]
