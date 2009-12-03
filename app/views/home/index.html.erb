@@ -10,6 +10,10 @@
  <%= link_to(h("ログアウト"), :action => "logout") %>
 </div>
 
+<div>
+  <%= link_to(h("追加"), :action => "add") %>
+</div>
+
 <ul class="articles" style="width: 300px;">
  <%- @articles.each { |article| -%>
   <li class="article">
