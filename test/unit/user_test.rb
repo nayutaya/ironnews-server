@@ -129,4 +129,25 @@ class UserTest < ActiveSupport::TestCase
       @klass.create_api_token,
       @klass.create_api_token)
   end
+
+  test "create_unique_api_token, pattern" do
+    assert_match(
+      @klass::ApiTokenPattern,
+      @klass.create_unique_api_token)
+  end
+
+  test "create_unique_api_token, duplication" do
+    dup_token1 = @yuya.api_token
+    dup_token2 = @shinya.api_token
+    uniq_token = "f" * 32
+    tokens = [dup_token1, dup_token2, uniq_token]
+
+    musha = Kagemusha.new(@klass)
+    musha.defs(:create_api_token) { tokens.shift }
+    musha.swap {
+      assert_equal(
+        uniq_token,
+        @klass.create_unique_api_token)
+    }
+  end
 end

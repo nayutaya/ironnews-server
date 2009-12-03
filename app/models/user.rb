@@ -32,4 +32,11 @@ class User < ActiveRecord::Base
   def self.create_api_token
     return 32.times.map { rand(16).to_s(16) }.join
   end
+
+  def self.create_unique_api_token
+    begin
+      token = self.create_api_token
+    end while self.exists?(:api_token => token)
+    return token
+  end
 end
