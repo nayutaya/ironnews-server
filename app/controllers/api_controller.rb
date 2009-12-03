@@ -5,12 +5,17 @@ class ApiController < ApplicationController
     redirect_to(:controller => "home")
   end
 
-  # FIXME: JSONPに対応
   def add_article
     api = AddArticleApi.from(params)
-    result = api.execute
+    render_json(api.execute)
+  end
 
-    json = result.to_json
-    send_data(json, :type => "text/javascript", :disposition => "inline")
+  private
+
+  def render_json(obj)
+    callback = params[:callback]
+    json     = obj.to_json
+    output   = (callback.blank? ? json : "#{callback}(#{json})")
+    send_data(output, :type => "text/javascript", :disposition => "inline")
   end
 end
