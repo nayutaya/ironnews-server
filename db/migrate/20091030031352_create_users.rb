@@ -8,9 +8,12 @@ class CreateUsers < ActiveRecord::Migration
       t.datetime :updated_at, :null => false
       # ユーザ名
       t.string   :name,       :null => false, :limit => 40
+      # APIトークン
+      t.string   :api_token,  :null => false, :limit => 40
     end
 
-    add_index :users, :name, :unique => true
+    add_index :users, :name,      :unique => true
+    add_index :users, :api_token, :unique => true
   end
 
   def self.down

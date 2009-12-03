@@ -5,7 +5,8 @@ class UserTest < ActiveSupport::TestCase
   def setup
     @klass = User
     @basic = @klass.new(
-      :name => "name")
+      :name      => "name",
+      :api_token => "00000000000000000000000000000000")
 
     @yuya   = users(:yuya)
     @shinya = users(:shinya)
@@ -69,6 +70,11 @@ class UserTest < ActiveSupport::TestCase
     assert_equal(false, @basic.valid?)
   end
 
+  test "validates_presence_of :api_token" do
+    @basic.api_token = ""
+    assert_equal(false, @basic.valid?)
+  end
+
   test "validates_length_of :name" do
     [
       ["a" *  3, false],
@@ -85,17 +91,63 @@ class UserTest < ActiveSupport::TestCase
     [
       ["a0123456789",                true ],
       ["abcdefghijklmnopqrstuvwxyz", true ],
-      ["ABCDEFGHIJKLMNOPQRSTUVWXYZ", true ],
       ["aa_a",                       true ],
       ["aaa_",                       true ],
       ["aa0a",                       true ],
       ["aaa0",                       true ],
+      ["AAAA",                       false],
       ["_aaa",                       false],
       ["0aaa",                       false],
       ["あいうえお",                 false],
     ].each { |value, expected|
       @basic.name = value
       assert_equal(expected, @basic.valid?, value)
+    }
+  end
+
+  test "validates_format_of :api_token" do
+    [
+      ["0123456789abcdef0123456789abcdef",  true ],
+      ["0000000000000000000000000000000",   false],
+      ["000000000000000000000000000000000", false],
+      ["g0000000000000000000000000000000",  false],
+    ].each { |value, expected|
+      @basic.api_token = value
+      assert_equal(expected, @basic.valid?, value)
+    }
+  end
+
+  #
+  # クラスメソッド
+  #
+
+  test "create_api_token" do
+    assert_match(
+      @klass::ApiTokenPattern,
+      @klass.create_api_token)
+    assert_not_equal(
+      @klass.create_api_token,
+      @klass.create_api_token)
+  end
+
+  test "create_unique_api_token, pattern" do
+    assert_match(
+      @klass::ApiTokenPattern,
+      @klass.create_unique_api_token)
+  end
+
+  test "create_unique_api_token, duplication" do
+    dup_token1 = @yuya.api_token
+    dup_token2 = @shinya.api_token
+    uniq_token = "f" * @klass::ApiTokenLength
+    tokens = [dup_token1, dup_token2, uniq_token]
+
+    musha = Kagemusha.new(@klass)
+    musha.defs(:create_api_token) { tokens.shift }
+    musha.swap {
+      assert_equal(
+        uniq_token,
+        @klass.create_unique_api_token)
     }
   end
 end
