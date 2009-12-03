@@ -1,3 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <title>ironnews</title>
+  <link rel="shortcut icon" href="/favicon.ico" type="image/vnd.microsoft.icon" />
+  <link rel="icon" href="/favicon.ico" type="image/vnd.microsoft.icon" />
+  <%= javascript_include_tag("jquery-1.3.2.min") %>
+  <%= javascript_include_tag("jquery-ui-1.7.2.custom.min") %>
+  <%= javascript_include_tag("jquery.hotkeys-0.7.9.min") %>
+  <%= javascript_include_tag("application") %>
+  <%= stylesheet_link_tag("application") %>
+ </head>
+ <body>
 
 <h1>閲覧</h1>
 
@@ -52,3 +69,6 @@
 
 <div id="next">次の記事を表示</div>
 <iframe id="frame" src="" width="800" height="600" frameborder="0" />
+
+ </body>
+</html>
