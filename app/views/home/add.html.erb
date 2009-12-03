@@ -1,0 +1,36 @@
+
+<form action="#" id="add-form">
+  <input type="text" name="url1" id="url1" value="" size="50" />
+  <button type="submit">登録</button>
+</form>
+
+<script type="text/javascript">
+  $(function() {
+    $("#add-form").submit(function() {
+      console.debug("submit");
+
+      var url1 = $("#url1").val();
+      var url = "/api/add?url1=" + url1;
+      console.debug(url);
+
+      $.ajax({
+        dataType: "jsonp",
+        data: {
+          url1: url1//,
+        },
+        cache: true,
+        url: "/api/add_article",
+        success: function (data) {
+          console.debug("success");
+          console.debug(data);
+        }
+      });
+
+      return false;
+    });
+    /*
+    $("#add-button").click(function() {
+    });
+    */
+  });
+</script>

@@ -9,16 +9,8 @@ class HomeController < ApplicationController
     @articles = Article.all(:order => "articles.created_at DESC, articles.id DESC")
   end
 
-  # FIXME: 検証コード
   def add
-    params.delete(:commit)
-    params.delete(:authenticity_token)
-    params.delete(:controller)
-    params.delete(:action)
-    api = AddArticleApi.new(params)
-    api.execute
-
-    redirect_to(:action => "index")
+    # nop
   end
 
   def view
