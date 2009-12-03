@@ -13,15 +13,38 @@
   <%= javascript_include_tag("jquery.hotkeys-0.7.9.min") %>
   <%= javascript_include_tag("application") %>
   <%= stylesheet_link_tag("application") %>
+  <style type="text/css">
+*
+{
+margin: 0;
+padding: 0;
+}
+body
+{
+overflow: hidden;
+}
+#control-panel
+{
+background-color: #FFF0FF;
+}
+#browse-panel
+{
+background-color: #FFFFF0;
+}
+#frame
+{
+border-style: solid;
+border-width: 0px;
+}
+  </style>
+  <script type="text/javascript">
+    var articleIds = <%= @article_ids.to_json %>;
+    var articleDB  = {};
+  </script>
  </head>
  <body>
+  <h1>閲覧</h1>
 
-<h1>閲覧</h1>
-
-<script type="text/javascript">
-  var articleIds = <%= @article_ids.to_json %>;
-  var articleDB  = {};
-</script>
 
 <script type="text/javascript">
   $(document).ready(function() {
@@ -68,7 +91,7 @@
 </script>
 
 <div id="next">次の記事を表示</div>
-<iframe id="frame" src="" width="800" height="600" frameborder="0" />
+<iframe id="frame" src="/loading.html" width="800" height="600" frameborder="0" />
 
  </body>
 </html>
