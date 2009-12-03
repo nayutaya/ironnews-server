@@ -5,13 +5,9 @@ class ApiController < ApplicationController
     redirect_to(:controller => "home")
   end
 
+  # FIXME: JSONPに対応
   def add_article
-    params.delete(:commit)
-    params.delete(:authenticity_token)
-    params.delete(:controller)
-    params.delete(:action)
-    
-    api = AddArticleApi.new(params)
+    api = AddArticleApi.from(params)
     result = api.execute
 
     json = result.to_json
