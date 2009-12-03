@@ -12,8 +12,8 @@
 # ユーザ
 class User < ActiveRecord::Base
   NameLength   = 4..40 # chars
-  NamePattern1 = /\A[A-Za-z0-9_]+\z/
-  NamePattern2 = /\A[^0-9_]/
+  NamePattern1 = /\A[a-z0-9_]+\z/
+  NamePattern2 = /\A[a-z]/
 
   has_many :open_id_credentials
   has_many :taggings

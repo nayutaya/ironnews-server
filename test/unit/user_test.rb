@@ -85,11 +85,11 @@ class UserTest < ActiveSupport::TestCase
     [
       ["a0123456789",                true ],
       ["abcdefghijklmnopqrstuvwxyz", true ],
-      ["ABCDEFGHIJKLMNOPQRSTUVWXYZ", true ],
       ["aa_a",                       true ],
       ["aaa_",                       true ],
       ["aa0a",                       true ],
       ["aaa0",                       true ],
+      ["AAAA",                       false],
       ["_aaa",                       false],
       ["0aaa",                       false],
       ["あいうえお",                 false],
