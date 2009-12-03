@@ -50,16 +50,17 @@ class AddArticleApi < ActiveForm
         title = self.class.get_title(url)
       end
 
-      result[:result][num] = {
-        :url  => url,
-        :title => title,
-      }
-
       unless article
-        Article.create!(
+        article = Article.create!(
           :title => title,
           :url   => url)
       end
+
+      result[:result][num] = {
+        :article_id => article.id,
+        :url        => url,
+        :title      => title,
+      }
     }
 
     return result

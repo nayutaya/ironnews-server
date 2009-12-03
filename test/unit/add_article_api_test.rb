@@ -75,23 +75,24 @@ class AddArticleApiTest < ActiveSupport::TestCase
       result = @form.execute
     }
 
+    article = Article.first(:order => "articles.id DESC")
+    assert_equal(title1, article.title)
+    assert_equal(url1,   article.url)
+
     expected = {
       :success => true,
       :result  => {
         1 => {
-          :url   => url1,
-          :title => title1,
+          :article_id => article.id,
+          :url        => url1,
+          :title      => title1,
         },
       }
     }
     assert_equal(expected, result)
-
-    article = Article.first(:order => "articles.id DESC")
-    assert_equal(title1, article.title)
-    assert_equal(url1,   article.url)
   end
 
-  test "execute, 2" do
+  test "execute, full" do
     url1   = "http://www.asahi.com/national/update/1202/TKY200912020353.html"
     title1 = "asahi.com（朝日新聞社）：リンゼイさん殺害の疑い　沈黙の市橋容疑者を再逮捕　 - 社会"
     url2   = "http://www.asahi.com/politics/update/1202/TKY200912020359.html"
@@ -105,22 +106,17 @@ class AddArticleApiTest < ActiveSupport::TestCase
       result = @form.execute
     }
 
+    articles = Article.all(:order => "articles.id DESC", :limit => 2).reverse
+
     expected = {
-      1 => {:url => url1, :title => title1},
-      2 => {:url => url2, :title => title2},
+      1 => {:article_id => articles[0].id, :url => url1, :title => title1},
+      2 => {:article_id => articles[1].id, :url => url2, :title => title2},
     }
     assert_equal(expected, result[:result])
-
-    article = Article.first(:order => "articles.id DESC")
-    assert_equal(title2, article.title)
-    assert_equal(url2,   article.url)
   end
 
   test "execute, already exist" do
-    url1   = articles(:asahi1).url
-    title1 = articles(:asahi1).title
-
-    @form.url1 = url1
+    @form.url1 = articles(:asahi1).url
 
     result = nil
     assert_difference("Article.count", 0) {
@@ -131,8 +127,9 @@ class AddArticleApiTest < ActiveSupport::TestCase
       :success => true,
       :result  => {
         1 => {
-          :url   => url1,
-          :title => title1,
+          :article_id => articles(:asahi1).id,
+          :url        => articles(:asahi1).url,
+          :title      => articles(:asahi1).title,
         },
       }
     }
