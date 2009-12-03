@@ -1,6 +1,15 @@
 
 <h1>鉄ニュース</h1>
 
+<div style="color: #006600;">
+ <%= flash[:notice] %>
+</div>
+
+<div>
+ <%= link_to(h("ログイン"), :action => "login") %> |
+ <%= link_to(h("ログアウト"), :action => "logout") %>
+</div>
+
 <div>
  <%- form_tag(:action => "add") { -%>
   <%= text_field(:form, :url, :size => 50) %>

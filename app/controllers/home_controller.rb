@@ -25,6 +25,18 @@ class HomeController < ApplicationController
     @article_ids = params[:article_ids].split(/,/).map(&:to_i)
   end
 
+  def login
+    session[:user_id] = User.find_by_name("yuya")
+    flash[:notice] = "ログインしました"
+    redirect_to(:action => "index")
+  end
+
+  def logout
+    session[:user_id] = nil
+    flash[:notice] = "ログアウトしました"
+    redirect_to(:action => "index")
+  end
+
   def get_info
     @article_ids = params[:article_ids].split(/,/).map(&:to_i)
     @callback    = params[:callback]
