@@ -11,12 +11,12 @@ class HomeController < ApplicationController
 
   # FIXME: 検証コード
   def add
-    url = (params[:form] || {})[:url]
-
-    unless url.blank?
-      api = AddArticleApi.new(:url1 => url)
-      api.execute
-    end
+    params.delete(:commit)
+    params.delete(:authenticity_token)
+    params.delete(:controller)
+    params.delete(:action)
+    api = AddArticleApi.new(params)
+    api.execute
 
     redirect_to(:action => "index")
   end
@@ -26,8 +26,8 @@ class HomeController < ApplicationController
   end
 
   def login
-    session[:user_id] = User.find_by_name("yuya")
-    flash[:notice] = "ログインしました"
+    session[:user_id] = User.find_by_name("yuya").id
+    flash[:notice] = "ログインしました #{session[:user_id]}"
     redirect_to(:action => "index")
   end
 

@@ -12,7 +12,7 @@
 
 <div>
  <%- form_tag(:action => "add") { -%>
-  <%= text_field(:form, :url, :size => 50) %>
+  <%= text_field_tag(:url1, "", :size => 50) %>
   <%= submit_tag("追加") %>
  <%- } -%>
 </div>
