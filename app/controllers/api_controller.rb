@@ -26,8 +26,13 @@ class ApiController < ApplicationController
     wsse = request.env["HTTP_X_WSSE"]
     token = Wsse::UsernameToken.parse(wsse)
     if token
-      username = "foo"
-      password = "bar"
+      user = User.find_by_name(token.username)
+      unless user
+        return false
+      end
+      
+      username = user.name
+      password = user.api_token
       if Wsse::Authenticator.authenticate?(token, username, password)
         return true
       end
