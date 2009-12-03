@@ -7,8 +7,8 @@ require "rubygems"
 gem "nayutaya-wsse"
 require "wsse"
 
-username = "foo"
-password = "bar"
+username = "yuya"
+password = "11111111111111111111111111111111"
 wsse     = Wsse::UsernameToken.build(username, password).format
 p wsse
 

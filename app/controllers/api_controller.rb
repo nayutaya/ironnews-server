@@ -1,37 +1,44 @@
 
 # API
 class ApiController < ApplicationController
+  before_filter :authentication, :only => [:add_article]
+
   def index
     redirect_to(:controller => "home")
   end
 
-  def add_article
-    unless authentication
-      render(:text => "error", :status => 401)
-      return
-    end
-    
+  def add_article   
     api = AddArticleApi.from(params)
     render_json(api.execute)
   end
 
   private
 
-  def authentication
-    user = User.find_by_id(session[:user_id])
-    return true if user
+  def authenticate_by_cookie
+    user_id = session[:user_id]
+    return nil if user_id.blank?
+    return User.find_by_id(user_id)
+  end
 
-    # FIXME: createdの範囲を限定
-    # FIXME: リピート攻撃に対処
+  # FIXME: createdの範囲を限定
+  # FIXME: リピート攻撃に対処
+  def authenticate_by_wsse
     wsse = request.env["HTTP_X_WSSE"]
+    return nil if wsse.blank?
     token = Wsse::UsernameToken.parse(wsse)
-    if token
-      username = "foo"
-      password = "bar"
-      if Wsse::Authenticator.authenticate?(token, username, password)
-        return true
-      end
-    end
+    return nil unless token
+    user = User.find_by_name(token.username)   
+    return nil unless user
+    return nil unless Wsse::Authenticator.authenticate?(token, user.name, user.api_token)
+    return user
+  end
+
+  def authentication
+    @user   = authenticate_by_cookie
+    @user ||= authenticate_by_wsse
+    return true if @user
+
+    render(:text => "Unauthorized", :status => 401)
 
     return false
   end
