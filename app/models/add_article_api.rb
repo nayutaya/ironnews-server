@@ -1,3 +1,11 @@
+# == Schema Information
+# Schema version: 20091030050149
+#
+# Table name: active_forms
+#
+#  url1 :text
+#  url2 :text
+#
 
 require "open-uri"
 

@@ -7,6 +7,7 @@
 #  created_at :datetime      not null
 #  updated_at :datetime      not null
 #  name       :string(40)    not null, index_users_on_name(unique)
+#  api_token  :string(40)    not null, index_users_on_api_token(unique)
 #
 
 yuya:
