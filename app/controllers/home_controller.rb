@@ -15,6 +15,7 @@ class HomeController < ApplicationController
 
   def view
     @article_ids = params[:article_ids].split(/,/).map(&:to_i)
+    render(:layout => false)
   end
 
   def login

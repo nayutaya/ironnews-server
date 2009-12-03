@@ -1,10 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <title>ironnews</title>
+  <link rel="shortcut icon" href="/favicon.ico" type="image/vnd.microsoft.icon" />
+  <link rel="icon" href="/favicon.ico" type="image/vnd.microsoft.icon" />
+  <%= javascript_include_tag("jquery-1.3.2.min") %>
+  <%= javascript_include_tag("jquery-ui-1.7.2.custom.min") %>
+  <%= javascript_include_tag("jquery.hotkeys-0.7.9.min") %>
+  <%= javascript_include_tag("application") %>
+  <%= stylesheet_link_tag("application") %>
+  <style type="text/css">
+*
+{
+margin: 0;
+padding: 0;
+}
+body
+{
+overflow: hidden;
+}
+#control-panel
+{
+background-color: #FFF0FF;
+}
+#browse-panel
+{
+background-color: #FFFFF0;
+}
+#frame
+{
+border-style: solid;
+border-width: 0px;
+}
+  </style>
+  <script type="text/javascript">
+    var articleIds = <%= @article_ids.to_json %>;
+    var articleDB  = {};
+  </script>
+ </head>
+ <body>
+  <h1>閲覧</h1>
 
-<h1>閲覧</h1>
-
-<script type="text/javascript">
-  var articleIds = <%= @article_ids.to_json %>;
-  var articleDB  = {};
-</script>
 
 <script type="text/javascript">
   $(document).ready(function() {
@@ -18,8 +58,10 @@
 
     var showArticle = function(id) {
       var url = articleDB[id].url;
+      /*
       if ( /www\.asahi\.com/.test(url) ) url += "#HeadLine";
       else if ( /mainichi\.jp/.test(url) ) url += "#MainBody";
+      */
       frame.attr("src", url);
     };
 
@@ -49,4 +91,7 @@
 </script>
 
 <div id="next">次の記事を表示</div>
-<iframe id="frame" src="" width="800" height="600" frameborder="0" />
+<iframe id="frame" src="/loading.html" width="800" height="600" frameborder="0" />
+
+ </body>
+</html>
