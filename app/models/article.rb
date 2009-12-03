@@ -27,14 +27,30 @@ class Article < ActiveRecord::Base
   validates_length_of :path,  :maximum => PathMaxLength,  :allow_blank => true
   validates_format_of :host, :with => HostPattern, :allow_blank => true
 
+  def self.join_host_path(host, path)
+    return "http://" + host + path
+  end
+
+  def self.split_host_path(url)
+    # FIXME: httpでない場合は例外を発生させる
+    uri  = URI.parse(url)
+    host = uri.host
+    port = (uri.port == URI::HTTP.default_port ? "" : ":#{uri.port}")
+    path = uri.path
+    return [host + port, path]
+  end
+
+  def self.find_by_url(url)
+    host, path = self.split_host_path(url)
+    return self.find_by_host_and_path(host, path)
+  end
+
   def url
-    return "http://" + self.host + self.path
+    return self.class.join_host_path(self.host, self.path)
   end
 
   def url=(value)
-    uri = URI.parse(value)
-    self.host = uri.host + (uri.port == URI::HTTP.default_port ? "" : ":#{uri.port}")
-    self.path = uri.path
+    self.host, self.path = self.class.split_host_path(value)
     return value
   end
 end

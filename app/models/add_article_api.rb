@@ -7,6 +7,18 @@ class AddArticleApi < ActiveForm
   column :url1, :type => :text
   column :url2, :type => :text
 
+  def self.suppress_parameter(params)
+    params = params.dup
+    [:controller, :action, :commit, :authenticity_token, :callback].each { |key|
+      params.delete(key)
+    }
+    return params
+  end
+
+  def self.from(params)
+    return self.new(self.suppress_parameter(params))
+  end
+
   # FIXME: 複数のURLのタイトルを一度に取得する
   def self.get_title(url)
     api_url = "http://v3.latest.ironnews-helper2.appspot.com/hatena-bookmark/get-title?url1=" + CGI.escape(url)
@@ -22,15 +34,24 @@ class AddArticleApi < ActiveForm
     }
 
     self.urls.each { |num, url|
-      title = self.class.get_title(url)
+      article = Article.find_by_url(url)
+
+      if article
+        title = article.title
+      else
+        title = self.class.get_title(url)
+      end
+
       result[:result][num] = {
         :url  => url,
         :title => title,
       }
 
-      Article.create!(
-        :title => title,
-        :url   => url)
+      unless article
+        Article.create!(
+          :title => title,
+          :url   => url)
+      end
     }
 
     return result

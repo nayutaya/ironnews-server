@@ -111,6 +111,48 @@ class ArticleTest < ActiveSupport::TestCase
   end
 
   #
+  # クラスメソッド
+  #
+
+  test "self.join_host_path" do
+    [
+      [["example.jp",       "/"],    "http://example.jp/"],
+      [["example.com",      "/foo"], "http://example.com/foo"],
+      [["example.org:80",   "/bar"], "http://example.org:80/bar"],
+      [["example.net:8080", "/baz"], "http://example.net:8080/baz"],
+    ].each { |value, expected|
+      assert_equal(
+        expected,
+        @klass.join_host_path(*value))
+    }
+  end
+
+  test "self.split_host_path" do
+    [
+      ["http://example.jp/",          ["example.jp",       "/"]],
+      ["http://example.com/foo",      ["example.com",      "/foo"]],
+      ["http://example.org:80/bar",   ["example.org",      "/bar"]],
+      ["http://example.net:8080/baz", ["example.net:8080", "/baz"]],
+    ].each { |value, expected|
+      assert_equal(
+        expected,
+        @klass.split_host_path(value))
+    }
+  end
+
+  test "self.find_by_url" do
+    assert_equal(
+      @asahi1.id,
+      @klass.find_by_url(@asahi1.url).id)
+    assert_equal(
+      @mainichi1.id,
+      @klass.find_by_url(@mainichi1.url).id)
+    assert_equal(
+      nil,
+      @klass.find_by_url("http://example.jp/"))
+  end
+
+  #
   # インスタンスメソッド
   #
 

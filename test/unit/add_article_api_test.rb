@@ -33,6 +33,34 @@ class AddArticleApiTest < ActiveSupport::TestCase
   end
 
   #
+  # クラスメソッド
+  #
+
+  test "self.suppress_parameter" do
+    params = {
+      :controller         => "a",
+      :action             => "b",
+      :commit             => "c",
+      :authenticity_token => "d",
+      :callback           => "e",
+      :url1               => "f",
+    }
+    expected = {
+      :url1 => "f",
+    }
+    assert_equal(expected, @klass.suppress_parameter(params))
+  end
+
+  test "self.from" do
+    params = {
+      :controller => "a",
+      :url1       => "b",
+    }
+    form = @klass.from(params)
+    assert_equal("b", form.url1)
+  end
+
+  #
   # インスタンスメソッド
   #
 
@@ -88,6 +116,30 @@ class AddArticleApiTest < ActiveSupport::TestCase
     article = Article.first(:order => "articles.id DESC")
     assert_equal(title2, article.title)
     assert_equal(url2,   article.url)
+  end
+
+  test "execute, already exist" do
+    url1   = articles(:asahi1).url
+    title1 = articles(:asahi1).title
+
+    form = @klass.new
+    form.url1 = url1
+
+    result = nil
+    assert_difference("Article.count", 0) {
+      result = form.execute
+    }
+
+    expected = {
+      :success => true,
+      :result  => {
+        1 => {
+          :url   => url1,
+          :title => title1,
+        },
+      }
+    }
+    assert_equal(expected, result)
   end
 
   test "urls, full" do
