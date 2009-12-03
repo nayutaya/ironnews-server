@@ -50,6 +50,15 @@ class AddArticleApiTest < ActiveSupport::TestCase
     assert_equal(expected, @klass.suppress_parameter(params))
   end
 
+  test "self.from" do
+    params = {
+      :controller => "a",
+      :url1       => "b",
+    }
+    form = @klass.from(params)
+    assert_equal("b", form.url1)
+  end
+
   #
   # インスタンスメソッド
   #
