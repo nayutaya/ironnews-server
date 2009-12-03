@@ -18,8 +18,10 @@
 
     var showArticle = function(id) {
       var url = articleDB[id].url;
+      /*
       if ( /www\.asahi\.com/.test(url) ) url += "#HeadLine";
       else if ( /mainichi\.jp/.test(url) ) url += "#MainBody";
+      */
       frame.attr("src", url);
     };
 
