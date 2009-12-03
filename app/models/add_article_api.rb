@@ -34,15 +34,26 @@ class AddArticleApi < ActiveForm
     }
 
     self.urls.each { |num, url|
-      title = self.class.get_title(url)
+      host = URI.parse(url).host
+      path = URI.parse(url).path
+      article = Article.find_by_host_and_path(host, path)
+
+      if article
+        title = article.title
+      else
+        title = self.class.get_title(url)
+      end
+
       result[:result][num] = {
         :url  => url,
         :title => title,
       }
 
-      Article.create!(
-        :title => title,
-        :url   => url)
+      unless article
+        Article.create!(
+          :title => title,
+          :url   => url)
+      end
     }
 
     return result

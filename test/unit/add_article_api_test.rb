@@ -117,6 +117,30 @@ class AddArticleApiTest < ActiveSupport::TestCase
     assert_equal(url2,   article.url)
   end
 
+  test "execute, already exist" do
+    url1   = articles(:asahi1).url
+    title1 = articles(:asahi1).title
+
+    form = @klass.new
+    form.url1 = url1
+
+    result = nil
+    assert_difference("Article.count", 0) {
+      result = form.execute
+    }
+
+    expected = {
+      :success => true,
+      :result  => {
+        1 => {
+          :url   => url1,
+          :title => title1,
+        },
+      }
+    }
+    assert_equal(expected, result)
+  end
+
   test "urls, full" do
     @form.attributes = {
       :url1 => "a",
