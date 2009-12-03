@@ -27,6 +27,10 @@ class Article < ActiveRecord::Base
   validates_length_of :path,  :maximum => PathMaxLength,  :allow_blank => true
   validates_format_of :host, :with => HostPattern, :allow_blank => true
 
+  def self.join_host_path(host, path)
+    return "http://" + host + path
+  end
+
   def self.split_host_path(url)
     uri  = URI.parse(url)
     host = uri.host + (uri.port == URI::HTTP.default_port ? "" : ":#{uri.port}")
