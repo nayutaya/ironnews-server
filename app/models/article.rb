@@ -32,14 +32,16 @@ class Article < ActiveRecord::Base
   end
 
   def self.split_host_path(url)
+    # FIXME: httpでない場合は例外を発生させる
     uri  = URI.parse(url)
-    host = uri.host + (uri.port == URI::HTTP.default_port ? "" : ":#{uri.port}")
+    host = uri.host
+    port = (uri.port == URI::HTTP.default_port ? "" : ":#{uri.port}")
     path = uri.path
-    return [host, path]
+    return [host + port, path]
   end
 
   def url
-    return "http://" + self.host + self.path
+    return self.class.join_host_path(self.host, self.path)
   end
 
   def url=(value)
