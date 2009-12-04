@@ -12,39 +12,25 @@
   <%= javascript_include_tag("jquery-ui-1.7.2.custom.min") %>
   <%= javascript_include_tag("jquery.hotkeys-0.7.9.min") %>
   <%= javascript_include_tag("application") %>
+  <%= javascript_include_tag("viewer") %>
   <%= stylesheet_link_tag("application") %>
-  <style type="text/css">
-*
-{
-margin: 0;
-padding: 0;
-}
-body
-{
-overflow: hidden;
-}
-#control-panel
-{
-background-color: #FFF0FF;
-}
-#browse-panel
-{
-background-color: #FFFFF0;
-}
-#frame
-{
-border-style: solid;
-border-width: 0px;
-}
-  </style>
+  <%= stylesheet_link_tag("viewer") %>
   <script type="text/javascript">
     var articleIds = <%= @article_ids.to_json %>;
     var articleDB  = {};
   </script>
  </head>
  <body>
-  <h1>閲覧</h1>
+  <div id="container">
+   <div id="controller">
+    controller
+   </div>
+   <iframe id="browser" src="/loading.html" width="800" height="500" frameborder="0" />
+  </div>
 
+<%
+=begin
+%>
 
 <script type="text/javascript">
   $(document).ready(function() {
@@ -92,6 +78,10 @@ border-width: 0px;
 
 <div id="next">次の記事を表示</div>
 <iframe id="frame" src="/loading.html" width="800" height="600" frameborder="0" />
+
+<%
+=end
+%>
 
  </body>
 </html>
