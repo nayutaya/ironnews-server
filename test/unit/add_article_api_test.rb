@@ -36,21 +36,6 @@ class AddArticleApiTest < ActiveSupport::TestCase
   # クラスメソッド
   #
 
-  test "self.suppress_parameter" do
-    params = {
-      :controller         => "a",
-      :action             => "b",
-      :commit             => "c",
-      :authenticity_token => "d",
-      :callback           => "e",
-      :url1               => "f",
-    }
-    expected = {
-      :url1 => "f",
-    }
-    assert_equal(expected, @klass.suppress_parameter(params))
-  end
-
   test "self.from" do
     params = {
       :controller => "a",
