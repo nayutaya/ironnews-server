@@ -1,2 +1,61 @@
-<h1>Viewer#index</h1>
-<p>Find me in app/views/viewer/index.html.erb</p>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <title>ironnews</title>
+  <link rel="shortcut icon" href="/favicon.ico" type="image/vnd.microsoft.icon" />
+  <link rel="icon" href="/favicon.ico" type="image/vnd.microsoft.icon" />
+  <%= javascript_include_tag("jquery-1.3.2.min") %>
+  <%#= javascript_include_tag("jquery-ui-1.7.2.custom.min") %>
+  <%#= javascript_include_tag("jquery.hotkeys-0.7.9.min") %>
+  <%= javascript_include_tag("application") %>
+  <%= javascript_include_tag("api") %>
+  <%= javascript_include_tag("viewer") %>
+  <%= stylesheet_link_tag("application") %>
+  <%= stylesheet_link_tag("viewer") %>
+  <script type="text/javascript">
+  //<![CDATA[
+    window.articleIds = <%= @article_ids.to_json %>;
+  //]]>
+  </script>
+ </head>
+ <body>
+  <div id="container">
+   <div id="controller">
+    <div id="next-article">次の<br />記事</div>
+    <div id="prev-article">前の<br />記事</div>
+    <div id="url">-</div>
+    <div id="tag-box">
+     <div id="division-tags" class="tags">
+      <span>鉄道</span>
+      <span>非鉄</span>
+     </div>
+     <div id="category-tags" class="tags">
+      <span>社会</span>
+      <span>事件事故</span>
+      <span>痴漢</span>
+      <span>政治経済</span>
+      <span>科学技術</span>
+      <span>車両</span>
+     </div>
+     <div id="area-tags" class="tags">
+      <span>北海道</span>
+      <span>東北</span>
+      <span>関東</span>
+      <span>中部</span>
+      <span>近畿</span>
+      <span>中国</span>
+      <span>四国</span>
+      <span>九州</span>
+      <span>沖縄</span>
+      <span>海外</span>
+     </div>
+    </div>
+   </div>
+   <iframe id="browser" src="/loading.html" width="800" height="500" frameborder="0" />
+  </div>
+ </body>
+</html>
