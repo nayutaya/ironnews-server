@@ -88,3 +88,45 @@ body
 {
   color: white;
 }
+
+#tag-box
+{
+  position: absolute;
+  top: 5px;
+  right: 100px;
+  width: 400px;
+  height: 40px;
+background-color: red;
+}
+
+#division-tags
+{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100px;
+  height: 14px;
+}
+
+#area-tags
+{
+  position: absolute;
+  top: 20px;
+  left: 0px;
+  width: 400px;
+  height: 14px;
+}
+
+div.tags
+{
+  padding: 2px 0px;
+  font-size: 10px;
+  line-height: 12px;
+}
+div.tags span
+{
+  padding: 1px 2px;
+  border: solid 1px white;
+  color: white;
+  cursor: pointer;
+}
