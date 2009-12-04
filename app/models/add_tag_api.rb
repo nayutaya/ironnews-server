@@ -27,7 +27,7 @@ class AddTagApi < ActiveForm
     result = {
       :success => true,
       :result  => {
-        :article_id => self.article_id,
+        :article_id => tagging.article_id,
         :tag_id     => tagging.tag_id,
       },
     }

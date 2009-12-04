@@ -49,26 +49,30 @@ class AddTagApiTest < ActiveSupport::TestCase
   #
 
   test "execute, exist tag" do
-    @form.article_id = articles(:mainichi1).id
-    @form.tag        = tags(:rail).name
+    user    = users(:yuya)
+    article = articles(:mainichi1)
+    tag     = tags(:rail)
+
+    @form.article_id = article.id
+    @form.tag        = tag.name
 
     result = nil
     assert_difference("Tag.count", 0) {
       assert_difference("Tagging.count", +1) {
-        result = @form.execute(users(:yuya))
+        result = @form.execute(user)
       }
     }
 
     tagging = Tagging.first(:order => "taggings.id DESC")
-    assert_equal(users(:yuya).id,          tagging.user_id)
-    assert_equal(articles(:mainichi1).id, tagging.article_id)
-    assert_equal(tags(:rail).id,           tagging.tag_id)
+    assert_equal(user.id,    tagging.user_id)
+    assert_equal(article.id, tagging.article_id)
+    assert_equal(tag.id,     tagging.tag_id)
 
     expected = {
       :success => true,
       :result  => {
-        :article_id => @form.article_id,
-        :tag_id     => tags(:rail).id,
+        :article_id => article.id,
+        :tag_id     => tag.id,
       },
     }
     assert_equal(expected, result)
