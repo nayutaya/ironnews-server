@@ -20,7 +20,9 @@ var initLayout = function() {
 
 var articleRecords   = null; // Ajaxにより取得される
 var currentArticleId = null;
+var currentReadTimer = null;
 
+var addTagToCurrentArticle = null;
 var showArticle = function(id) {
   var url   = articleRecords[id].url;
   var title = articleRecords[id].title;
@@ -29,6 +31,11 @@ var showArticle = function(id) {
   document.title = title;
 
   currentArticleId = id;
+
+  if ( currentReadTimer != null ) clearTimeout(currentReadTimer);
+  currentReadTimer = setTimeout(function() {
+    addTagToCurrentArticle("既読");
+  }, 3000);
 };
 
 var getNextArticleId = function() {
@@ -58,7 +65,7 @@ var loadArticles = function() {
   });
 };
 
-var addTagToCurrentArticle = function(tag, success) {
+addTagToCurrentArticle = function(tag, success) {
   //if ( success == null ) success = function() { /*nop*/ };
 
   $.ajax({
