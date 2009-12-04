@@ -16,6 +16,21 @@ api.getInfo = function(article_ids, options) {
   });
 };
 
+api.getArticles = function(article_ids, options) {
+  if ( options == null ) options = {};
+
+  $.ajax({
+    type: "GET",
+    url: "/api/get_articles",
+    data: {
+      article_ids: article_ids.join(",")//,
+    },
+    dataType: "jsonp",
+    cache: true,
+    success: options.success//,
+  });
+};
+
 api.addTag = function(article_id, tag, options) {
   if ( options == null ) options = {};
 
