@@ -1,5 +1,5 @@
 
-var adjustContainer = function() {
+var adjustLayout = function() {
   var container  = $("#container");
   var controller = $("#controller");
   var browser    = $("#browser");
@@ -11,6 +11,11 @@ var adjustContainer = function() {
 
   browser.width(container.outerWidth());
   browser.height(container.outerHeight() - controller.outerHeight())
+};
+
+var initLayout = function() {
+  $(window).resize(adjustLayout);
+  adjustLayout();
 };
 
 var articleRecords   = null; // Ajaxにより取得される
@@ -46,10 +51,24 @@ var loadArticles = function() {
   });
 };
 
-$(function() {
-  $(window).resize(adjustContainer);
-  adjustContainer();
+var addTagToCurrentArticle = function(tag, success) {
+  //if ( success == null ) success = function() { /*nop*/ };
 
+  $.ajax({
+    type: "GET",
+    url: "/api/add_tag",
+    data: {
+      article_id: currentArticleId,
+      tag: tag//,
+    },
+    dataType: "jsonp",
+    cache: true,
+    success: success//,
+  });
+};
+
+$(function() {
+  initLayout();
   loadArticles();
 
   $("#next").click(function() {
@@ -65,21 +84,8 @@ $(function() {
   });
 
   $("#tag-read").click(function() {
-    var article_id = currentArticleId;
-    var tag        = "既読";
-
-    $.ajax({
-      type: "GET",
-      url: "/api/add_tag",
-      data: {
-        article_id: article_id,
-        tag: tag
-      },
-      dataType: "jsonp",
-      cache: true,
-      success: function(data){
-        console.debug(data);
-      }//,
+    addTagToCurrentArticle("既読", function(data) {
+      console.debug(data);
     });
   });
 });
