@@ -108,4 +108,29 @@ class AddTagApiTest < ActiveSupport::TestCase
     }
     assert_equal(expected, result)
   end
+
+  test "execute, exist tagging" do
+    user     = taggings(:yuya_asahi1_rail).user
+    article  = taggings(:yuya_asahi1_rail).article
+    tag      = taggings(:yuya_asahi1_rail).tag
+
+    @form.article_id = article.id
+    @form.tag        = tag.name
+
+    result = nil
+    assert_difference("Tag.count", +0) {
+      assert_difference("Tagging.count", +0) {
+        result = @form.execute(user)
+      }
+    }
+
+    expected = {
+      :success => true,
+      :result  => {
+        :article_id => article.id,
+        :tag_id     => tag.id,
+      },
+    }
+    assert_equal(expected, result)
+  end
 end

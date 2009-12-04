@@ -20,11 +20,8 @@ class AddTagApi < ActiveForm
   def execute(user)
     tag = Tag.get(self.tag)
 
-    tagging = Tagging.new
-    tagging.user_id    = user.id
-    tagging.article_id = self.article_id
-    tagging.tag_id     = tag.id
-    tagging.save!
+    tagging = Tagging.find_or_create_by_user_id_and_article_id_and_tag_id(
+      user.id, self.article_id, tag.id)
 
     result = {
       :success => true,
