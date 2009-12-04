@@ -1,42 +1,47 @@
 
 var viewer = {};
+viewer.articleRecords   = null;
+viewer.currentArticleId = null;
+viewer.currentReadTimer = null;
 
-viewer.adjustLayout = function() {
+viewer.initLayout = function() {
   var container  = $("#container");
   var controller = $("#controller");
   var browser    = $("#browser");
 
-  container.width($(window).width());
-  container.height($(window).height());
+  var adjustLayout = function() {
+    var window_width      = $(window).width();
+    var window_height     = $(window).height();
+    var controller_height = controller.outerHeight();
 
-  controller.width(container.outerWidth());
+    container.width(window_width);
+    container.height(window_height);
+    controller.width(window_width);
+    browser.width(window_width);
+    browser.height(window_height - controller_height);
+  };
 
-  browser.width(container.outerWidth());
-  browser.height(container.outerHeight() - controller.outerHeight())
+  $(window).resize(adjustLayout);
+  adjustLayout();
 };
 
-viewer.initLayout = function() {
-  $(window).resize(viewer.adjustLayout);
-  viewer.adjustLayout();
-};
+viewer.showArticle = function(article_id) {
+  var url   = viewer.articleRecords[article_id].url;
+  var title = viewer.articleRecords[article_id].title;
 
-viewer.articleRecords   = null; // Ajaxにより取得される
-viewer.currentArticleId = null;
-viewer.currentReadTimer = null;
-
-viewer.showArticle = function(id) {
-  var url   = viewer.articleRecords[id].url;
-  var title = viewer.articleRecords[id].title;
   $("#browser").attr("src", url);
   $("#url").text(url);
   document.title = title;
 
-  viewer.currentArticleId = id;
-
-  if ( viewer.currentReadTimer != null ) clearTimeout(viewer.currentReadTimer);
+  if ( viewer.currentReadTimer != null )
+  {
+    clearTimeout(viewer.currentReadTimer);
+  }
   viewer.currentReadTimer = setTimeout(function() {
     viewer.addTagToCurrentArticle("既読");
   }, 3000);
+
+  viewer.currentArticleId = article_id;
 };
 
 viewer.getNextArticleId = function() {
