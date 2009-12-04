@@ -17,12 +17,15 @@ var articleDB = {};
 var current = 0;
 
 var showArticle = function(id) {
-  var url = articleDB[id].url;
+  var url   = articleDB[id].url;
+  var title = articleDB[id].title;
   /*
   if ( /www\.asahi\.com/.test(url) ) url += "#HeadLine";
   else if ( /mainichi\.jp/.test(url) ) url += "#MainBody";
   */
   $("#browser").attr("src", url);
+  $("#url").text(url);
+  document.title = title;
 };
 
 var loadArticles = function() {
