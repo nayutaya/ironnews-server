@@ -7,6 +7,11 @@ class ApiController < ApplicationController
     redirect_to(:controller => "home")
   end
 
+  def get_articles
+    api = GetArticlesApi.from(params)
+    render_json(api.execute)
+  end
+
   def add_article   
     api = AddArticleApi.from(params)
     render_json(api.execute)

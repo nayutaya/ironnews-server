@@ -65,9 +65,9 @@ viewer.getPrevArticleId = function() {
 };
 
 viewer.loadArticles = function() {
-  api.getInfo(viewer.articleIds, {
+  api.getArticles(viewer.articleIds, {
     success: function(data) {
-      viewer.articleRecords = data;
+      viewer.articleRecords = data["result"];
       viewer.showArticle(viewer.articleIds[0]);
     }//,
   });

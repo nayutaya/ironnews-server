@@ -1,12 +1,12 @@
 
 var api = {};
 
-api.getInfo = function(article_ids, options) {
+api.getArticles = function(article_ids, options) {
   if ( options == null ) options = {};
 
   $.ajax({
     type: "GET",
-    url: "/home/get_info",
+    url: "/api/get_articles",
     data: {
       article_ids: article_ids.join(",")//,
     },
