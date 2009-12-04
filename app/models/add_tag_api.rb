@@ -16,4 +16,14 @@ class AddTagApi < ActiveForm
   validates_presence_of :tag
   # FIXME: article_idの存在を検証
   # FIXME: tagの長さを検証
+
+  def execute(user)
+    tagging = Tagging.new
+    tagging.user_id    = user.id
+    tagging.article_id = self.article_id
+    tagging.tag_id     = Tag.find_by_name(self.tag).id
+    tagging.save!
+
+    return nil
+  end
 end

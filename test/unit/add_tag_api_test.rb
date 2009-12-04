@@ -4,6 +4,7 @@ require 'test_helper'
 class AddTagApiTest < ActiveSupport::TestCase
   def setup
     @klass = AddTagApi
+    @form  = @klass.new
     @basic = @klass.new(
       :article_id => 1,
       :tag        => "tag")
@@ -41,5 +42,26 @@ class AddTagApiTest < ActiveSupport::TestCase
   test "validates_presence_of :tag" do
     @basic.tag = ""
     assert_equal(false, @basic.valid?)
+  end
+
+  #
+  # インスタンスメソッド
+  #
+
+  test "execute" do
+    @form.article_id = articles(:mainichi1).id
+    @form.tag        = tags(:rail).name
+
+    result = nil
+    assert_difference("Tag.count", 0) {
+      assert_difference("Tagging.count", +1) {
+        result = @form.execute(users(:yuya))
+      }
+    }
+
+    tagging = Tagging.first(:order => "taggings.id DESC")
+    assert_equal(users(:yuya).id,          tagging.user_id)
+    assert_equal(articles(:mainichi1).id, tagging.article_id)
+    assert_equal(tags(:rail).id,           tagging.tag_id)
   end
 end
