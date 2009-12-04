@@ -22,7 +22,7 @@ viewer.initLayout = function() {
   };
 
   $(window).resize(adjustLayout);
-  adjustLayout();
+  setTimeout(adjustLayout, 100); // Google Chromeで正常に動作させるために100msec遅延させる
 };
 
 viewer.showArticle = function(article_id) {
