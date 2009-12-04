@@ -98,7 +98,16 @@ body
   position: absolute;
   top: 0px;
   left: 0px;
-  width: 100px;
+  width: 70px;
+  height: 14px;
+}
+
+#category-tags
+{
+  position: absolute;
+  top: 0px;
+  left: 70px;
+  width: 250px;
   height: 14px;
 }
 
