@@ -92,9 +92,10 @@ $(function() {
     else alert("最初の記事です");
   });
 
-  $("#tag-read").click(function() {
-    viewer.addTagToCurrentArticle("既読", function(data) {
-      console.debug(data);
+  $("div.tags span").each(function() {
+    $(this).click(function() {
+      var tag = $(this).text();
+      viewer.addTagToCurrentArticle(tag, function() { /*nop*/ });
     });
   });
 });
