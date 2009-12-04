@@ -17,7 +17,7 @@
   <%= stylesheet_link_tag("viewer") %>
   <script type="text/javascript">
   //<![CDATA[
-    var articleIds = <%= @article_ids.to_json %>;
+    window.articleIds = <%= @article_ids.to_json %>;
   //]]>
   </script>
  </head>

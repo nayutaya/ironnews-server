@@ -13,8 +13,8 @@ var adjustContainer = function() {
   browser.height(container.outerHeight() - controller.outerHeight())
 };
 
-var articleRecords = {};
-var currentArticleIndex = 0;
+var articleRecords   = null; // Ajaxにより取得される
+var currentArticleId = null;
 
 var showArticle = function(id) {
   var url   = articleRecords[id].url;
@@ -22,17 +22,26 @@ var showArticle = function(id) {
   $("#browser").attr("src", url);
   $("#url").text(url);
   document.title = title;
+
+  currentArticleId = id;
+};
+
+var getNextArticleId = function() {
+  var index = window.articleIds.indexOf(currentArticleId);
+  if ( index < 0 ) return null;
+  if ( index >= window.articleIds.length - 1 ) return null;
+  return window.articleIds[index + 1];
 };
 
 var loadArticles = function() {
   $.ajax({
     type: "GET",
     url: "/home/get_info",
-    data: {"article_ids": articleIds.join(",")},
+    data: {"article_ids": window.articleIds.join(",")},
     dataType: "jsonp",
     success: function(data){
       articleRecords = data;
-      showArticle(articleIds[0]);
+      showArticle(window.articleIds[0]);
     }//,
   });
 };
@@ -44,10 +53,10 @@ $(function() {
   loadArticles();
 
   $("#next").click(function() {
-    if ( currentArticleIndex < articleIds.length - 1 )
+    var next_id = getNextArticleId();
+    if ( next_id != null )
     {
-      currentArticleIndex += 1;
-      showArticle(articleIds[currentArticleIndex]);
+      showArticle(next_id);
     }
     else
     {
@@ -56,7 +65,7 @@ $(function() {
   });
 
   $("#tag-read").click(function() {
-    var article_id = articleIds[currentArticleIndex];
+    var article_id = currentArticleId;
     var tag        = "既読";
 
     $.ajax({
