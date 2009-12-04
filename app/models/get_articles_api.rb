@@ -17,21 +17,17 @@ class GetArticlesApi < ApiBase
       return {:success => false}
     end
 
-    # FIXME: まとめて取得する
-    articles = {}
-    self.parsed_article_ids.each { |article_id|
-      # FIXME: エラー処理
-      article = Article.find_by_id(article_id)
-      articles[article_id] = {
+    articles = Article.find_all_by_id(self.parsed_article_ids.sort.uniq).inject({}) { |memo, article|
+      memo[article.id] = {
         :title => article.title,
         :url   => article.url,
       }
+      memo
     }
 
-    result = {
+    return {
       :success => true,
       :result  => articles,
     }
-    return result
   end
 end
