@@ -64,12 +64,8 @@ viewer.getPrevArticleId = function() {
 };
 
 viewer.loadArticles = function() {
-  $.ajax({
-    type: "GET",
-    url: "/home/get_info",
-    data: {"article_ids": window.articleIds.join(",")},
-    dataType: "jsonp",
-    success: function(data){
+  api.get_info(window.articleIds, {
+    success: function(data) {
       viewer.articleRecords = data;
       viewer.showArticle(window.articleIds[0]);
     }//,
