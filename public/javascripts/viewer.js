@@ -1,5 +1,7 @@
 
-var adjustLayout = function() {
+var viewer = {};
+
+viewer.adjustLayout = function() {
   var container  = $("#container");
   var controller = $("#controller");
   var browser    = $("#browser");
@@ -13,66 +15,63 @@ var adjustLayout = function() {
   browser.height(container.outerHeight() - controller.outerHeight())
 };
 
-var initLayout = function() {
-  $(window).resize(adjustLayout);
-  adjustLayout();
+viewer.initLayout = function() {
+  $(window).resize(viewer.adjustLayout);
+  viewer.adjustLayout();
 };
 
-var articleRecords   = null; // Ajaxにより取得される
-var currentArticleId = null;
-var currentReadTimer = null;
+viewer.articleRecords   = null; // Ajaxにより取得される
+viewer.currentArticleId = null;
+viewer.currentReadTimer = null;
 
-var addTagToCurrentArticle = null;
-var showArticle = function(id) {
-  var url   = articleRecords[id].url;
-  var title = articleRecords[id].title;
+viewer.showArticle = function(id) {
+  var url   = viewer.articleRecords[id].url;
+  var title = viewer.articleRecords[id].title;
   $("#browser").attr("src", url);
   $("#url").text(url);
   document.title = title;
 
-  currentArticleId = id;
+  viewer.currentArticleId = id;
 
-  if ( currentReadTimer != null ) clearTimeout(currentReadTimer);
-  currentReadTimer = setTimeout(function() {
-    addTagToCurrentArticle("既読");
+  if ( viewer.currentReadTimer != null ) clearTimeout(viewer.currentReadTimer);
+  viewer.currentReadTimer = setTimeout(function() {
+    viewer.addTagToCurrentArticle("既読");
   }, 3000);
 };
 
-var getNextArticleId = function() {
-  var index = window.articleIds.indexOf(currentArticleId);
+viewer.getNextArticleId = function() {
+  var index = window.articleIds.indexOf(viewer.currentArticleId);
   if ( index < 0 ) return null;
   if ( index >= window.articleIds.length - 1 ) return null;
   return window.articleIds[index + 1];
 };
 
-var getPrevArticleId = function() {
-  var index = window.articleIds.indexOf(currentArticleId);
+viewer.getPrevArticleId = function() {
+  var index = window.articleIds.indexOf(viewer.currentArticleId);
   if ( index < 0 ) return null;
   if ( index <= 0 ) return null;
   return window.articleIds[index - 1];
 };
 
-var loadArticles = function() {
+viewer.loadArticles = function() {
   $.ajax({
     type: "GET",
     url: "/home/get_info",
     data: {"article_ids": window.articleIds.join(",")},
     dataType: "jsonp",
     success: function(data){
-      articleRecords = data;
-      showArticle(window.articleIds[0]);
+      viewer.articleRecords = data;
+      viewer.showArticle(window.articleIds[0]);
     }//,
   });
 };
 
-addTagToCurrentArticle = function(tag, success) {
-  //if ( success == null ) success = function() { /*nop*/ };
-
+viewer.addTagToCurrentArticle = function(tag, success) {
   $.ajax({
     type: "GET",
     url: "/api/add_tag",
     data: {
-      article_id: currentArticleId,
+      article_id: viewer.currentArticleId,
       tag: tag//,
     },
     dataType: "jsonp",
@@ -82,23 +81,23 @@ addTagToCurrentArticle = function(tag, success) {
 };
 
 $(function() {
-  initLayout();
-  loadArticles();
+  viewer.initLayout();
+  viewer.loadArticles();
 
   $("#next-article").click(function() {
-    var article_id = getNextArticleId();
-    if ( article_id != null ) showArticle(article_id);
+    var article_id = viewer.getNextArticleId();
+    if ( article_id != null ) viewer.showArticle(article_id);
     else alert("最後の記事です");
   });
 
   $("#prev-article").click(function() {
-    var article_id = getPrevArticleId();
-    if ( article_id != null ) showArticle(article_id);
+    var article_id = viewer.getPrevArticleId();
+    if ( article_id != null ) viewer.showArticle(article_id);
     else alert("最初の記事です");
   });
 
   $("#tag-read").click(function() {
-    addTagToCurrentArticle("既読", function(data) {
+    viewer.addTagToCurrentArticle("既読", function(data) {
       console.debug(data);
     });
   });
