@@ -1,5 +1,6 @@
 
 var viewer = {};
+viewer.articleIds       = null;
 viewer.articleRecords   = null;
 viewer.currentArticleId = null;
 viewer.currentReadTimer = null;
@@ -45,29 +46,29 @@ viewer.showArticle = function(article_id) {
 };
 
 viewer.getArticleIndex = function(article_id) {
-  var index = window.articleIds.indexOf(article_id);
+  var index = viewer.articleIds.indexOf(article_id);
   return (index >= 0 ? index : null);
 };
 
 viewer.getNextArticleId = function() {
   var index = viewer.getArticleIndex(viewer.currentArticleId);
   if ( index == null ) return null;
-  if ( index >= window.articleIds.length - 1 ) return null;
-  return window.articleIds[index + 1];
+  if ( index >= viewer.articleIds.length - 1 ) return null;
+  return viewer.articleIds[index + 1];
 };
 
 viewer.getPrevArticleId = function() {
   var index = viewer.getArticleIndex(viewer.currentArticleId);
   if ( index == null ) return null;
   if ( index <= 0 ) return null;
-  return window.articleIds[index - 1];
+  return viewer.articleIds[index - 1];
 };
 
 viewer.loadArticles = function() {
-  api.getInfo(window.articleIds, {
+  api.getInfo(viewer.articleIds, {
     success: function(data) {
       viewer.articleRecords = data;
-      viewer.showArticle(window.articleIds[0]);
+      viewer.showArticle(viewer.articleIds[0]);
     }//,
   });
 };
@@ -78,6 +79,16 @@ viewer.addTagToCurrentArticle = function(tag, success) {
 
 $(function() {
   viewer.initLayout();
+
+  var fragment = location.hash;
+  var ids      = (fragment.match(/^#(\d+(?:,\d+)*)$/) || [])[1];
+  if ( ids == null )
+  {
+    alert("記事IDが取得できませんでした。");
+    return;
+  }
+  viewer.articleIds = ids.split(",");
+
   viewer.loadArticles();
 
   $("#next-article").click(function() {
@@ -93,8 +104,8 @@ $(function() {
   });
 
   $("div.tags span").each(function() {
+    var tag = $(this).text();
     $(this).click(function() {
-      var tag = $(this).text();
       viewer.addTagToCurrentArticle(tag, function() { /*nop*/ });
     });
   });

@@ -16,13 +16,6 @@
   <%= javascript_include_tag("viewer") %>
   <%= stylesheet_link_tag("application") %>
   <%= stylesheet_link_tag("viewer") %>
-  <script type="text/javascript">
-  //<![CDATA[
-    var fragment = location.hash;
-    var ids      = (fragment.match(/^#(\d+(?:,\d+)*)$/) || [])[1];
-    window.articleIds = ids.split(",");
-  //]]>
-  </script>
  </head>
  <body>
   <div id="container">
