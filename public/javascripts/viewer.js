@@ -64,7 +64,7 @@ viewer.getPrevArticleId = function() {
 };
 
 viewer.loadArticles = function() {
-  api.get_info(window.articleIds, {
+  api.getInfo(window.articleIds, {
     success: function(data) {
       viewer.articleRecords = data;
       viewer.showArticle(window.articleIds[0]);
@@ -73,17 +73,7 @@ viewer.loadArticles = function() {
 };
 
 viewer.addTagToCurrentArticle = function(tag, success) {
-  $.ajax({
-    type: "GET",
-    url: "/api/add_tag",
-    data: {
-      article_id: viewer.currentArticleId,
-      tag: tag//,
-    },
-    dataType: "jsonp",
-    cache: true,
-    success: success//,
-  });
+  api.addTag(viewer.currentArticleId, tag, {success: success});
 };
 
 $(function() {
