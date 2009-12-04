@@ -13,16 +13,12 @@ var adjustContainer = function() {
   browser.height(container.outerHeight() - controller.outerHeight())
 };
 
-var articleDB = {};
-var current = 0;
+var articleRecords = {};
+var currentArticleIndex = 0;
 
 var showArticle = function(id) {
-  var url   = articleDB[id].url;
-  var title = articleDB[id].title;
-  /*
-  if ( /www\.asahi\.com/.test(url) ) url += "#HeadLine";
-  else if ( /mainichi\.jp/.test(url) ) url += "#MainBody";
-  */
+  var url   = articleRecords[id].url;
+  var title = articleRecords[id].title;
   $("#browser").attr("src", url);
   $("#url").text(url);
   document.title = title;
@@ -35,7 +31,7 @@ var loadArticles = function() {
     data: {"article_ids": articleIds.join(",")},
     dataType: "jsonp",
     success: function(data){
-      articleDB = data;
+      articleRecords = data;
       showArticle(articleIds[0]);
     }//,
   });
@@ -48,10 +44,10 @@ $(function() {
   loadArticles();
 
   $("#next").click(function() {
-    if ( current < articleIds.length - 1 )
+    if ( currentArticleIndex < articleIds.length - 1 )
     {
-      current += 1;
-      showArticle(articleIds[current]);
+      currentArticleIndex += 1;
+      showArticle(articleIds[currentArticleIndex]);
     }
     else
     {
@@ -60,7 +56,7 @@ $(function() {
   });
 
   $("#tag-read").click(function() {
-    var article_id = articleIds[current];
+    var article_id = articleIds[currentArticleIndex];
     var tag        = "既読";
 
     $.ajax({
