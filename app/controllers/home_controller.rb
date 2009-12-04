@@ -24,22 +24,4 @@ class HomeController < ApplicationController
     flash[:notice] = "ログアウトしました"
     redirect_to(:action => "index")
   end
-
-  def get_info
-    @article_ids = params[:article_ids].split(/,/).map(&:to_i)
-    @callback    = params[:callback]
-
-    articles = Article.all(:conditions => {:id => @article_ids})
-
-    ret = articles.inject({}) { |memo, article|
-      memo[article.id] = {
-        "title" => article.title,
-        "url"   => article.url,
-      }
-      memo
-    }
-
-    json = "#{@callback}(#{ret.to_json})"
-    send_data(json, :type => "text/javascript", :disposition => "inline")
-  end
 end
