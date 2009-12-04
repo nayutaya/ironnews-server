@@ -4,6 +4,7 @@ require 'test_helper'
 class GetArticlesApiTest < ActiveSupport::TestCase
   def setup
     @klass = GetArticlesApi
+    @form  = @klass.new
     @basic = @klass.new(
       :article_ids => "1")
   end
@@ -48,5 +49,18 @@ class GetArticlesApiTest < ActiveSupport::TestCase
       @basic.article_ids = value
       assert_equal(expected, @basic.valid?, value)
     }
+  end
+
+  #
+  # インスタンスメソッド
+  #
+
+  test "parsed_article_ids" do
+    @form.article_ids = ""
+    assert_equal([], @form.parsed_article_ids)
+    @form.article_ids = "1234567890"
+    assert_equal([1234567890], @form.parsed_article_ids)
+    @form.article_ids = "1,2,3"
+    assert_equal([1, 2, 3], @form.parsed_article_ids)
   end
 end
