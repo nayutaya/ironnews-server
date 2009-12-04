@@ -52,6 +52,19 @@ class GetArticlesApiTest < ActiveSupport::TestCase
   end
 
   #
+  # クラスメソッド
+  #
+
+  test "self.from" do
+    params = {
+      :controller  => "a",
+      :article_ids => "b",
+    }
+    form = @klass.from(params)
+    assert_equal("b", form.article_ids)
+  end
+
+  #
   # インスタンスメソッド
   #
 

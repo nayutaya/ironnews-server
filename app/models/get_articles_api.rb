@@ -8,6 +8,10 @@ class GetArticlesApi < ApiBase
   validates_presence_of :article_ids
   validates_format_of :article_ids, :with => ArticleIdsFormat, :allow_blank => true
 
+  def self.from(params)
+    return self.new(self.suppress_parameter(params))
+  end
+
   def parsed_article_ids
     return self.article_ids.split(/,/).map(&:to_i)
   end
