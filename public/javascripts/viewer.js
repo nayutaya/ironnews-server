@@ -22,7 +22,7 @@ viewer.initLayout = function() {
   };
 
   $(window).resize(adjustLayout);
-  adjustLayout();
+  setTimeout(adjustLayout, 100); // Google Chromeで正常に動作させるために100msec遅延させる
 };
 
 viewer.showArticle = function(article_id) {
@@ -44,27 +44,28 @@ viewer.showArticle = function(article_id) {
   viewer.currentArticleId = article_id;
 };
 
+viewer.getArticleIndex = function(article_id) {
+  var index = window.articleIds.indexOf(article_id);
+  return (index >= 0 ? index : null);
+};
+
 viewer.getNextArticleId = function() {
-  var index = window.articleIds.indexOf(viewer.currentArticleId);
-  if ( index < 0 ) return null;
+  var index = viewer.getArticleIndex(viewer.currentArticleId);
+  if ( index == null ) return null;
   if ( index >= window.articleIds.length - 1 ) return null;
   return window.articleIds[index + 1];
 };
 
 viewer.getPrevArticleId = function() {
-  var index = window.articleIds.indexOf(viewer.currentArticleId);
-  if ( index < 0 ) return null;
+  var index = viewer.getArticleIndex(viewer.currentArticleId);
+  if ( index == null ) return null;
   if ( index <= 0 ) return null;
   return window.articleIds[index - 1];
 };
 
 viewer.loadArticles = function() {
-  $.ajax({
-    type: "GET",
-    url: "/home/get_info",
-    data: {"article_ids": window.articleIds.join(",")},
-    dataType: "jsonp",
-    success: function(data){
+  api.getInfo(window.articleIds, {
+    success: function(data) {
       viewer.articleRecords = data;
       viewer.showArticle(window.articleIds[0]);
     }//,
@@ -72,17 +73,7 @@ viewer.loadArticles = function() {
 };
 
 viewer.addTagToCurrentArticle = function(tag, success) {
-  $.ajax({
-    type: "GET",
-    url: "/api/add_tag",
-    data: {
-      article_id: viewer.currentArticleId,
-      tag: tag//,
-    },
-    dataType: "jsonp",
-    cache: true,
-    success: success//,
-  });
+  api.addTag(viewer.currentArticleId, tag, {success: success});
 };
 
 $(function() {
@@ -101,9 +92,10 @@ $(function() {
     else alert("最初の記事です");
   });
 
-  $("#tag-read").click(function() {
-    viewer.addTagToCurrentArticle("既読", function(data) {
-      console.debug(data);
+  $("div.tags span").each(function() {
+    $(this).click(function() {
+      var tag = $(this).text();
+      viewer.addTagToCurrentArticle(tag, function() { /*nop*/ });
     });
   });
 });
