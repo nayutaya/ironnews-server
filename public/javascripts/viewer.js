@@ -37,7 +37,7 @@ var loadArticles = function() {
     success: function(data){
       articleDB = data;
       showArticle(articleIds[0]);
-    },
+    }//,
   });
 };
 
@@ -57,5 +57,24 @@ $(function() {
     {
       alert("最後の記事です");
     }
+  });
+
+  $("#tag-read").click(function() {
+    var article_id = articleIds[current];
+    var tag        = "既読";
+
+    $.ajax({
+      type: "GET",
+      url: "/api/add_tag",
+      data: {
+        article_id: article_id,
+        tag: tag
+      },
+      dataType: "jsonp",
+      cache: true,
+      success: function(data){
+        console.debug(data);
+      }//,
+    });
   });
 });
