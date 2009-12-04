@@ -59,7 +59,7 @@ class AddTagApiTest < ActiveSupport::TestCase
     result = nil
     assert_difference("Tag.count", 0) {
       assert_difference("Tagging.count", +1) {
-        result = @form.execute(user)
+        result = @form.execute(user.id)
       }
     }
 
@@ -89,7 +89,7 @@ class AddTagApiTest < ActiveSupport::TestCase
     result = nil
     assert_difference("Tag.count", +1) {
       assert_difference("Tagging.count", +1) {
-        result = @form.execute(user)
+        result = @form.execute(user.id)
       }
     }
 
@@ -120,7 +120,7 @@ class AddTagApiTest < ActiveSupport::TestCase
     result = nil
     assert_difference("Tag.count", +0) {
       assert_difference("Tagging.count", +0) {
-        result = @form.execute(user)
+        result = @form.execute(user.id)
       }
     }
 

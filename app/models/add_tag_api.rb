@@ -17,11 +17,11 @@ class AddTagApi < ActiveForm
   # FIXME: article_idの存在を検証
   # FIXME: tagの長さを検証
 
-  def execute(user)
+  def execute(user_id)
     tag = Tag.get(self.tag)
 
     tagging = Tagging.find_or_create_by_user_id_and_article_id_and_tag_id(
-      user.id, self.article_id, tag.id)
+      user_id, self.article_id, tag.id)
 
     result = {
       :success => true,
