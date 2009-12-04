@@ -13,11 +13,6 @@ class HomeController < ApplicationController
     # nop
   end
 
-  def view
-    @article_ids = params[:article_ids].split(/,/).map(&:to_i)
-    render(:layout => false)
-  end
-
   def login
     session[:user_id] = User.find_by_name("yuya").id
     flash[:notice] = "ログインしました #{session[:user_id]}"
