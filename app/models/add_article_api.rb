@@ -10,18 +10,10 @@
 require "open-uri"
 
 # 記事追加API
-class AddArticleApi < ActiveForm
+class AddArticleApi < ApiBase
   # FIXME: url3～url10を追加
   column :url1, :type => :text
   column :url2, :type => :text
-
-  def self.suppress_parameter(params)
-    params = params.dup
-    [:controller, :action, :commit, :authenticity_token, :callback].each { |key|
-      params.delete(key)
-    }
-    return params
-  end
 
   def self.from(params)
     return self.new(self.suppress_parameter(params))

@@ -1,7 +1,7 @@
 
 # API
 class ApiController < ApplicationController
-  before_filter :authentication, :only => [:add_article]
+  before_filter :authentication, :only => [:add_article, :add_tag]
 
   def index
     redirect_to(:controller => "home")
@@ -10,6 +10,11 @@ class ApiController < ApplicationController
   def add_article   
     api = AddArticleApi.from(params)
     render_json(api.execute)
+  end
+
+  def add_tag
+    api = AddTagApi.from(params)
+    render_json(api.execute(@user))
   end
 
   private

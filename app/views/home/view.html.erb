@@ -17,15 +17,17 @@
   <%= stylesheet_link_tag("viewer") %>
   <script type="text/javascript">
   //<![CDATA[
-    var articleIds = <%= @article_ids.to_json %>;
+    window.articleIds = <%= @article_ids.to_json %>;
   //]]>
   </script>
  </head>
  <body>
   <div id="container">
    <div id="controller">
-    <div id="next">次の記事を表示</div>
+    <div id="next-article">次の<br />記事</div>
+    <div id="prev-article">前の<br />記事</div>
     <div id="url">-</div>
+    <div id="tags"><span id="tag-read">既読</span></div>
    </div>
    <iframe id="browser" src="/loading.html" width="800" height="500" frameborder="0" />
   </div>
