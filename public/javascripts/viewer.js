@@ -38,6 +38,13 @@ var getNextArticleId = function() {
   return window.articleIds[index + 1];
 };
 
+var getPrevArticleId = function() {
+  var index = window.articleIds.indexOf(currentArticleId);
+  if ( index < 0 ) return null;
+  if ( index <= 0 ) return null;
+  return window.articleIds[index - 1];
+};
+
 var loadArticles = function() {
   $.ajax({
     type: "GET",
@@ -71,16 +78,16 @@ $(function() {
   initLayout();
   loadArticles();
 
-  $("#next").click(function() {
-    var next_id = getNextArticleId();
-    if ( next_id != null )
-    {
-      showArticle(next_id);
-    }
-    else
-    {
-      alert("最後の記事です");
-    }
+  $("#next-article").click(function() {
+    var article_id = getNextArticleId();
+    if ( article_id != null ) showArticle(article_id);
+    else alert("最後の記事です");
+  });
+
+  $("#prev-article").click(function() {
+    var article_id = getPrevArticleId();
+    if ( article_id != null ) showArticle(article_id);
+    else alert("最初の記事です");
   });
 
   $("#tag-read").click(function() {
