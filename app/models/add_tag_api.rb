@@ -18,10 +18,12 @@ class AddTagApi < ActiveForm
   # FIXME: tagの長さを検証
 
   def execute(user)
+    tag = Tag.get(self.tag)
+
     tagging = Tagging.new
     tagging.user_id    = user.id
     tagging.article_id = self.article_id
-    tagging.tag_id     = Tag.find_by_name(self.tag).id
+    tagging.tag_id     = tag.id
     tagging.save!
 
     result = {

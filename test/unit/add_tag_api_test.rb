@@ -77,4 +77,35 @@ class AddTagApiTest < ActiveSupport::TestCase
     }
     assert_equal(expected, result)
   end
+
+  test "execute, new tag" do
+    user     = users(:yuya)
+    article  = articles(:mainichi1)
+    tag_name = "新しいタグ"
+
+    @form.article_id = article.id
+    @form.tag        = tag_name
+
+    result = nil
+    assert_difference("Tag.count", +1) {
+      assert_difference("Tagging.count", +1) {
+        result = @form.execute(user)
+      }
+    }
+
+    tag     = Tag.get(tag_name)
+    tagging = Tagging.first(:order => "taggings.id DESC")
+    assert_equal(user.id,    tagging.user_id)
+    assert_equal(article.id, tagging.article_id)
+    assert_equal(tag.id,     tagging.tag_id)
+
+    expected = {
+      :success => true,
+      :result  => {
+        :article_id => article.id,
+        :tag_id     => tag.id,
+      },
+    }
+    assert_equal(expected, result)
+  end
 end
