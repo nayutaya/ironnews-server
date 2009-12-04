@@ -11,4 +11,9 @@
 class AddTagApi < ActiveForm
   column :article_id, :type => :integer
   column :tag,        :type => :string
+
+  validates_presence_of :article_id
+  validates_presence_of :tag
+  # FIXME: article_idの存在を検証
+  # FIXME: tagの長さを検証
 end
