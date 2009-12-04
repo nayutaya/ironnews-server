@@ -44,16 +44,21 @@ viewer.showArticle = function(article_id) {
   viewer.currentArticleId = article_id;
 };
 
+viewer.getArticleIndex = function(article_id) {
+  var index = window.articleIds.indexOf(article_id);
+  return (index >= 0 ? index : null);
+};
+
 viewer.getNextArticleId = function() {
-  var index = window.articleIds.indexOf(viewer.currentArticleId);
-  if ( index < 0 ) return null;
+  var index = viewer.getArticleIndex(viewer.currentArticleId);
+  if ( index == null ) return null;
   if ( index >= window.articleIds.length - 1 ) return null;
   return window.articleIds[index + 1];
 };
 
 viewer.getPrevArticleId = function() {
-  var index = window.articleIds.indexOf(viewer.currentArticleId);
-  if ( index < 0 ) return null;
+  var index = viewer.getArticleIndex(viewer.currentArticleId);
+  if ( index == null ) return null;
   if ( index <= 0 ) return null;
   return window.articleIds[index - 1];
 };
