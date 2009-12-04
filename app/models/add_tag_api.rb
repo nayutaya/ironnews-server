@@ -8,7 +8,7 @@
 #
 
 # タグ追加API
-class AddTagApi < ActiveForm
+class AddTagApi < ApiBase
   column :article_id, :type => :integer
   column :tag,        :type => :string
 
@@ -16,6 +16,10 @@ class AddTagApi < ActiveForm
   validates_presence_of :tag
   # FIXME: article_idの存在を検証
   # FIXME: tagの長さを検証
+
+  def self.from(params)
+    return self.new(self.suppress_parameter(params))
+  end
 
   def execute(user_id)
     tag = Tag.get(self.tag)
