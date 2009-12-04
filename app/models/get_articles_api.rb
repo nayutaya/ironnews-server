@@ -11,4 +11,27 @@ class GetArticlesApi < ApiBase
   def parsed_article_ids
     return self.article_ids.split(/,/).map(&:to_i)
   end
+
+  def execute
+    unless self.valid?
+      return {:success => false}
+    end
+
+    # FIXME: まとめて取得する
+    articles = {}
+    self.parsed_article_ids.each { |article_id|
+      # FIXME: エラー処理
+      article = Article.find_by_id(article_id)
+      articles[article_id] = {
+        :title => article.title,
+        :url   => article.url,
+      }
+    }
+
+    result = {
+      :success => true,
+      :result  => articles,
+    }
+    return result
+  end
 end

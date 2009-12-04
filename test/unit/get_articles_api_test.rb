@@ -63,4 +63,36 @@ class GetArticlesApiTest < ActiveSupport::TestCase
     @form.article_ids = "1,2,3"
     assert_equal([1, 2, 3], @form.parsed_article_ids)
   end
+
+  test "execute" do
+    @form.article_ids = [articles(:asahi1).id, articles(:mainichi1).id].join(",")
+
+    result = @form.execute
+
+    expected = {
+      :success => true,
+      :result  => {
+        articles(:asahi1).id => {
+          :title => articles(:asahi1).title,
+          :url   => articles(:asahi1).url,
+        },
+        articles(:mainichi1).id => {
+          :title => articles(:mainichi1).title,
+          :url   => articles(:mainichi1).url,
+        },
+      },
+    }
+    assert_equal(expected, result)
+  end
+
+  test "execute, invalid" do
+    @form.article_ids = ""
+
+    result = @form.execute
+
+    expected = {
+      :success => false,
+    }
+    assert_equal(expected, result)
+  end
 end
