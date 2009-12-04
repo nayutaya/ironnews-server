@@ -45,16 +45,16 @@ $(document).ready(function() {
   });
 
   var getArticleIdFromAnchorElement = function(anchor) {
-    return (/^article-(\d+)$/.exec(anchor.id)||[])[1];
+    return (/^article-(\d+)$/.exec(anchor.id) || [])[1];
   };
 
   $("ul.articles li a").each(function() {
-      var articleId = getArticleIdFromAnchorElement(this);
-      if ( articleId != null )
-      {
-        var path = "/view/" + articleId;
-        this.href = path;
-      }
+    var articleId = getArticleIdFromAnchorElement(this);
+    if ( articleId != null )
+    {
+      var path = "/viewer#" + articleId;
+      this.href = path;
+    }
   });
 
   var articles = $("ul.articles li");
@@ -108,7 +108,7 @@ $(document).ready(function() {
   var openCurrentArticle = function() {
     var current   = getCurrentAnchorElement();
     var articleId = getArticleIdFromAnchorElement(current);
-    var path = "/view/" + articleId;
+    var path = "/viewer#" + articleId;
     var win = window.open(path);
   };
   var openPinnedArticles = function() {
@@ -119,7 +119,7 @@ $(document).ready(function() {
     });
     if ( articleIds.length > 0 )
     {
-      var path = "/view/" + articleIds.join(",");
+      var path = "/viewer#" + articleIds.join(",");
       var win = window.open(path);
     }
   };
