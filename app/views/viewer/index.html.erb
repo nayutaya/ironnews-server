@@ -18,7 +18,9 @@
   <%= stylesheet_link_tag("viewer") %>
   <script type="text/javascript">
   //<![CDATA[
-    window.articleIds = <%= @article_ids.to_json %>;
+    var fragment = location.hash;
+    var ids      = (fragment.match(/^#(\d+(?:,\d+)*)$/) || [])[1];
+    window.articleIds = ids.split(",");
   //]]>
   </script>
  </head>
