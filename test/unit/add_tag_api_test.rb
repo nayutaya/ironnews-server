@@ -48,7 +48,7 @@ class AddTagApiTest < ActiveSupport::TestCase
   # インスタンスメソッド
   #
 
-  test "execute" do
+  test "execute, exist tag" do
     @form.article_id = articles(:mainichi1).id
     @form.tag        = tags(:rail).name
 
@@ -63,5 +63,14 @@ class AddTagApiTest < ActiveSupport::TestCase
     assert_equal(users(:yuya).id,          tagging.user_id)
     assert_equal(articles(:mainichi1).id, tagging.article_id)
     assert_equal(tags(:rail).id,           tagging.tag_id)
+
+    expected = {
+      :success => true,
+      :result  => {
+        :article_id => @form.article_id,
+        :tag_id     => tags(:rail).id,
+      },
+    }
+    assert_equal(expected, result)
   end
 end

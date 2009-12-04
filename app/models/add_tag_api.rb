@@ -24,6 +24,14 @@ class AddTagApi < ActiveForm
     tagging.tag_id     = Tag.find_by_name(self.tag).id
     tagging.save!
 
-    return nil
+    result = {
+      :success => true,
+      :result  => {
+        :article_id => self.article_id,
+        :tag_id     => tagging.tag_id,
+      },
+    }
+    
+    return result
   end
 end
