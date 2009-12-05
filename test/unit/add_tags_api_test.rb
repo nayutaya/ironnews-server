@@ -42,4 +42,17 @@ class AddTagsApiTest < ActiveSupport::TestCase
     @basic.tag1 = ""
     assert_equal(false, @basic.valid?)
   end
+
+  #
+  # クラスメソッド
+  #
+
+  test "self.from" do
+    params = {
+      :controller => "a",
+      :article_id => 1,
+    }
+    form = @klass.from(params)
+    assert_equal(1, form.article_id)
+  end
 end
