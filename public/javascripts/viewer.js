@@ -74,7 +74,7 @@ viewer.loadArticles = function() {
 };
 
 viewer.addTagToCurrentArticle = function(tag, success) {
-  api.addTag(viewer.currentArticleId, tag, {success: success});
+  api.addTags(viewer.currentArticleId, tag, {success: success});
 };
 
 $(function() {
