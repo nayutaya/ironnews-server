@@ -8,4 +8,8 @@ class ApiBase < ActiveForm
     }
     return params
   end
+
+  def self.from(params)
+    return self.new(self.suppress_parameter(params))
+  end
 end

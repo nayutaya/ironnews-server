@@ -8,8 +8,4 @@ class RemoveTagsApi < ApiBase
   validates_presence_of :tag1
   # FIXME: article_idの存在を検証
   # FIXME: tag1の長さを検証
-
-  def self.from(params)
-    return self.new(self.suppress_parameter(params))
-  end
 end
