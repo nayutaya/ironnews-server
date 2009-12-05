@@ -4,6 +4,7 @@ require 'test_helper'
 class RemoveTagsApiTest < ActiveSupport::TestCase
   def setup
     @klass = RemoveTagsApi
+    @form  = @klass.new
     @basic = @klass.new(
       :article_id => 1,
       :tag1       => "tag1")
@@ -54,5 +55,42 @@ class RemoveTagsApiTest < ActiveSupport::TestCase
     }
     form = @klass.from(params)
     assert_equal(1, form.article_id)
+  end
+
+  #
+  # インスタンスメソッド
+  #
+
+  test "execute, exist tagging" do
+    user    = taggings(:yuya_asahi1_rail).user
+    article = taggings(:yuya_asahi1_rail).article
+    tag     = taggings(:yuya_asahi1_rail).tag
+
+    @form.article_id = article.id
+    @form.tag1       = tag.name
+
+    result = nil
+    assert_difference("Tag.count", 0) {
+      assert_difference("Tagging.count", -1) {
+        result = @form.execute(user.id)
+      }
+    }
+
+    assert_equal(
+      nil,
+      Tagging.find_by_user_id_and_article_id_and_tag_id(user.id, article.id, tag.id))
+
+    expected = {
+      :success => true,
+    }
+    assert_equal(expected, result)
+  end
+
+  test "execute, no exist tagging" do
+
+  end
+
+  test "execute, no exist tag" do
+
   end
 end
