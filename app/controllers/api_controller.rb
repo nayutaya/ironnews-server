@@ -17,11 +17,6 @@ class ApiController < ApplicationController
     render_json(api.execute)
   end
 
-  def add_tag
-    api = AddTagApi.from(params)
-    render_json(api.execute(@user.id))
-  end
-
   def add_tags
     api = AddTagsApi.from(params)
     render_json(api.execute(@user.id))

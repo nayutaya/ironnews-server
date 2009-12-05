@@ -16,22 +16,6 @@ api.getArticles = function(article_ids, options) {
   });
 };
 
-api.addTag = function(article_id, tag, options) {
-  if ( options == null ) options = {};
-
-  $.ajax({
-    type: "GET",
-    url: "/api/add_tag",
-    data: {
-      article_id: article_id,
-      tag: tag//,
-    },
-    dataType: "jsonp",
-    cache: true,
-    success: options.success//,
-  });
-};
-
 api.addTags = function(article_id, tag1, options) {
   if ( options == null ) options = {};
 
