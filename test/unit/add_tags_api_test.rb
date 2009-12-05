@@ -1,13 +1,13 @@
 
 require 'test_helper'
 
-class AddTagApiTest < ActiveSupport::TestCase
+class AddTagsApiTest < ActiveSupport::TestCase
   def setup
-    @klass = AddTagApi
+    @klass = AddTagsApi
     @form  = @klass.new
     @basic = @klass.new(
       :article_id => 1,
-      :tag        => "tag")
+      :tag1       => "tag1")
   end
 
   #
@@ -17,7 +17,7 @@ class AddTagApiTest < ActiveSupport::TestCase
   test "columns" do
     [
       [:article_id, nil, "1", 1],
-      [:tag,        nil, "1", "1"],
+      [:tag1,       nil, "1", "1"],
     ].each { |name, default, set_value, get_value|
       form = @klass.new
       assert_equal(default, form.__send__(name))
@@ -39,8 +39,8 @@ class AddTagApiTest < ActiveSupport::TestCase
     assert_equal(false, @basic.valid?)
   end
 
-  test "validates_presence_of :tag" do
-    @basic.tag = ""
+  test "validates_presence_of :tag1" do
+    @basic.tag1 = ""
     assert_equal(false, @basic.valid?)
   end
 
@@ -67,7 +67,7 @@ class AddTagApiTest < ActiveSupport::TestCase
     tag     = tags(:rail)
 
     @form.article_id = article.id
-    @form.tag        = tag.name
+    @form.tag1       = tag.name
 
     result = nil
     assert_difference("Tag.count", 0) {
@@ -85,7 +85,7 @@ class AddTagApiTest < ActiveSupport::TestCase
       :success => true,
       :result  => {
         :article_id => article.id,
-        :tag_id     => tag.id,
+        :tag1_id    => tag.id,
       },
     }
     assert_equal(expected, result)
@@ -97,7 +97,7 @@ class AddTagApiTest < ActiveSupport::TestCase
     tag_name = "新しいタグ"
 
     @form.article_id = article.id
-    @form.tag        = tag_name
+    @form.tag1       = tag_name
 
     result = nil
     assert_difference("Tag.count", +1) {
@@ -116,7 +116,7 @@ class AddTagApiTest < ActiveSupport::TestCase
       :success => true,
       :result  => {
         :article_id => article.id,
-        :tag_id     => tag.id,
+        :tag1_id    => tag.id,
       },
     }
     assert_equal(expected, result)
@@ -128,7 +128,7 @@ class AddTagApiTest < ActiveSupport::TestCase
     tag      = taggings(:yuya_asahi1_rail).tag
 
     @form.article_id = article.id
-    @form.tag        = tag.name
+    @form.tag1       = tag.name
 
     result = nil
     assert_difference("Tag.count", +0) {
@@ -141,7 +141,7 @@ class AddTagApiTest < ActiveSupport::TestCase
       :success => true,
       :result  => {
         :article_id => article.id,
-        :tag_id     => tag.id,
+        :tag1_id    => tag.id,
       },
     }
     assert_equal(expected, result)

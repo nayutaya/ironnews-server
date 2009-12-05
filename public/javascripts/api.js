@@ -16,15 +16,15 @@ api.getArticles = function(article_ids, options) {
   });
 };
 
-api.addTag = function(article_id, tag, options) {
+api.addTags = function(article_id, tag1, options) {
   if ( options == null ) options = {};
 
   $.ajax({
     type: "GET",
-    url: "/api/add_tag",
+    url: "/api/add_tags",
     data: {
       article_id: article_id,
-      tag: tag//,
+      tag1: tag1//,
     },
     dataType: "jsonp",
     cache: true,
