@@ -13,7 +13,7 @@ class RemoveTagsApi < ApiBase
     tag = Tag.get(self.tag1, :create => false)
     if tag
       tagging = Tagging.find_by_user_id_and_article_id_and_tag_id(user_id, self.article_id, tag.id)
-      tagging.destroy
+      tagging.destroy if tagging
     end
 
     return {

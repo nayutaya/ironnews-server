@@ -87,7 +87,24 @@ class RemoveTagsApiTest < ActiveSupport::TestCase
   end
 
   test "execute, no exist tagging" do
+    user     = users(:yuya)
+    article  = articles(:asahi1)
+    tag_name = "非鉄"
 
+    @form.article_id = article.id
+    @form.tag1       = tag_name
+
+    result = nil
+    assert_difference("Tag.count", 0) {
+      assert_difference("Tagging.count", 0) {
+        result = @form.execute(user.id)
+      }
+    }
+
+    expected = {
+      :success => true,
+    }
+    assert_equal(expected, result)
   end
 
   test "execute, no exist tag" do
