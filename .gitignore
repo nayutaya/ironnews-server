@@ -1,3 +1,4 @@
+config/database.yml
 config/secret.txt
 notes.txt
 db/*.sqlite3
