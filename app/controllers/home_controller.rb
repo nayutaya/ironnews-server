@@ -6,7 +6,7 @@ class HomeController < ApplicationController
   # TODO: テストせよ
   # GET /
   def index
-    @articles = Article.all(:order => "articles.created_at DESC, articles.id DESC")
+    @articles = Article.all(:order => "articles.created_at DESC, articles.id DESC", :limit => 100)
   end
 
   def add
