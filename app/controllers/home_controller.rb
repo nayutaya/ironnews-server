@@ -13,6 +13,7 @@ class HomeController < ApplicationController
     # nop
   end
 
+=begin
   def login
     session[:user_id] = User.find_by_name("yuya").id
     flash[:notice] = "ログインしました #{session[:user_id]}"
@@ -24,4 +25,5 @@ class HomeController < ApplicationController
     flash[:notice] = "ログアウトしました"
     redirect_to(:action => "index")
   end
+=end
 end

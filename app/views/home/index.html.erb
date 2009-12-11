@@ -5,10 +5,16 @@
  <%= flash[:notice] %>
 </div>
 
+<%
+=begin
+%>
 <div>
  <%= link_to(h("ログイン"), :action => "login") %> |
  <%= link_to(h("ログアウト"), :action => "logout") %>
 </div>
+<%
+=end
+%>
 
 <div>
   <%= link_to(h("追加"), :action => "add") %>
