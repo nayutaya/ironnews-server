@@ -54,12 +54,10 @@ class DerivedTagging < ActiveRecord::Base
     result = {}
 
     tag_table.each { |article_id, tags|
-      t = tags.map { |tag_id, count|
-        [tag_id, count, tag_ids.index(tag_id)]
-      }.sort_by { |tag_id, count, position|
-        [-count, position]
-      }.map { |tag_id, count, position| tag_id }[0, limit]
-      result[article_id] = t
+      result[article_id] = tags.
+        sort_by { |tag_id, count| [-count, tag_ids.index(tag_id)] }.
+        map     { |tag_id, count| tag_id }.
+        slice(0, limit)
     }
 
     return result
