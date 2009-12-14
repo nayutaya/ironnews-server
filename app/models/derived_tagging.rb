@@ -19,4 +19,8 @@ class DerivedTagging < ActiveRecord::Base
   validates_presence_of :article_id
   validates_presence_of :tag_id
   validates_uniqueness_of :tag_id, :scope => [:article_id]
+
+  def self.get_maximum_serial
+    return self.maximum(:serial) || 1
+  end
 end

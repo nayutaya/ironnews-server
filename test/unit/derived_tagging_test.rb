@@ -86,4 +86,19 @@ class DerivedTaggingTest < ActiveSupport::TestCase
       assert_equal(expected, derived_taggings.valid?, index.to_s)
     }
   end
+
+  #
+  # クラスメソッド
+  #
+
+  test "get_maximum_serial, empty" do
+    @klass.delete_all
+    assert_equal(1, @klass.get_maximum_serial)
+  end
+
+  test "get_maximum_serial, normal" do
+    assert_equal(
+      @klass.all.map(&:serial).max,
+      @klass.get_maximum_serial)
+  end
 end
