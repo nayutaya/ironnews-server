@@ -146,6 +146,29 @@ class DerivedTaggingTest < ActiveSupport::TestCase
     assert_equal(expected, @klass.create_tag_table(taggings))
   end
 
+  test "create_derive_tag_table" do
+    tag_table = {
+      articles(:asahi1).id => {
+        tags(:rail).id    => 2,
+      },
+      articles(:asahi2).id => {
+        tags(:rail).id    => 1,
+        tags(:nonrail).id => 1,
+      },
+      articles(:asahi3).id => {
+        tags(:rail).id    => 1,
+        tags(:nonrail).id => 2,
+      },
+    }
+    tag_ids = [tags(:rail).id, tags(:nonrail).id]
+    expected = {
+      articles(:asahi1).id => [tags(:rail).id],
+      articles(:asahi2).id => [tags(:rail).id],
+      articles(:asahi3).id => [tags(:nonrail).id],
+    }
+    assert_equal(expected, @klass.create_derive_tag_table(tag_table, tag_ids, 1))
+  end
+
   # TODO: テストせよ
   test "update" do
     @klass.update

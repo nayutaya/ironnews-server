@@ -50,6 +50,21 @@ class DerivedTagging < ActiveRecord::Base
     return result
   end
 
+  def self.create_derive_tag_table(tag_table, tag_ids, limit)
+    result = {}
+
+    tag_table.each { |article_id, tags|
+      t = tags.map { |tag_id, count|
+        [tag_id, count, tag_ids.index(tag_id)]
+      }.sort_by { |tag_id, count, position|
+        [-count, position]
+      }.map { |tag_id, count, position| tag_id }[0, limit]
+      result[article_id] = t
+    }
+
+    return result
+  end
+
   def self.update(limit = 10)
     current_serial = self.get_maximum_serial
     taggings       = self.get_target_taggings(current_serial, limit)
