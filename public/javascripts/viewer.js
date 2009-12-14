@@ -39,7 +39,7 @@ viewer.showArticle = function(article_id) {
     clearTimeout(viewer.currentReadTimer);
   }
   viewer.currentReadTimer = setTimeout(function() {
-    viewer.addTagToCurrentArticle("既読");
+    viewer.addTagsToCurrentArticle(["既読"]);
   }, 3000);
 
   viewer.currentArticleId = article_id;
@@ -73,12 +73,18 @@ viewer.loadArticles = function() {
   });
 };
 
-viewer.addTagToCurrentArticle = function(tag, success) {
-  api.addTags(viewer.currentArticleId, tag, {success: success});
+viewer.addTagsToCurrentArticle = function(tags, success) {
+  // FIXME: まとめて追加する
+  $.each(tags, function(index, tag) {
+    api.addTags(viewer.currentArticleId, tag, {success: success});
+  });
 };
 
-viewer.removeTagOfCurrentArticle = function(tag, success) {
-  api.removeTags(viewer.currentArticleId, tag, {success: success});
+viewer.removeTagsFromCurrentArticle = function(tags, success) {
+  // FIXME: まとめて削除する
+  $.each(tags, function(index, tag) {
+    api.removeTags(viewer.currentArticleId, tag, {success: success});
+  });
 };
 
 $(function() {
@@ -115,11 +121,8 @@ $(function() {
         var tag2 = $(this).text();
         if ( tag2 != add_tag ) remove_tags.push(tag2);
       });
-      // FIXME: まとめて削除する
-      $.each(remove_tags, function(index, remove_tag) {
-        viewer.removeTagOfCurrentArticle(remove_tag, function() { /*nop*/ });
-      });
-      viewer.addTagToCurrentArticle(add_tag, function() { /*nop*/ });
+      viewer.removeTagsFromCurrentArticle(remove_tags, function() { /*nop*/ });
+      viewer.addTagsToCurrentArticle([add_tag], function() { /*nop*/ });
     });
   });
 });
