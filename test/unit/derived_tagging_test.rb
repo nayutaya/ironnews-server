@@ -1,8 +1,75 @@
+
 require 'test_helper'
 
 class DerivedTaggingTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
+  def setup
+    @klass = DerivedTagging
+    @basic = @klass.new(
+      :serial     => 1,
+      :article_id => 1,
+      :tag_id     => 1)
   end
+
+  #
+  # 関連
+  #
+
+  # TODO: 実装せよ
+
+  #
+  # 検証
+  #
+
+  test "all fixtures are valid" do
+    assert_equal(true, @klass.all.all?(&:valid?))
+  end
+
+  test "basic is valid" do
+    assert_equal(true, @basic.valid?)
+  end
+
+  test "validates_presence_of :serial" do
+    @basic.serial = nil
+    assert_equal(false, @basic.valid?)
+  end
+
+  test "validates_presence_of :article_id" do
+    @basic.article_id = nil
+    assert_equal(false, @basic.valid?)
+  end
+
+  test "validates_presence_of :tag_id" do
+    @basic.tag_id = nil
+    assert_equal(false, @basic.valid?)
+  end
+
+=begin
+  test "validates_uniqueness_of :tag_id, :scope => [:article_id], on create" do
+    [
+      [articles(:asahi2), tags(:rail),    true ],
+      [articles(:asahi3), tags(:rail),    true ],
+      [articles(:asahi2), tags(:nonrail), true ],
+      [articles(:asahi2), tags(:rail),    false],
+    ].each_with_index { |(article, tag, expected), index|
+      @basic.article = article
+      @basic.tag     = tag
+      assert_equal(expected, @basic.valid?, index.to_s)
+    }
+  end
+
+  test "validates_uniqueness_of :tag_id, :scope => [:article_id], on update" do
+    [
+      [articles(:asahi2), tags(:rail),    true ],
+      [articles(:asahi3), tags(:rail),    true ],
+      [articles(:asahi2), tags(:nonrail), true ],
+      [articles(:asahi2), tags(:rail),    true ],
+      [articles(:asahi1), tags(:rail),    false],
+    ].each_with_index { |(article, tag, expected), index|
+      taggings = taggings(:yuya_asahi2_rail)
+      taggings.article = article
+      taggings.tag     = tag
+      assert_equal(expected, taggings.valid?, index.to_s)
+    }
+  end
+=end
 end
