@@ -34,10 +34,6 @@ class DerivedTagging < ActiveRecord::Base
   end
 
   def self.get_division_tags
-    #return [
-    #  Tag.get("鉄道"),
-    #  Tag.get("非鉄"),
-    #]
     return DivisionTags.map { |name| Tag.get(name) }
   end
 
@@ -54,18 +50,16 @@ class DerivedTagging < ActiveRecord::Base
     return result
   end
 
-  def self.create_derive_tag_table(tag_table, tag_ids, limit)
-    result = {}
-
-    tag_table.each { |article_id, tags|
-      result[article_id] = tags.
-        select  { |tag_id, count| tag_ids.include?(tag_id) }.
-        sort_by { |tag_id, count| [-count, tag_ids.index(tag_id)] }.
-        map     { |tag_id, count| tag_id }.
+  def self.create_derive_tag_table(tag_table, candidate_tag_ids, limit)
+    return tag_table.inject({}) { |memo, (article_id, tags)|
+      memo[article_id] = tags.
+        map     { |tag_id, count| [tag_id, count, candidate_tag_ids.index(tag_id)] }.
+        reject  { |tag_id, count, pos| pos.nil? }.
+        sort_by { |tag_id, count, pos| [-count, pos] }.
+        map     { |tag_id, count, pos| tag_id }.
         slice(0, limit)
+      memo
     }
-
-    return result
   end
 
   def self.update(limit = 10)
