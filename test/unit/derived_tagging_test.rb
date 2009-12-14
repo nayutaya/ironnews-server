@@ -128,25 +128,6 @@ class DerivedTaggingTest < ActiveSupport::TestCase
   end
 
   test "create_tag_table" do
-    taggings = [
-      taggings(:yuya_asahi1_rail),
-      taggings(:yuya_asahi2_rail),
-      taggings(:risa_asahi1_rail),
-      taggings(:risa_asahi2_nonrail),
-    ]
-    expected = {
-      articles(:asahi1).id => {
-        tags(:rail).id => 2,
-      },
-      articles(:asahi2).id => {
-        tags(:rail).id    => 1,
-        tags(:nonrail).id => 1,
-      },
-    }
-    assert_equal(expected, @klass.create_tag_table(taggings))
-  end
-
-  test "create_tag_table2" do
     article_ids = [
       articles(:asahi1).id,
       articles(:asahi2).id,
@@ -164,7 +145,7 @@ class DerivedTaggingTest < ActiveSupport::TestCase
     }
     assert_equal(
       expected,
-      @klass.create_tag_table2(article_ids))
+      @klass.create_tag_table(article_ids))
   end
 
   test "create_derive_tag_table, limit 1" do

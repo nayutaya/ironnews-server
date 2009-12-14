@@ -38,19 +38,7 @@ class DerivedTagging < ActiveRecord::Base
     ]
   end
 
-  def self.create_tag_table(taggings)
-    result = {}
-
-    taggings.each { |tagging|
-      result[tagging.article_id] ||= {}
-      result[tagging.article_id][tagging.tag_id] ||= 0
-      result[tagging.article_id][tagging.tag_id] += 1
-    }
-
-    return result
-  end
-
-  def self.create_tag_table2(article_ids)
+  def self.create_tag_table(article_ids)
     result = {}
     article_ids.each { |article_id|
       result[article_id] = {}
@@ -86,7 +74,7 @@ class DerivedTagging < ActiveRecord::Base
     division_tag_ids = division_tags.map(&:id)
     article_ids      = taggings.map(&:article_id).sort.uniq
 
-    tag_table = self.create_tag_table(taggings)
+    tag_table = self.create_tag_table(article_ids)
 
     next_serial = taggings.map(&:id).max
 
