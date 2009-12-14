@@ -23,4 +23,11 @@ class DerivedTagging < ActiveRecord::Base
   def self.get_maximum_serial
     return self.maximum(:serial) || 1
   end
+
+  def self.get_target_taggings(serial, limit)
+    return Tagging.all(
+      :conditions => ["taggings.id > ?", serial],
+      :order      => "taggings.id ASC",
+      :limit      => limit)
+  end
 end

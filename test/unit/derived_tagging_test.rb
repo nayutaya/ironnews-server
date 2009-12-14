@@ -101,4 +101,21 @@ class DerivedTaggingTest < ActiveSupport::TestCase
       @klass.all.map(&:serial).max,
       @klass.get_maximum_serial)
   end
+
+  test "get_target_taggings, all" do
+    assert_equal(
+      Tagging.all.sort_by(&:id),
+      @klass.get_target_taggings(0, 10))
+  end
+
+  test "get_target_taggings, part" do
+    taggings = Tagging.all.sort_by(&:id)
+    serial   = taggings.delete_at(0).id
+    assert_equal(
+      taggings,
+      @klass.get_target_taggings(serial, 10))
+    assert_equal(
+      taggings[0, 2],
+      @klass.get_target_taggings(serial, 2))
+  end
 end
