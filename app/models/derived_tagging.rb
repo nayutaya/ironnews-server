@@ -13,6 +13,8 @@
 # 導出タグ付け
 class DerivedTagging < ActiveRecord::Base
   DivisionTags = %w[鉄道 非鉄].uniq
+  CategoryTags = %w[社会 事件事故 痴漢 政治経済 科学技術 車両].uniq
+  AreaTags     = %w[北海道 東北 関東 中部 近畿 中国 四国 九州 沖縄 海外].uniq
 
   belongs_to :article
   belongs_to :tag
@@ -33,8 +35,19 @@ class DerivedTagging < ActiveRecord::Base
       :limit      => limit)
   end
 
+  # FIXME: 1回のクエリでまとめて取得
   def self.get_division_tags
     return DivisionTags.map { |name| Tag.get(name) }
+  end
+
+  # FIXME: 1回のクエリでまとめて取得
+  def self.get_category_tags
+    return CategoryTags.map { |name| Tag.get(name) }
+  end
+
+  # FIXME: 1回のクエリでまとめて取得
+  def self.get_area_tags
+    return AreaTags.map { |name| Tag.get(name) }
   end
 
   def self.create_tag_table(article_ids)
@@ -73,7 +86,9 @@ class DerivedTagging < ActiveRecord::Base
 
     self.delete_all(:article_id => article_ids)
 
-    list = self.create_division(tag_table)
+    list  = self.create_division(tag_table)
+    list += self.create_category(tag_table)
+    list += self.create_area(tag_table)
     list.each { |article_id, tag_id|
       self.create!(
         :serial     => next_serial,
@@ -89,6 +104,34 @@ class DerivedTagging < ActiveRecord::Base
     result = []
     division_tag_table = self.create_derive_tag_table(tag_table, division_tag_ids, 1)
     division_tag_table.each { |article_id, tag_ids|
+      tag_ids.each { |tag_id|
+        result << [article_id, tag_id]
+      }
+    }
+    return result
+  end
+
+  # TODO: テストせよ
+  def self.create_category(tag_table)
+    category_tag_ids = self.get_category_tags.map(&:id)
+
+    result = []
+    category_tag_table = self.create_derive_tag_table(tag_table, category_tag_ids, 2)
+    category_tag_table.each { |article_id, tag_ids|
+      tag_ids.each { |tag_id|
+        result << [article_id, tag_id]
+      }
+    }
+    return result
+  end
+
+  # TODO: テストせよ
+  def self.create_area(tag_table)
+    area_tag_ids = self.get_area_tags.map(&:id)
+
+    result = []
+    area_tag_table = self.create_derive_tag_table(tag_table, area_tag_ids, 2)
+    area_tag_table.each { |article_id, tag_ids|
       tag_ids.each { |tag_id|
         result << [article_id, tag_id]
       }

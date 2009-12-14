@@ -125,6 +125,18 @@ class DerivedTaggingTest < ActiveSupport::TestCase
       @klass.get_division_tags.map(&:name))
   end
 
+  test "get_category_tags" do
+    assert_equal(
+      @klass::CategoryTags,
+      @klass.get_category_tags.map(&:name))
+  end
+
+  test "get_area_tags" do
+    assert_equal(
+      @klass::AreaTags,
+      @klass.get_area_tags.map(&:name))
+  end
+
   test "create_tag_table" do
     article_ids = [
       articles(:asahi1).id,
