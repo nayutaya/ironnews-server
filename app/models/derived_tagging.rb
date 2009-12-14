@@ -65,20 +65,18 @@ class DerivedTagging < ActiveRecord::Base
   def self.update(limit = 10)
     current_serial = self.get_serial
     taggings       = self.get_target_taggings(current_serial, limit)
-    division_tags  = self.get_division_tags
-    division_tag_ids = division_tags.map(&:id)
-    article_ids      = taggings.map(&:article_id).sort.uniq
+    article_ids    = taggings.map(&:article_id).sort.uniq
 
-    tag_table = self.create_tag_table(article_ids)
-
+    tag_table   = self.create_tag_table(article_ids)
     next_serial = taggings.map(&:id).max
 
-    self.delete_all(
-      [
-        "(derived_taggings.article_id IN (?)) AND (derived_taggings.tag_id IN (?))",
-        article_ids,
-        division_tag_ids
-      ])
+    self.delete_all(:article_id => article_ids)
+    self.update_division(tag_table, next_serial)
+  end
+
+  def self.update_division(tag_table, next_serial)
+    division_tag_ids = self.get_division_tags.map(&:id)
+
     division_tag_table = self.create_derive_tag_table(tag_table, division_tag_ids, 1)
     division_tag_table.each { |article_id, tag_ids|
       tag_ids.each { |tag_id|
