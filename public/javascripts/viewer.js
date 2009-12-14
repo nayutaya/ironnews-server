@@ -77,6 +77,10 @@ viewer.addTagToCurrentArticle = function(tag, success) {
   api.addTags(viewer.currentArticleId, tag, {success: success});
 };
 
+viewer.removeTagOfCurrentArticle = function(tag, success) {
+  api.removeTags(viewer.currentArticleId, tag, {success: success});
+};
+
 $(function() {
   viewer.initLayout();
 
@@ -104,9 +108,18 @@ $(function() {
   });
 
   $("div.tags span").each(function() {
-    var tag = $(this).text();
+    var add_tag = $(this).text();
     $(this).click(function() {
-      viewer.addTagToCurrentArticle(tag, function() { /*nop*/ });
+      var remove_tags = [];
+      $("span", $(this).parent()).each(function() {
+        var tag2 = $(this).text();
+        if ( tag2 != add_tag ) remove_tags.push(tag2);
+      });
+      // FIXME: まとめて削除する
+      $.each(remove_tags, function(index, remove_tag) {
+        viewer.removeTagOfCurrentArticle(remove_tag, function() { /*nop*/ });
+      });
+      viewer.addTagToCurrentArticle(add_tag, function() { /*nop*/ });
     });
   });
 });
