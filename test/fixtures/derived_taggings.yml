@@ -10,10 +10,20 @@
 #  tag_id     :integer       not null, index_derived_taggings_on_article_id_and_tag_id(unique) index_derived_taggings_on_tag_id
 #
 
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+asahi1_rail:
+  created_at: 2009-01-01 00:00:00
+  serial: 1
+  article: asahi1
+  tag_id: 0 #rail
 
-# one:
-#   column: value
-#
-# two:
-#   column: value
+asahi2_rail:
+  created_at: 2009-01-01 00:00:00
+  serial: 1
+  article: asahi2
+  tag_id: 1#rail
+
+asahi3_nonrail:
+  created_at: 2009-01-01 00:00:00
+  serial: 1
+  article: asahi3
+  tag_id: 2#nonrail
