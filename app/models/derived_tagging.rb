@@ -55,6 +55,7 @@ class DerivedTagging < ActiveRecord::Base
 
     tag_table.each { |article_id, tags|
       result[article_id] = tags.
+        select  { |tag_id, count| tag_ids.include?(tag_id) }.
         sort_by { |tag_id, count| [-count, tag_ids.index(tag_id)] }.
         map     { |tag_id, count| tag_id }.
         slice(0, limit)
