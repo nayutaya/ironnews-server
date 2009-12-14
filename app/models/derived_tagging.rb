@@ -20,7 +20,7 @@ class DerivedTagging < ActiveRecord::Base
   validates_presence_of :tag_id
   validates_uniqueness_of :tag_id, :scope => [:article_id]
 
-  def self.get_maximum_serial
+  def self.get_serial
     return self.maximum(:serial) || 1
   end
 
@@ -39,15 +39,13 @@ class DerivedTagging < ActiveRecord::Base
   end
 
   def self.create_tag_table(article_ids)
-    result = {}
-    article_ids.each { |article_id|
-      result[article_id] = {}
+    result = article_ids.inject({}) { |memo, article_id|
+      memo[article_id] = Hash.new(0)
+      memo
     }
 
-    taggings = Tagging.find_all_by_article_id(article_ids)
-    taggings.each { |tagging|
-      result[tagging.article_id][tagging.tag_id] ||= 0
-      result[tagging.article_id][tagging.tag_id]  += 1
+    Tagging.find_all_by_article_id(article_ids).each { |tagging|
+      result[tagging.article_id][tagging.tag_id] += 1
     }
 
     return result
@@ -68,7 +66,7 @@ class DerivedTagging < ActiveRecord::Base
   end
 
   def self.update(limit = 10)
-    current_serial = self.get_maximum_serial
+    current_serial = self.get_serial
     taggings       = self.get_target_taggings(current_serial, limit)
     division_tags  = self.get_divition_tags
     division_tag_ids = division_tags.map(&:id)
