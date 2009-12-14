@@ -18,5 +18,5 @@ class DerivedTagging < ActiveRecord::Base
   validates_presence_of :serial
   validates_presence_of :article_id
   validates_presence_of :tag_id
-  # TODO: 一意性の検証を追加
+  validates_uniqueness_of :tag_id, :scope => [:article_id]
 end

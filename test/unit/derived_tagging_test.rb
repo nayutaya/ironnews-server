@@ -61,13 +61,11 @@ class DerivedTaggingTest < ActiveSupport::TestCase
     assert_equal(false, @basic.valid?)
   end
 
-=begin
   test "validates_uniqueness_of :tag_id, :scope => [:article_id], on create" do
     [
-      [articles(:asahi2), tags(:rail),    true ],
+      [articles(:asahi1), tags(:nonrail), true ],
       [articles(:asahi3), tags(:rail),    true ],
-      [articles(:asahi2), tags(:nonrail), true ],
-      [articles(:asahi2), tags(:rail),    false],
+      [articles(:asahi1), tags(:rail),    false],
     ].each_with_index { |(article, tag, expected), index|
       @basic.article = article
       @basic.tag     = tag
@@ -77,17 +75,15 @@ class DerivedTaggingTest < ActiveSupport::TestCase
 
   test "validates_uniqueness_of :tag_id, :scope => [:article_id], on update" do
     [
-      [articles(:asahi2), tags(:rail),    true ],
+      [articles(:asahi1), tags(:rail),    true ],
+      [articles(:asahi1), tags(:nonrail), true ],
       [articles(:asahi3), tags(:rail),    true ],
-      [articles(:asahi2), tags(:nonrail), true ],
-      [articles(:asahi2), tags(:rail),    true ],
-      [articles(:asahi1), tags(:rail),    false],
+      [articles(:asahi2), tags(:rail),    false],
     ].each_with_index { |(article, tag, expected), index|
-      taggings = taggings(:yuya_asahi2_rail)
-      taggings.article = article
-      taggings.tag     = tag
-      assert_equal(expected, taggings.valid?, index.to_s)
+      derived_taggings = derived_taggings(:asahi1_rail)
+      derived_taggings.article = article
+      derived_taggings.tag     = tag
+      assert_equal(expected, derived_taggings.valid?, index.to_s)
     }
   end
-=end
 end
