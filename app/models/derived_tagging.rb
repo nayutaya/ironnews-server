@@ -37,4 +37,32 @@ class DerivedTagging < ActiveRecord::Base
       Tag.get("非鉄"),
     ]
   end
+
+  def self.create_tag_table(taggings)
+    result = {}
+
+    taggings.each { |tagging|
+      result[tagging.article_id] ||= {}
+      result[tagging.article_id][tagging.tag_id] ||= 0
+      result[tagging.article_id][tagging.tag_id] += 1
+    }
+
+    return result
+  end
+
+  def self.update(limit = 10)
+    current_serial = self.get_maximum_serial
+    taggings       = self.get_target_taggings(current_serial, limit)
+    division_tags  = self.get_divition_tags
+
+    next_serial = taggings.map(&:id).max
+    article_ids = taggings.map(&:article_id).sort.uniq
+
+    self.delete_all(
+      [
+        "(derived_taggings.article_id IN (?)) AND (derived_taggings.tag_id IN (?))",
+        article_ids,
+        division_tags.map(&:id)
+      ])
+  end
 end
