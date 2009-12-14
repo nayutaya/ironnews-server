@@ -1,3 +1,11 @@
+# == Schema Information
+# Schema version: 20091214022821
+#
+# Table name: active_forms
+#
+#  article_id :integer
+#  tag1       :string
+#
 
 # 複数タグ削除API
 class RemoveTagsApi < ApiBase
