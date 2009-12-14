@@ -24,6 +24,15 @@ class DerivedTaggingTest < ActiveSupport::TestCase
       derived_taggings(:asahi3_nonrail).article)
   end
 
+  test "belongs_to :tag" do
+    assert_equal(
+      tags(:rail),
+      derived_taggings(:asahi1_rail).tag)
+
+    assert_equal(
+      tags(:nonrail),
+      derived_taggings(:asahi3_nonrail).tag)
+  end
 
   #
   # 検証

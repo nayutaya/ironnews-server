@@ -13,6 +13,7 @@
 # 導出タグ付け
 class DerivedTagging < ActiveRecord::Base
   belongs_to :article
+  belongs_to :tag
 
   validates_presence_of :serial
   validates_presence_of :article_id
