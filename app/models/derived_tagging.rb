@@ -50,6 +50,21 @@ class DerivedTagging < ActiveRecord::Base
     return result
   end
 
+  def self.create_tag_table2(article_ids)
+    result = {}
+    article_ids.each { |article_id|
+      result[article_id] = {}
+    }
+
+    taggings = Tagging.find_all_by_article_id(article_ids)
+    taggings.each { |tagging|
+      result[tagging.article_id][tagging.tag_id] ||= 0
+      result[tagging.article_id][tagging.tag_id]  += 1
+    }
+
+    return result
+  end
+
   def self.create_derive_tag_table(tag_table, tag_ids, limit)
     result = {}
 
@@ -68,15 +83,27 @@ class DerivedTagging < ActiveRecord::Base
     current_serial = self.get_maximum_serial
     taggings       = self.get_target_taggings(current_serial, limit)
     division_tags  = self.get_divition_tags
+    division_tag_ids = division_tags.map(&:id)
+    article_ids      = taggings.map(&:article_id).sort.uniq
+
+    tag_table = self.create_tag_table(taggings)
 
     next_serial = taggings.map(&:id).max
-    article_ids = taggings.map(&:article_id).sort.uniq
 
     self.delete_all(
       [
         "(derived_taggings.article_id IN (?)) AND (derived_taggings.tag_id IN (?))",
         article_ids,
-        division_tags.map(&:id)
+        division_tag_ids
       ])
+    division_tag_table = self.create_derive_tag_table(tag_table, division_tag_ids, 1)
+    division_tag_table.each { |article_id, tag_ids|
+      tag_ids.each { |tag_id|
+        self.create!(
+          :serial     => next_serial,
+          :article_id => article_id,
+          :tag_id     => tag_id)
+      }
+    }
   end
 end
