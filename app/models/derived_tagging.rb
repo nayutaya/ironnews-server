@@ -62,6 +62,7 @@ class DerivedTagging < ActiveRecord::Base
     }
   end
 
+  # TODO: テストせよ
   def self.update(limit = 10)
     current_serial = self.get_serial
     taggings       = self.get_target_taggings(current_serial, limit)
@@ -71,20 +72,27 @@ class DerivedTagging < ActiveRecord::Base
     next_serial = taggings.map(&:id).max
 
     self.delete_all(:article_id => article_ids)
-    self.update_division(tag_table, next_serial)
+
+    list = self.create_division(tag_table)
+    list.each { |article_id, tag_id|
+      self.create!(
+        :serial     => next_serial,
+        :article_id => article_id,
+        :tag_id     => tag_id)
+    }
   end
 
-  def self.update_division(tag_table, next_serial)
+  # TODO: テストせよ
+  def self.create_division(tag_table)
     division_tag_ids = self.get_division_tags.map(&:id)
 
+    result = []
     division_tag_table = self.create_derive_tag_table(tag_table, division_tag_ids, 1)
     division_tag_table.each { |article_id, tag_ids|
       tag_ids.each { |tag_id|
-        self.create!(
-          :serial     => next_serial,
-          :article_id => article_id,
-          :tag_id     => tag_id)
+        result << [article_id, tag_id]
       }
     }
+    return result
   end
 end
