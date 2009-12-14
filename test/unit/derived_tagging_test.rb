@@ -120,11 +120,9 @@ class DerivedTaggingTest < ActiveSupport::TestCase
   end
 
   test "get_division_tags" do
-    tags = @klass.get_divition_tags
-    assert_equal(2, tags.size)
     assert_equal(
-      %w[鉄道 非鉄],
-      tags.map(&:name))
+      @klass::DivisionTags,
+      @klass.get_division_tags.map(&:name))
   end
 
   test "create_tag_table" do

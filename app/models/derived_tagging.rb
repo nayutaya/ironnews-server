@@ -12,6 +12,8 @@
 
 # 導出タグ付け
 class DerivedTagging < ActiveRecord::Base
+  DivisionTags = %w[鉄道 非鉄].uniq
+
   belongs_to :article
   belongs_to :tag
 
@@ -31,11 +33,12 @@ class DerivedTagging < ActiveRecord::Base
       :limit      => limit)
   end
 
-  def self.get_divition_tags
-    return [
-      Tag.get("鉄道"),
-      Tag.get("非鉄"),
-    ]
+  def self.get_division_tags
+    #return [
+    #  Tag.get("鉄道"),
+    #  Tag.get("非鉄"),
+    #]
+    return DivisionTags.map { |name| Tag.get(name) }
   end
 
   def self.create_tag_table(article_ids)
@@ -68,7 +71,7 @@ class DerivedTagging < ActiveRecord::Base
   def self.update(limit = 10)
     current_serial = self.get_serial
     taggings       = self.get_target_taggings(current_serial, limit)
-    division_tags  = self.get_divition_tags
+    division_tags  = self.get_division_tags
     division_tag_ids = division_tags.map(&:id)
     article_ids      = taggings.map(&:article_id).sort.uniq
 
