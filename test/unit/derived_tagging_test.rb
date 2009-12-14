@@ -86,4 +86,134 @@ class DerivedTaggingTest < ActiveSupport::TestCase
       assert_equal(expected, derived_taggings.valid?, index.to_s)
     }
   end
+
+  #
+  # クラスメソッド
+  #
+
+  test "get_serial" do
+    assert_equal(
+      @klass.all.map(&:serial).max,
+      @klass.get_serial)
+  end
+
+  test "get_serial, empty" do
+    @klass.delete_all
+    assert_equal(1, @klass.get_serial)
+  end
+
+  test "get_target_taggings, all" do
+    assert_equal(
+      Tagging.all.sort_by(&:id),
+      @klass.get_target_taggings(0, 10))
+  end
+
+  test "get_target_taggings, part" do
+    taggings = Tagging.all.sort_by(&:id)
+    serial   = taggings.delete_at(0).id
+    assert_equal(
+      taggings,
+      @klass.get_target_taggings(serial, 10))
+    assert_equal(
+      taggings[0, 2],
+      @klass.get_target_taggings(serial, 2))
+  end
+
+  test "get_division_tags" do
+    assert_equal(
+      @klass::DivisionTags,
+      @klass.get_division_tags.map(&:name))
+  end
+
+  test "get_category_tags" do
+    assert_equal(
+      @klass::CategoryTags,
+      @klass.get_category_tags.map(&:name))
+  end
+
+  test "get_area_tags" do
+    assert_equal(
+      @klass::AreaTags,
+      @klass.get_area_tags.map(&:name))
+  end
+
+  test "create_tag_table" do
+    article_ids = [
+      articles(:asahi1).id,
+      articles(:asahi2).id,
+      articles(:mainichi1).id,
+    ]
+    expected = {
+      articles(:asahi1).id => {
+        tags(:rail).id => 2,
+      },
+      articles(:asahi2).id => {
+        tags(:rail).id    => 1,
+        tags(:nonrail).id => 1,
+      },
+      articles(:mainichi1).id => {},
+    }
+    assert_equal(
+      expected,
+      @klass.create_tag_table(article_ids))
+  end
+
+  test "create_derive_tag_table, limit 1" do
+    tag_table = {
+      articles(:asahi1).id => {
+        tags(:rail).id    => 2,
+      },
+      articles(:asahi2).id => {
+        tags(:rail).id    => 1,
+        tags(:nonrail).id => 1,
+      },
+      articles(:asahi3).id => {
+        tags(:rail).id    => 1,
+        tags(:nonrail).id => 2,
+      },
+      articles(:mainichi1).id => {
+        Tag.get("新しいタグ").id => 1,
+      }
+    }
+    tag_ids = [tags(:rail).id, tags(:nonrail).id]
+    expected = {
+      articles(:asahi1).id    => [tags(:rail).id],
+      articles(:asahi2).id    => [tags(:rail).id],
+      articles(:asahi3).id    => [tags(:nonrail).id],
+      articles(:mainichi1).id => [],
+    }
+    assert_equal(
+      expected,
+      @klass.create_derive_tag_table(tag_table, tag_ids, 1))
+  end
+
+  test "create_derive_tag_table, limit 2" do
+    tag_table = {
+      articles(:asahi1).id => {
+        tags(:rail).id    => 2,
+      },
+      articles(:asahi2).id => {
+        tags(:rail).id    => 1,
+        tags(:nonrail).id => 1,
+      },
+      articles(:asahi3).id => {
+        tags(:rail).id    => 1,
+        tags(:nonrail).id => 2,
+      },
+    }
+    tag_ids = [tags(:rail).id, tags(:nonrail).id]
+    expected = {
+      articles(:asahi1).id => [tags(:rail).id],
+      articles(:asahi2).id => [tags(:rail).id, tags(:nonrail).id],
+      articles(:asahi3).id => [tags(:nonrail).id, tags(:rail).id],
+    }
+    assert_equal(
+      expected,
+      @klass.create_derive_tag_table(tag_table, tag_ids, 2))
+  end
+
+  # TODO: テストせよ
+  test "update" do
+    @klass.update
+  end
 end

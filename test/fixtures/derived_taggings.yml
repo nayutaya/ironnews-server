@@ -18,12 +18,12 @@ asahi1_rail:
 
 asahi2_rail:
   created_at: 2009-01-01 00:00:00
-  serial: 1
+  serial: 2
   article: asahi2
   tag: rail
 
 asahi3_nonrail:
   created_at: 2009-01-01 00:00:00
-  serial: 1
+  serial: 3
   article: asahi3
   tag: nonrail

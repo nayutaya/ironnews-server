@@ -20,11 +20,17 @@ class ApiController < ApplicationController
   def add_tags
     api = AddTagsApi.from(params)
     render_json(api.execute(@user.id))
+
+    # FIXME: 実験用コード
+    DerivedTagging.update(10)
   end
 
   def remove_tags
     api = RemoveTagsApi.from(params)
     render_json(api.execute(@user.id))
+
+    # FIXME: 実験用コード
+    DerivedTagging.update(10)
   end
 
   private
