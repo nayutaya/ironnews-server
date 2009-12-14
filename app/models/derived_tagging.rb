@@ -30,4 +30,11 @@ class DerivedTagging < ActiveRecord::Base
       :order      => "taggings.id ASC",
       :limit      => limit)
   end
+
+  def self.get_divition_tags
+    return [
+      Tag.get("鉄道"),
+      Tag.get("非鉄"),
+    ]
+  end
 end

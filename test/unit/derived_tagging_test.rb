@@ -118,4 +118,12 @@ class DerivedTaggingTest < ActiveSupport::TestCase
       taggings[0, 2],
       @klass.get_target_taggings(serial, 2))
   end
+
+  test "get_division_tags" do
+    tags = @klass.get_divition_tags
+    assert_equal(2, tags.size)
+    assert_equal(
+      %w[鉄道 非鉄],
+      tags.map(&:name))
+  end
 end
