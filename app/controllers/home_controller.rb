@@ -13,10 +13,13 @@ class HomeController < ApplicationController
     # nop
   end
 
-=begin
   def login
-    session[:user_id] = User.find_by_name("yuya").id
-    flash[:notice] = "ログインしました #{session[:user_id]}"
+    api_token = params[:api_token]
+    user      = User.find_by_api_token(api_token)
+    if user
+      session[:user_id] = user.id
+      flash[:notice] = "ログインしました #{user.id}"
+    end
     redirect_to(:action => "index")
   end
 
@@ -25,5 +28,4 @@ class HomeController < ApplicationController
     flash[:notice] = "ログアウトしました"
     redirect_to(:action => "index")
   end
-=end
 end
