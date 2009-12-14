@@ -1,3 +1,10 @@
+# == Schema Information
+# Schema version: 20091214022821
+#
+# Table name: active_forms
+#
+#  article_ids :text
+#
 
 # 記事取得API
 class GetArticlesApi < ApiBase
