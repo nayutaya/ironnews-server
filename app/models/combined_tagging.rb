@@ -59,7 +59,7 @@ class CombinedTagging < ActiveRecord::Base
 
   def self.create_tag_frequency_table(article_ids)
     return Tagging.
-      scoped(:conditions => {:article_id => article_ids}).
+      scoped_by_article_id(article_ids).
       create_tag_frequency_table
   end
 
