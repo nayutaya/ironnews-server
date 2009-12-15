@@ -105,7 +105,7 @@ class TaggingTest < ActiveSupport::TestCase
   # クラスメソッド
   #
 
-  test "create_tag_frequency_table" do
+  test "create_tag_frequency_table_from" do
     taggings = [
       taggings(:yuya_asahi1_rail),
       taggings(:yuya_asahi2_rail),

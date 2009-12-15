@@ -22,14 +22,12 @@ class Tagging < ActiveRecord::Base
   validates_uniqueness_of :tag_id, :scope => [:user_id, :article_id]
 
   def self.create_tag_frequency_table_from(taggings)
-    result = {}
-
-    taggings.each { |tagging|
-      result[tagging.article_id] ||= {}
-      result[tagging.article_id][tagging.tag_id] ||= 0
-      result[tagging.article_id][tagging.tag_id]  += 1
+    return taggings.inject({}) { |memo, tagging|
+      aid, tid = tagging.article_id, tagging.tag_id
+      memo[aid]      ||= {}
+      memo[aid][tid] ||= 0
+      memo[aid][tid]  += 1
+      memo
     }
-
-    return result
   end
 end
