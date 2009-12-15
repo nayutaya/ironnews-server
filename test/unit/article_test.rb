@@ -35,22 +35,6 @@ class ArticleTest < ActiveSupport::TestCase
       articles(:asahi2).taggings.sort_by(&:id))
   end
 
-  test "has_many :derived_taggings" do
-    expected = [
-      derived_taggings(:asahi1_rail),
-    ]
-    assert_equal(
-      expected.sort_by(&:id),
-      articles(:asahi1).derived_taggings.sort_by(&:id))
-
-    expected = [
-      derived_taggings(:asahi2_rail),
-    ]
-    assert_equal(
-      expected.sort_by(&:id),
-      articles(:asahi2).derived_taggings.sort_by(&:id))
-  end
-
   test "has_one :combined_tagging" do
     assert_equal(
       combined_taggings(:asahi1),
