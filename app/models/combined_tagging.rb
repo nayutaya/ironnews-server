@@ -47,6 +47,16 @@ class CombinedTagging < ActiveRecord::Base
       end
     {:conditions => ["(#{table_name}.category_tag1_id = ?) OR (#{table_name}.category_tag2_id = ?)", tag_id, tag_id]}
   }
+  named_scope :area, proc { |tag|
+    tag_id =
+      case tag
+      when Tag     then tag.id
+      when Integer then tag
+      when String  then Tag.get(tag).id
+      else raise("BUG")
+      end
+    {:conditions => ["(#{table_name}.area_tag1_id = ?) OR (#{table_name}.area_tag2_id = ?)", tag_id, tag_id]}
+  }
 
   validates_presence_of :serial
   validates_presence_of :article_id
