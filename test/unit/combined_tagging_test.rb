@@ -156,7 +156,7 @@ class CombinedTaggingTest < ActiveSupport::TestCase
       @klass.get_area_tags.map(&:name))
   end
 
-  test "create_tag_table" do
+  test "create_tag_frequency_table" do
     article_ids = [
       articles(:asahi1).id,
       articles(:asahi2).id,
@@ -164,16 +164,15 @@ class CombinedTaggingTest < ActiveSupport::TestCase
     ]
     expected = {
       articles(:asahi1).id => {
-        tags(:rail).id => 2,
+        tags(:rail).id    => 2,
       },
       articles(:asahi2).id => {
         tags(:rail).id    => 1,
         tags(:nonrail).id => 1,
       },
-      articles(:mainichi1).id => {},
     }
     assert_equal(
       expected,
-      @klass.create_tag_table(article_ids))
+      @klass.create_tag_frequency_table(article_ids))
   end
 end

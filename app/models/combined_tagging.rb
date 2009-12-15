@@ -57,15 +57,8 @@ class CombinedTagging < ActiveRecord::Base
     return AreaTags.map { |name| Tag.get(name) }
   end
 
-  def self.create_tag_table(article_ids)
-    base = article_ids.inject({}) { |memo, article_id|
-      memo[article_id] = {}
-      memo
-    }
-
+  def self.create_tag_frequency_table(article_ids)
     taggings = Tagging.find_all_by_article_id(article_ids)
-    result = Tagging.create_tag_frequency_table_from(taggings)
-
-    return base.merge(result)
+    return Tagging.create_tag_frequency_table_from(taggings)
   end
 end
