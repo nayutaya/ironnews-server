@@ -18,7 +18,6 @@ class Article < ActiveRecord::Base
   HostPattern    = /\A[a-z\d\-]+(\.[a-z\d\-]+)*(:\d+)?\z/
 
   has_many :taggings
-  has_many :derived_taggings
   has_one :combined_tagging
 
   validates_presence_of :title
