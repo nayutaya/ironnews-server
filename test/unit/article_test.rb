@@ -51,6 +51,16 @@ class ArticleTest < ActiveSupport::TestCase
       articles(:asahi2).derived_taggings.sort_by(&:id))
   end
 
+  test "has_one :combined_tagging" do
+    assert_equal(
+      combined_taggings(:asahi1),
+      articles(:asahi1).combined_tagging)
+
+    assert_equal(
+      nil,
+      articles(:mainichi1).combined_tagging)
+  end
+
   #
   # 検証
   #

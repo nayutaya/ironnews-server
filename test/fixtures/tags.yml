@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20091214022821
+# Schema version: 20091215020439
 #
 # Table name: tags
 #
@@ -15,3 +15,19 @@ rail:
 nonrail:
   created_at: 2009-01-01 00:00:00
   name: "非鉄"
+
+social:
+  created_at: 2009-01-01 00:00:00
+  name: "社会"
+
+economy:
+  created_at: 2009-01-01 00:00:00
+  name: "政治経済"
+
+kanto:
+  created_at: 2009-01-01 00:00:00
+  name: "関東"
+
+kinki:
+  created_at: 2009-01-01 00:00:00
+  name: "近畿"

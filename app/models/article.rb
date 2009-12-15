@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20091214022821
+# Schema version: 20091215020439
 #
 # Table name: articles
 #
@@ -19,6 +19,7 @@ class Article < ActiveRecord::Base
 
   has_many :taggings
   has_many :derived_taggings
+  has_one :combined_tagging
 
   validates_presence_of :title
   validates_presence_of :host
