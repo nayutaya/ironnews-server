@@ -27,19 +27,6 @@ class CombinedTagging < ActiveRecord::Base
   belongs_to :area_tag1, :class_name => "Tag"
   belongs_to :area_tag2, :class_name => "Tag"
 
-  named_scope :division, proc { |tag|
-    tag_id = Tag.get(tag).id
-    {:conditions => ["#{table_name}.division_tag_id = ?", tag_id]}
-  }
-  named_scope :category, proc { |tag|
-    tag_id = Tag.get(tag).id
-    {:conditions => ["(#{table_name}.category_tag1_id = ?) OR (#{table_name}.category_tag2_id = ?)", tag_id, tag_id]}
-  }
-  named_scope :area, proc { |tag|
-    tag_id = Tag.get(tag).id
-    {:conditions => ["(#{table_name}.area_tag1_id = ?) OR (#{table_name}.area_tag2_id = ?)", tag_id, tag_id]}
-  }
-
   validates_presence_of :serial
   validates_presence_of :article_id
   validates_uniqueness_of :article_id
