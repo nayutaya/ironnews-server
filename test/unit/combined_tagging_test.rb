@@ -155,4 +155,25 @@ class CombinedTaggingTest < ActiveSupport::TestCase
       @klass::AreaTags,
       @klass.get_area_tags.map(&:name))
   end
+
+  test "create_tag_table" do
+    article_ids = [
+      articles(:asahi1).id,
+      articles(:asahi2).id,
+      articles(:mainichi1).id,
+    ]
+    expected = {
+      articles(:asahi1).id => {
+        tags(:rail).id => 2,
+      },
+      articles(:asahi2).id => {
+        tags(:rail).id    => 1,
+        tags(:nonrail).id => 1,
+      },
+      articles(:mainichi1).id => {},
+    }
+    assert_equal(
+      expected,
+      @klass.create_tag_table(article_ids))
+  end
 end
