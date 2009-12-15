@@ -27,6 +27,12 @@ class CombinedTagging < ActiveRecord::Base
   belongs_to :area_tag1, :class_name => "Tag"
   belongs_to :area_tag2, :class_name => "Tag"
 
+  named_scope :division, proc { |tag|
+    {
+      :conditions => ["#{table_name}.division_tag_id = ?", tag.id]
+    }
+  }
+
   validates_presence_of :serial
   validates_presence_of :article_id
   validates_uniqueness_of :article_id

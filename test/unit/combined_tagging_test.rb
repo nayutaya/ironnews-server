@@ -74,6 +74,19 @@ class CombinedTaggingTest < ActiveSupport::TestCase
   end
 
   #
+  # 名前付きスコープ
+  #
+
+  test "division" do
+    expected = [
+      combined_taggings(:asahi1),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.division(Tag.get("鉄道")).all.sort_by(&:id))
+  end
+
+  #
   # 検証
   #
 
