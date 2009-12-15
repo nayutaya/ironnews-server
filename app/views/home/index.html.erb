@@ -20,12 +20,45 @@
   <%= link_to(h("追加"), :action => "add") %>
 </div>
 
-<ul class="articles" style="width: 300px;">
+<div>
+ [ <%= link_to(h("沖縄"), :controller => "areas", :action => "okinawa") %>
+ | <%= link_to(h("九州"), :controller => "areas", :action => "kyushu") %>
+ | <%= link_to(h("四国"), :controller => "areas", :action => "shikoku") %>
+ | <%= link_to(h("中国"), :controller => "areas", :action => "chugoku") %>
+ | <%= link_to(h("近畿"), :controller => "areas", :action => "kinki") %>
+ | <%= link_to(h("中部"), :controller => "areas", :action => "chubu") %>
+ | <%= link_to(h("関東"), :controller => "areas", :action => "kanto") %>
+ | <%= link_to(h("東北"), :controller => "areas", :action => "tohoku") %>
+ | <%= link_to(h("北海道"), :controller => "areas", :action => "hokkaido") %>
+ | <%= link_to(h("海外"), :controller => "areas", :action => "world") %>
+ ]
+</div>
+<div>
+ [ <%= link_to(h("社会"), :controller => "categories", :action => "social") %>
+ ]
+</div>
+
+<ul class="articles" style="width: 600px;">
  <%- @articles.each { |article| -%>
   <li class="article">
    <%= link_to(h(article.title), article.url,
          :id    => "article-#{article.id}",
          :title => article.created_at.strftime("%Y年%m月%d日%H時%M分: ") + article.title) %>
+   <span>
+    <%
+      combined_tagging = article.combined_tagging
+      tags = []
+      if combined_tagging
+        tags << combined_tagging.division_tag.try(:name)
+        tags << combined_tagging.category_tag1.try(:name)
+        tags << combined_tagging.category_tag2.try(:name)
+        tags << combined_tagging.area_tag1.try(:name)
+        tags << combined_tagging.area_tag2.try(:name)
+        tags.reject!(&:nil?)
+      end
+    %>
+    <%=h tags.join(" / ") %>
+   </span>
   </li>
  <%- } -%>
 </ul>

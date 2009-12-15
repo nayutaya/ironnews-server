@@ -46,6 +46,82 @@ class ArticleTest < ActiveSupport::TestCase
   end
 
   #
+  # 名前付きスコープ
+  #
+
+  test "division, rail" do
+    expected = [
+      articles(:asahi1),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.division(tags(:rail)).all.sort_by(&:id))
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.division(tags(:rail).id).all.sort_by(&:id))
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.division(tags(:rail).name).all.sort_by(&:id))
+  end
+
+  test "division, nonrail" do
+    expected = [
+      articles(:asahi3),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.division(tags(:nonrail)).all.sort_by(&:id))
+  end
+
+  test "category, social" do
+    expected = [
+      articles(:asahi1),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.category(tags(:social)).all.sort_by(&:id))
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.category(tags(:social).id).all.sort_by(&:id))
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.category(tags(:social).name).all.sort_by(&:id))
+  end
+
+  test "category, economy" do
+    expected = [
+      articles(:asahi1),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.category(tags(:economy)).all.sort_by(&:id))
+  end
+
+  test "area, kanto" do
+    expected = [
+      articles(:asahi1),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.area(tags(:kanto)).all.sort_by(&:id))
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.area(tags(:kanto).id).all.sort_by(&:id))
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.area(tags(:kanto).name).all.sort_by(&:id))
+  end
+
+  test "area, kinki" do
+    expected = [
+      articles(:asahi1),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.area(tags(:kinki)).all.sort_by(&:id))
+  end
+
+  #
   # 検証
   #
 

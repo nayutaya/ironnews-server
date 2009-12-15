@@ -15,7 +15,6 @@ class Tag < ActiveRecord::Base
   Separator     = /[\s\/,　]+/
 
   has_many :taggings
-  has_many :derived_taggings
 
   validates_presence_of :name
   validates_length_of :name, :maximum => NameMaxLength, :allow_blank => true
@@ -30,16 +29,22 @@ class Tag < ActiveRecord::Base
     return names.split(Separator).reject(&:empty?)
   end
 
-  def self.get(name, options = {})
+  def self.get(tag, options = {})
     options = options.dup
     create = (options.delete(:create) != false)
     raise(ArgumentError) unless options.empty?
 
-    normalized_name = self.normalize(name)
-    if create
-      return self.find_or_create_by_name(normalized_name)
-    else
-      return self.find_by_name(normalized_name)
+    case tag
+    when self    then return tag
+    when Integer then return self.find(tag)
+    when String  then
+      normalized_name = self.normalize(tag)
+      if create
+        return self.find_or_create_by_name(normalized_name)
+      else
+        return self.find_by_name(normalized_name)
+      end
+    else raise(ArgumentError)
     end
   end
 end
