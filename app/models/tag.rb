@@ -29,22 +29,22 @@ class Tag < ActiveRecord::Base
     return names.split(Separator).reject(&:empty?)
   end
 
-  def self.get(name, options = {})
+  def self.get(tag, options = {})
     options = options.dup
     create = (options.delete(:create) != false)
     raise(ArgumentError) unless options.empty?
 
-    if name.kind_of?(self)
-      return name
-    elsif name.kind_of?(Integer)
-      return self.find(name)
-    end
-
-    normalized_name = self.normalize(name)
-    if create
-      return self.find_or_create_by_name(normalized_name)
-    else
-      return self.find_by_name(normalized_name)
+    case tag
+    when self    then return tag
+    when Integer then return self.find(tag)
+    when String  then
+      normalized_name = self.normalize(tag)
+      if create
+        return self.find_or_create_by_name(normalized_name)
+      else
+        return self.find_by_name(normalized_name)
+      end
+    else raise(ArgumentError)
     end
   end
 end
