@@ -1,2 +1,12 @@
-<h1>Areas#hokkaido</h1>
-<p>Find me in app/views/areas/hokkaido.html.erb</p>
+
+<h1>地域別: 北海道</h1>
+
+<ul class="articles" style="width: 600px;">
+ <%- @articles.each { |article| -%>
+  <li class="article">
+   <%= link_to(h(article.title), article.url,
+         :id    => "article-#{article.id}",
+         :title => article.created_at.strftime("%Y年%m月%d日%H時%M分: ") + article.title) %>
+  </li>
+ <%- } -%>
+</ul>

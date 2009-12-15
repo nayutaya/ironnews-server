@@ -20,6 +20,11 @@
   <%= link_to(h("追加"), :action => "add") %>
 </div>
 
+<div>
+ [ <%= link_to(h("北海道"), :controller => "areas", :action => "hokkaido") %>
+ ]
+</div>
+
 <ul class="articles" style="width: 600px;">
  <%- @articles.each { |article| -%>
   <li class="article">
