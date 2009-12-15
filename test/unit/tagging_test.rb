@@ -100,4 +100,35 @@ class TaggingTest < ActiveSupport::TestCase
       assert_equal(expected, taggings.valid?, index.to_s)
     }
   end
+
+  #
+  # クラスメソッド
+  #
+
+  test "create_tag_frequency_table" do
+    taggings = [
+      taggings(:yuya_asahi1_rail),
+      taggings(:yuya_asahi2_rail),
+      taggings(:risa_asahi1_rail),
+      taggings(:risa_asahi2_nonrail),
+    ]
+    expected = {
+      articles(:asahi1).id => {
+        tags(:rail).id    => 2,
+      },
+      articles(:asahi2).id => {
+        tags(:rail).id    => 1,
+        tags(:nonrail).id => 1,
+      },
+    }
+    assert_equal(
+      expected,
+      @klass.create_tag_frequency_table_from(taggings))
+  end
+
+  test "create_tag_frequency_table_from, empty" do
+    assert_equal(
+      {},
+      @klass.create_tag_frequency_table_from([]))
+  end
 end
