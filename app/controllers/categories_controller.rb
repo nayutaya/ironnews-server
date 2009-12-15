@@ -1,9 +1,9 @@
 
 class CategoriesController < ApplicationController
   def social
-    @articles = CombinedTagging.
+    @articles = Article.
       division("鉄道").
       category("社会").
-      all(:include => :article).map(&:article)
+      all
   end
 end
