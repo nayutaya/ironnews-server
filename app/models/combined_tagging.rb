@@ -30,9 +30,9 @@ class CombinedTagging < ActiveRecord::Base
   named_scope :division, proc { |tag|
     tag_id =
       case tag
-      when String  then Tag.get(tag).id
-      when Integer then tag
       when Tag     then tag.id
+      when Integer then tag
+      when String  then Tag.get(tag).id
       end
     {:conditions => ["#{table_name}.division_tag_id = ?", tag_id]}
   }
