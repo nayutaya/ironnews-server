@@ -28,33 +28,15 @@ class CombinedTagging < ActiveRecord::Base
   belongs_to :area_tag2, :class_name => "Tag"
 
   named_scope :division, proc { |tag|
-    tag_id =
-      case tag
-      when Tag     then tag.id
-      when Integer then tag
-      when String  then Tag.get(tag).id
-      else raise("BUG")
-      end
+    tag_id = Tag.get(tag).id
     {:conditions => ["#{table_name}.division_tag_id = ?", tag_id]}
   }
   named_scope :category, proc { |tag|
-    tag_id =
-      case tag
-      when Tag     then tag.id
-      when Integer then tag
-      when String  then Tag.get(tag).id
-      else raise("BUG")
-      end
+    tag_id = Tag.get(tag).id
     {:conditions => ["(#{table_name}.category_tag1_id = ?) OR (#{table_name}.category_tag2_id = ?)", tag_id, tag_id]}
   }
   named_scope :area, proc { |tag|
-    tag_id =
-      case tag
-      when Tag     then tag.id
-      when Integer then tag
-      when String  then Tag.get(tag).id
-      else raise("BUG")
-      end
+    tag_id = Tag.get(tag).id
     {:conditions => ["(#{table_name}.area_tag1_id = ?) OR (#{table_name}.area_tag2_id = ?)", tag_id, tag_id]}
   }
 
