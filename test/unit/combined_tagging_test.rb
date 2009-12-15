@@ -45,7 +45,6 @@ class CombinedTaggingTest < ActiveSupport::TestCase
     assert_equal(false, @basic.valid?)
   end
 
-=begin
   test "validates_uniqueness_of :article_id, on create" do
     @basic.article_id = articles(:asahi1).id
     assert_equal(false, @basic.valid?)
@@ -56,5 +55,4 @@ class CombinedTaggingTest < ActiveSupport::TestCase
     record.article_id = articles(:asahi2).id
     assert_equal(false, record.valid?)
   end
-=end
 end

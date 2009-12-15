@@ -20,5 +20,5 @@ class CombinedTagging < ActiveRecord::Base
 
   validates_presence_of :serial
   validates_presence_of :article_id
-  #validates_uniqueness_of :article_id
+  validates_uniqueness_of :article_id
 end
