@@ -1,2 +1,12 @@
-<h1>Categories#social</h1>
-<p>Find me in app/views/categories/social.html.erb</p>
+
+<h1>カテゴリ別: 社会</h1>
+
+<ul class="articles" style="width: 600px;">
+ <%- @articles.each { |article| -%>
+  <li class="article">
+   <%= link_to(h(article.title), article.url,
+         :id    => "article-#{article.id}",
+         :title => article.created_at.strftime("%Y年%m月%d日%H時%M分: ") + article.title) %>
+  </li>
+ <%- } -%>
+</ul>
