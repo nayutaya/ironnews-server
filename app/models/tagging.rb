@@ -30,4 +30,9 @@ class Tagging < ActiveRecord::Base
       memo
     }
   end
+
+  def self.create_tag_frequency_table
+    taggings = self.all
+    return self.create_tag_frequency_table_from(taggings)
+  end
 end

@@ -131,4 +131,26 @@ class TaggingTest < ActiveSupport::TestCase
       {},
       @klass.create_tag_frequency_table_from([]))
   end
+
+  test "create_tag_frequency_table" do
+    taggings = [
+      taggings(:yuya_asahi1_rail),
+      taggings(:yuya_asahi2_rail),
+      taggings(:risa_asahi1_rail),
+      taggings(:risa_asahi2_nonrail),
+    ]
+    scope = {:conditions => {:id => taggings.map(&:id)}}
+    expected = {
+      articles(:asahi1).id => {
+        tags(:rail).id    => 2,
+      },
+      articles(:asahi2).id => {
+        tags(:rail).id    => 1,
+        tags(:nonrail).id => 1,
+      },
+    }
+    assert_equal(
+      expected,
+      @klass.scoped(scope).create_tag_frequency_table)
+  end
 end
