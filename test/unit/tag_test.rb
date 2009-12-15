@@ -143,14 +143,38 @@ class TagTest < ActiveSupport::TestCase
     }
   end
 
-  test "self.get, already exists" do
+  test "self.get, tag object" do
+    assert_equal(
+      tags(:rail),
+      @klass.get(tags(:rail)))
+    assert_equal(
+      tags(:nonrail),
+      @klass.get(tags(:nonrail)))
+  end
+
+  test "self.get, tag id" do
+    assert_equal(
+      tags(:rail),
+      @klass.get(tags(:rail).id))
+    assert_equal(
+      tags(:nonrail),
+      @klass.get(tags(:nonrail).id))
+  end
+
+  test "self.get, tag id, invalid" do
+    assert_raise(ActiveRecord::RecordNotFound) {
+      @klass.get(0)
+    }
+  end
+
+  test "self.get, string, already exists" do
     tag1 = @klass.get(@rail.name)
     assert_equal(@rail.id, tag1.id)
     tag2 = @klass.get(@rail.name, :create => false)
     assert_equal(@rail.id, tag2.id)
   end
 
-  test "self.get, not exists" do
+  test "self.get, string, not exists" do
     tag1, tag2 = nil
     assert_difference("#{@klass}.count", +1) {
       tag1 = @klass.get("TAG")
@@ -163,7 +187,7 @@ class TagTest < ActiveSupport::TestCase
     assert_equal(tag2.id, tag1.id)
   end
 
-  test "self.get, not exists but not create" do
+  test "self.get, string, not exists but not create" do
     tag1 = nil
     assert_difference("#{@klass}.count", 0) {
       tag1 = @klass.get("TAG", :create => false)
@@ -171,7 +195,7 @@ class TagTest < ActiveSupport::TestCase
     assert_equal(nil, tag1)
   end
 
-  test "self.get, invalid parameter" do
+  test "self.get, string, invalid parameter" do
     assert_raise(ArgumentError) {
       @klass.get("tag", :invalid => true)
     }

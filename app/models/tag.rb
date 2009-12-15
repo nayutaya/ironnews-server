@@ -35,6 +35,12 @@ class Tag < ActiveRecord::Base
     create = (options.delete(:create) != false)
     raise(ArgumentError) unless options.empty?
 
+    if name.kind_of?(self)
+      return name
+    elsif name.kind_of?(Integer)
+      return self.find(name)
+    end
+
     normalized_name = self.normalize(name)
     if create
       return self.find_or_create_by_name(normalized_name)
