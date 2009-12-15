@@ -10,6 +10,20 @@ class CombinedTaggingTest < ActiveSupport::TestCase
   end
 
   #
+  # 関連
+  #
+
+  test "belongs_to :article" do
+    assert_equal(
+      articles(:asahi1),
+      combined_taggings(:asahi1).article)
+
+    assert_equal(
+      articles(:asahi3),
+      combined_taggings(:asahi3).article)
+  end
+
+  #
   # 検証
   #
 

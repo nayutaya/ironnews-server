@@ -19,6 +19,7 @@ class Article < ActiveRecord::Base
 
   has_many :taggings
   has_many :derived_taggings
+  has_one :combined_tagging
 
   validates_presence_of :title
   validates_presence_of :host
