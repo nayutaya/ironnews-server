@@ -63,7 +63,7 @@ class CombinedTagging < ActiveRecord::Base
       create_tag_frequency_table
   end
 
-  def self.create_derive_tag_table(tag_frequency_table, candidate_tag_ids, limit)
+  def self.create_combined_tag_table(tag_frequency_table, candidate_tag_ids, limit)
     return tag_frequency_table.inject({}) { |memo, (article_id, tag_frequency)|
       memo[article_id] = tag_frequency.
         map     { |tag_id, count| [tag_id, count, candidate_tag_ids.index(tag_id)] }.

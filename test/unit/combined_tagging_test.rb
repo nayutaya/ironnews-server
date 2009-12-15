@@ -176,7 +176,7 @@ class CombinedTaggingTest < ActiveSupport::TestCase
       @klass.create_tag_frequency_table(article_ids))
   end
 
-  test "create_derive_tag_table, limit 1" do
+  test "create_combined_tag_table, limit 1" do
     tag_frequency_table = {
       articles(:asahi1).id => {
         tags(:rail).id    => 2,
@@ -205,10 +205,10 @@ class CombinedTaggingTest < ActiveSupport::TestCase
     }
     assert_equal(
       expected,
-      @klass.create_derive_tag_table(tag_frequency_table, candidate_tag_ids, 1))
+      @klass.create_combined_tag_table(tag_frequency_table, candidate_tag_ids, 1))
   end
 
-  test "create_derive_tag_table, limit 2" do
+  test "create_combined_tag_table, limit 2" do
     tag_frequency_table = {
       articles(:asahi1).id => {
         tags(:rail).id    => 2,
@@ -233,6 +233,6 @@ class CombinedTaggingTest < ActiveSupport::TestCase
     }
     assert_equal(
       expected,
-      @klass.create_derive_tag_table(tag_frequency_table, candidate_tag_ids, 2))
+      @klass.create_combined_tag_table(tag_frequency_table, candidate_tag_ids, 2))
   end
 end
