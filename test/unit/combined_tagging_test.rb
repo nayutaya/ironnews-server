@@ -53,6 +53,26 @@ class CombinedTaggingTest < ActiveSupport::TestCase
       combined_taggings(:asahi3).category_tag2)
   end
 
+  test "belongs_to :area_tag1" do
+    assert_equal(
+      tags(:kanto),
+      combined_taggings(:asahi1).area_tag1)
+
+    assert_equal(
+      nil,
+      combined_taggings(:asahi3).area_tag1)
+  end
+
+  test "belongs_to :area_tag2" do
+    assert_equal(
+      tags(:kinki),
+      combined_taggings(:asahi1).area_tag2)
+
+    assert_equal(
+      nil,
+      combined_taggings(:asahi3).area_tag2)
+  end
+
   #
   # 検証
   #

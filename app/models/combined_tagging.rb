@@ -20,6 +20,8 @@ class CombinedTagging < ActiveRecord::Base
   belongs_to :division_tag, :class_name => "Tag"
   belongs_to :category_tag1, :class_name => "Tag"
   belongs_to :category_tag2, :class_name => "Tag"
+  belongs_to :area_tag1, :class_name => "Tag"
+  belongs_to :area_tag2, :class_name => "Tag"
 
   validates_presence_of :serial
   validates_presence_of :article_id

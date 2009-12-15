@@ -23,3 +23,11 @@ social:
 economy:
   created_at: 2009-01-01 00:00:00
   name: "政治経済"
+
+kanto:
+  created_at: 2009-01-01 00:00:00
+  name: "関東"
+
+kinki:
+  created_at: 2009-01-01 00:00:00
+  name: "近畿"

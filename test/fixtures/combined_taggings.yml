@@ -21,25 +21,25 @@ asahi1:
   division_tag: rail
   category_tag1: social
   category_tag2: economy
-  area_tag1_id: null
-  area_tag2_id: null
+  area_tag1: kanto
+  area_tag2: kinki
 
 asahi2:
   created_at: 2009-01-01 00:00:00
   serial: 2
   article: asahi2
-  division_tag_id: null
-  category_tag1_id: null
-  category_tag2_id: null
-  area_tag1_id: null
-  area_tag2_id: null
+  division_tag: null
+  category_tag1: null
+  category_tag2: null
+  area_tag1: null
+  area_tag2: null
 
 asahi3:
   created_at: 2009-01-01 00:00:00
   serial: 3
   article: asahi3
   division_tag: nonrail
-  category_tag1_id: null
-  category_tag2_id: null
-  area_tag1_id: null
-  area_tag2_id: null
+  category_tag1: null
+  category_tag2: null
+  area_tag1: null
+  area_tag2: null
