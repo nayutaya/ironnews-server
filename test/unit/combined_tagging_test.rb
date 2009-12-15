@@ -101,6 +101,30 @@ class CombinedTaggingTest < ActiveSupport::TestCase
       @klass.division(tags(:nonrail)).all.sort_by(&:id))
   end
 
+  test "category, social" do
+    expected = [
+      combined_taggings(:asahi1),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.category(tags(:social)).all.sort_by(&:id))
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.category(tags(:social).id).all.sort_by(&:id))
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.category(tags(:social).name).all.sort_by(&:id))
+  end
+
+  test "category, economy" do
+    expected = [
+      combined_taggings(:asahi1),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.category(tags(:economy)).all.sort_by(&:id))
+  end
+
   #
   # 検証
   #
