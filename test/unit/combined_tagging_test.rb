@@ -105,4 +105,54 @@ class CombinedTaggingTest < ActiveSupport::TestCase
     record.article_id = articles(:asahi2).id
     assert_equal(false, record.valid?)
   end
+
+  #
+  # クラスメソッド
+  #
+
+  test "get_serial" do
+    assert_equal(
+      @klass.all.map(&:serial).max,
+      @klass.get_serial)
+  end
+
+  test "get_serial, empty" do
+    @klass.delete_all
+    assert_equal(1, @klass.get_serial)
+  end
+
+  test "get_target_taggings, all" do
+    assert_equal(
+      Tagging.all.sort_by(&:id),
+      @klass.get_target_taggings(0, 10))
+  end
+
+  test "get_target_taggings, part" do
+    taggings = Tagging.all.sort_by(&:id)
+    serial   = taggings.delete_at(0).id
+    assert_equal(
+      taggings,
+      @klass.get_target_taggings(serial, 10))
+    assert_equal(
+      taggings[0, 2],
+      @klass.get_target_taggings(serial, 2))
+  end
+
+  test "get_division_tags" do
+    assert_equal(
+      @klass::DivisionTags,
+      @klass.get_division_tags.map(&:name))
+  end
+
+  test "get_category_tags" do
+    assert_equal(
+      @klass::CategoryTags,
+      @klass.get_category_tags.map(&:name))
+  end
+
+  test "get_area_tags" do
+    assert_equal(
+      @klass::AreaTags,
+      @klass.get_area_tags.map(&:name))
+  end
 end

@@ -16,6 +16,10 @@
 
 # 合成タグ付け
 class CombinedTagging < ActiveRecord::Base
+  DivisionTags = %w[鉄道 非鉄].uniq
+  CategoryTags = %w[社会 事件事故 痴漢 政治経済 科学技術 車両].uniq
+  AreaTags     = %w[北海道 東北 関東 中部 近畿 中国 四国 九州 沖縄 海外].uniq
+
   belongs_to :article
   belongs_to :division_tag, :class_name => "Tag"
   belongs_to :category_tag1, :class_name => "Tag"
@@ -26,4 +30,30 @@ class CombinedTagging < ActiveRecord::Base
   validates_presence_of :serial
   validates_presence_of :article_id
   validates_uniqueness_of :article_id
+
+  def self.get_serial
+    return self.maximum(:serial) || 1
+  end
+
+  def self.get_target_taggings(serial, limit)
+    return Tagging.all(
+      :conditions => ["taggings.id > ?", serial],
+      :order      => "taggings.id ASC",
+      :limit      => limit)
+  end
+
+  # FIXME: 1回のクエリでまとめて取得
+  def self.get_division_tags
+    return DivisionTags.map { |name| Tag.get(name) }
+  end
+
+  # FIXME: 1回のクエリでまとめて取得
+  def self.get_category_tags
+    return CategoryTags.map { |name| Tag.get(name) }
+  end
+
+  # FIXME: 1回のクエリでまとめて取得
+  def self.get_area_tags
+    return AreaTags.map { |name| Tag.get(name) }
+  end
 end
