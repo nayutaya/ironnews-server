@@ -23,7 +23,7 @@ Rails::Initializer.run do |config|
   config.gem "nayutaya-kagemusha", :lib => "kagemusha", :version => ">= 0.1.0", :source => "http://gemcutter.org"
   config.gem "nayutaya-wsse", :lib => "wsse", :version => ">= 0.0.1", :source => "http://gemcutter.org"
   config.gem "nayutaya-active-form", :version => ">= 0.0.1", :source => "http://gemcutter.org"
-  config.gem "nayutaya-bookmark-utility", :lib => "bookmark_utility", :version => ">= 0.0.7", :source => "http://gemcutter.org"
+  config.gem "nayutaya-bookmark-utility", :lib => "bookmark_utility", :version => ">= 0.0.9", :source => "http://gemcutter.org"
   config.gem "will_paginate", :version => ">= 2.3.11", :source => "http://gemcutter.org"
   config.gem "locale", :version => ">= 2.0.4"
   config.gem "locale_rails", :version => ">= 2.0.4"
