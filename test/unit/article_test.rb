@@ -46,6 +46,34 @@ class ArticleTest < ActiveSupport::TestCase
   end
 
   #
+  # 名前付きスコープ
+  #
+
+  test "division, rail" do
+    expected = [
+      articles(:asahi1),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.division(tags(:rail)).all.sort_by(&:id))
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.division(tags(:rail).id).all.sort_by(&:id))
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.division(tags(:rail).name).all.sort_by(&:id))
+  end
+
+  test "division, nonrail" do
+    expected = [
+      articles(:asahi3),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.division(tags(:nonrail)).all.sort_by(&:id))
+  end
+
+  #
   # 検証
   #
 

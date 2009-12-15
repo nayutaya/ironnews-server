@@ -20,6 +20,14 @@ class Article < ActiveRecord::Base
   has_many :taggings
   has_one :combined_tagging
 
+  named_scope :division, proc { |tag|
+    tag_id = Tag.get(tag).id
+    {
+      :include    => :combined_tagging,
+      :conditions => ["combined_taggings.division_tag_id = ?", tag_id],
+    }
+  }
+
   validates_presence_of :title
   validates_presence_of :host
   validates_presence_of :path
