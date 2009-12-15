@@ -19,7 +19,7 @@ class CreateCombinedTaggings < ActiveRecord::Migration
     end
 
     add_index :combined_taggings, :serial
-    add_index :combined_taggings, :article_id
+    add_index :combined_taggings, :article_id, :unique => true
     add_index :combined_taggings, :division_tag_id
     add_index :combined_taggings, :category_tag_id1
     add_index :combined_taggings, :category_tag_id2
