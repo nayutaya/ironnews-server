@@ -105,4 +105,139 @@ class CombinedTaggingTest < ActiveSupport::TestCase
     record.article_id = articles(:asahi2).id
     assert_equal(false, record.valid?)
   end
+
+  #
+  # クラスメソッド
+  #
+
+  test "get_current_serial" do
+    assert_equal(
+      @klass.all.map(&:serial).max,
+      @klass.get_current_serial)
+  end
+
+  test "get_current_serial, empty" do
+    @klass.delete_all
+    assert_equal(1, @klass.get_current_serial)
+  end
+
+  test "get_target_taggings, all" do
+    assert_equal(
+      Tagging.all.sort_by(&:id),
+      @klass.get_target_taggings(0, 10))
+  end
+
+  test "get_target_taggings, part" do
+    taggings = Tagging.all.sort_by(&:id)
+    serial   = taggings.delete_at(0).id
+    assert_equal(
+      taggings,
+      @klass.get_target_taggings(serial, 10))
+    assert_equal(
+      taggings[0, 2],
+      @klass.get_target_taggings(serial, 2))
+  end
+
+  test "get_division_tags" do
+    assert_equal(
+      @klass::DivisionTags,
+      @klass.get_division_tags.map(&:name))
+  end
+
+  test "get_category_tags" do
+    assert_equal(
+      @klass::CategoryTags,
+      @klass.get_category_tags.map(&:name))
+  end
+
+  test "get_area_tags" do
+    assert_equal(
+      @klass::AreaTags,
+      @klass.get_area_tags.map(&:name))
+  end
+
+  test "create_tag_frequency_table" do
+    article_ids = [
+      articles(:asahi1).id,
+      articles(:asahi2).id,
+      articles(:mainichi1).id,
+    ]
+    expected = {
+      articles(:asahi1).id => {
+        tags(:rail).id    => 2,
+      },
+      articles(:asahi2).id => {
+        tags(:rail).id    => 1,
+        tags(:nonrail).id => 1,
+      },
+    }
+    assert_equal(
+      expected,
+      @klass.create_tag_frequency_table(article_ids))
+  end
+
+  test "create_combined_tag_table, limit 1" do
+    tag_frequency_table = {
+      articles(:asahi1).id => {
+        tags(:rail).id    => 2,
+      },
+      articles(:asahi2).id => {
+        tags(:rail).id    => 1,
+        tags(:nonrail).id => 1,
+      },
+      articles(:asahi3).id => {
+        tags(:rail).id    => 1,
+        tags(:nonrail).id => 2,
+      },
+      articles(:mainichi1).id => {
+        tags(:social).id  => 1,
+      }
+    }
+    candidate_tag_ids = [
+      tags(:rail).id,
+      tags(:nonrail).id,
+    ]
+    expected = {
+      articles(:asahi1).id    => [tags(:rail).id],
+      articles(:asahi2).id    => [tags(:rail).id],
+      articles(:asahi3).id    => [tags(:nonrail).id],
+      articles(:mainichi1).id => [],
+    }
+    assert_equal(
+      expected,
+      @klass.create_combined_tag_table(tag_frequency_table, candidate_tag_ids, 1))
+  end
+
+  test "create_combined_tag_table, limit 2" do
+    tag_frequency_table = {
+      articles(:asahi1).id => {
+        tags(:rail).id    => 2,
+      },
+      articles(:asahi2).id => {
+        tags(:rail).id    => 1,
+        tags(:nonrail).id => 1,
+      },
+      articles(:asahi3).id => {
+        tags(:rail).id    => 1,
+        tags(:nonrail).id => 2,
+      },
+    }
+    candidate_tag_ids = [
+      tags(:rail).id,
+      tags(:nonrail).id,
+    ]
+    expected = {
+      articles(:asahi1).id => [tags(:rail).id],
+      articles(:asahi2).id => [tags(:rail).id, tags(:nonrail).id],
+      articles(:asahi3).id => [tags(:nonrail).id, tags(:rail).id],
+    }
+    assert_equal(
+      expected,
+      @klass.create_combined_tag_table(tag_frequency_table, candidate_tag_ids, 2))
+  end
+
+  # TODO: テストせよ
+  test "incremental_update" do
+    @klass.incremental_update
+  end
 end

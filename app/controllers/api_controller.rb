@@ -22,7 +22,7 @@ class ApiController < ApplicationController
     render_json(api.execute(@user.id))
 
     # FIXME: 実験用コード
-    DerivedTagging.update(10)
+    CombinedTagging.incremental_update(10)
   end
 
   def remove_tags
@@ -30,7 +30,7 @@ class ApiController < ApplicationController
     render_json(api.execute(@user.id))
 
     # FIXME: 実験用コード
-    DerivedTagging.update(10)
+    CombinedTagging.incremental_update(10)
   end
 
   private
