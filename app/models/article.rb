@@ -27,6 +27,13 @@ class Article < ActiveRecord::Base
       :conditions => ["combined_taggings.division_tag_id = ?", tag_id],
     }
   }
+  named_scope :category, proc { |tag|
+    tag_id = Tag.get(tag).id
+    {
+      :include    => :combined_tagging,
+      :conditions => ["(combined_taggings.category_tag1_id = ?) OR (combined_taggings.category_tag2_id = ?)", tag_id, tag_id],
+    }
+  }
 
   validates_presence_of :title
   validates_presence_of :host
