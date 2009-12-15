@@ -20,12 +20,27 @@
   <%= link_to(h("追加"), :action => "add") %>
 </div>
 
-<ul class="articles" style="width: 300px;">
+<ul class="articles" style="width: 600px;">
  <%- @articles.each { |article| -%>
   <li class="article">
    <%= link_to(h(article.title), article.url,
          :id    => "article-#{article.id}",
          :title => article.created_at.strftime("%Y年%m月%d日%H時%M分: ") + article.title) %>
+   <span>
+    <%
+      combined_tagging = article.combined_tagging
+      tags = []
+      if combined_tagging
+        tags << combined_tagging.division_tag.try(:name)
+        tags << combined_tagging.category_tag1.try(:name)
+        tags << combined_tagging.category_tag2.try(:name)
+        tags << combined_tagging.area_tag1.try(:name)
+        tags << combined_tagging.area_tag2.try(:name)
+        tags.reject!(&:nil?)
+      end
+    %>
+    <%=h tags.join(" / ") %>
+   </span>
   </li>
  <%- } -%>
 </ul>
