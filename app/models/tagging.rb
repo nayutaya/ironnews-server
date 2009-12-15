@@ -32,7 +32,12 @@ class Tagging < ActiveRecord::Base
   end
 
   def self.create_tag_frequency_table
-    taggings = self.all
-    return self.create_tag_frequency_table_from(taggings)
+    return self.all.inject({}) { |memo, tagging|
+      aid, tid = tagging.article_id, tagging.tag_id
+      memo[aid]      ||= {}
+      memo[aid][tid] ||= 0
+      memo[aid][tid]  += 1
+      memo
+    }
   end
 end
