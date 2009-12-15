@@ -83,6 +83,12 @@ class CombinedTaggingTest < ActiveSupport::TestCase
     ]
     assert_equal(
       expected.sort_by(&:id),
+      @klass.division("鉄道").all.sort_by(&:id))
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.division(Tag.get("鉄道").id).all.sort_by(&:id))
+    assert_equal(
+      expected.sort_by(&:id),
       @klass.division(Tag.get("鉄道")).all.sort_by(&:id))
   end
 

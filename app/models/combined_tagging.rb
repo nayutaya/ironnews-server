@@ -28,9 +28,13 @@ class CombinedTagging < ActiveRecord::Base
   belongs_to :area_tag2, :class_name => "Tag"
 
   named_scope :division, proc { |tag|
-    {
-      :conditions => ["#{table_name}.division_tag_id = ?", tag.id]
-    }
+    tag_id =
+      case tag
+      when String  then Tag.get(tag).id
+      when Integer then tag
+      when Tag     then tag.id
+      end
+    {:conditions => ["#{table_name}.division_tag_id = ?", tag_id]}
   }
 
   validates_presence_of :serial
