@@ -31,7 +31,7 @@ class CombinedTagging < ActiveRecord::Base
   validates_presence_of :article_id
   validates_uniqueness_of :article_id
 
-  def self.get_serial
+  def self.get_current_serial
     return self.maximum(:serial) || 1
   end
 

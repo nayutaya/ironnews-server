@@ -110,15 +110,15 @@ class CombinedTaggingTest < ActiveSupport::TestCase
   # クラスメソッド
   #
 
-  test "get_serial" do
+  test "get_current_serial" do
     assert_equal(
       @klass.all.map(&:serial).max,
-      @klass.get_serial)
+      @klass.get_current_serial)
   end
 
-  test "get_serial, empty" do
+  test "get_current_serial, empty" do
     @klass.delete_all
-    assert_equal(1, @klass.get_serial)
+    assert_equal(1, @klass.get_current_serial)
   end
 
   test "get_target_taggings, all" do
