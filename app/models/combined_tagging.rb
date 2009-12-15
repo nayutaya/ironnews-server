@@ -74,4 +74,32 @@ class CombinedTagging < ActiveRecord::Base
       memo
     }
   end
+
+  # TODO: テストせよ
+  def self.incremental_update(limit = 10)
+    current_serial = self.get_current_serial
+    taggings       = self.get_target_taggings(current_serial, limit)
+    article_ids    = taggings.map(&:article_id).sort.uniq
+    next_serial    = taggings.map(&:id).max
+
+    division_tag_ids = self.get_division_tags.map(&:id)
+    category_tag_ids = self.get_category_tags.map(&:id)
+    area_tag_ids     = self.get_area_tags.map(&:id)
+
+    tag_frequency_table = self.create_tag_frequency_table(article_ids)
+    division_table      = self.create_combined_tag_table(tag_frequency_table, division_tag_ids, 1)
+    category_table      = self.create_combined_tag_table(tag_frequency_table, category_tag_ids, 2)
+    area_table          = self.create_combined_tag_table(tag_frequency_table, area_tag_ids, 2)
+
+    article_ids.each { |article_id|
+      combined_tagging = self.find_or_initialize_by_article_id(article_id)
+      combined_tagging.serial           = next_serial
+      combined_tagging.division_tag_id  = division_table[article_id].first
+      combined_tagging.category_tag1_id = category_table[article_id].first
+      combined_tagging.category_tag2_id = category_table[article_id].second
+      combined_tagging.area_tag1_id     = area_table[article_id].first
+      combined_tagging.area_tag2_id     = area_table[article_id].second
+      combined_tagging.save!
+    }
+  end
 end

@@ -235,4 +235,9 @@ class CombinedTaggingTest < ActiveSupport::TestCase
       expected,
       @klass.create_combined_tag_table(tag_frequency_table, candidate_tag_ids, 2))
   end
+
+  # TODO: テストせよ
+  test "incremental_update" do
+    @klass.incremental_update
+  end
 end
