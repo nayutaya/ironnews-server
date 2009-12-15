@@ -29,8 +29,28 @@ class CombinedTaggingTest < ActiveSupport::TestCase
       combined_taggings(:asahi1).division_tag)
 
     assert_equal(
-      tags(:nonrail),
-      combined_taggings(:asahi3).division_tag)
+      nil,
+      combined_taggings(:asahi2).division_tag)
+  end
+
+  test "belongs_to :category_tag1" do
+    assert_equal(
+      tags(:social),
+      combined_taggings(:asahi1).category_tag1)
+
+    assert_equal(
+      nil,
+      combined_taggings(:asahi3).category_tag1)
+  end
+
+  test "belongs_to :category_tag2" do
+    assert_equal(
+      tags(:economy),
+      combined_taggings(:asahi1).category_tag2)
+
+    assert_equal(
+      nil,
+      combined_taggings(:asahi3).category_tag2)
   end
 
   #
