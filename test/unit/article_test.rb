@@ -97,6 +97,30 @@ class ArticleTest < ActiveSupport::TestCase
       @klass.category(tags(:economy)).all.sort_by(&:id))
   end
 
+  test "area, kanto" do
+    expected = [
+      articles(:asahi1),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.area(tags(:kanto)).all.sort_by(&:id))
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.area(tags(:kanto).id).all.sort_by(&:id))
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.area(tags(:kanto).name).all.sort_by(&:id))
+  end
+
+  test "area, kinki" do
+    expected = [
+      articles(:asahi1),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.area(tags(:kinki)).all.sort_by(&:id))
+  end
+
   #
   # 検証
   #
