@@ -14,5 +14,9 @@
 #  area_tag_id2     :integer       index_combined_taggings_on_area_tag_id2
 #
 
+# 合成タグ付け
 class CombinedTagging < ActiveRecord::Base
+  validates_presence_of :serial
+  validates_presence_of :article_id
+  #validates_uniqueness_of :article_id
 end
