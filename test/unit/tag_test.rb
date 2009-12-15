@@ -34,23 +34,6 @@ class TagTest < ActiveSupport::TestCase
       @nonrail.taggings.sort_by(&:id))
   end
 
-  test "has_many :derived_taggings" do
-    expected = [
-      derived_taggings(:asahi1_rail),
-      derived_taggings(:asahi2_rail),
-    ]
-    assert_equal(
-      expected.sort_by(&:id),
-      @rail.derived_taggings.sort_by(&:id))
-
-    expected = [
-      derived_taggings(:asahi3_nonrail),
-    ]
-    assert_equal(
-      expected.sort_by(&:id),
-      @nonrail.derived_taggings.sort_by(&:id))
-  end
-
   #
   # 検証
   #

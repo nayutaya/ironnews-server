@@ -15,7 +15,6 @@ class Tag < ActiveRecord::Base
   Separator     = /[\s\/,　]+/
 
   has_many :taggings
-  has_many :derived_taggings
 
   validates_presence_of :name
   validates_length_of :name, :maximum => NameMaxLength, :allow_blank => true
