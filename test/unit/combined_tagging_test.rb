@@ -175,4 +175,58 @@ class CombinedTaggingTest < ActiveSupport::TestCase
       expected,
       @klass.create_tag_frequency_table(article_ids))
   end
+
+  test "create_derive_tag_table, limit 1" do
+    tag_table = {
+      articles(:asahi1).id => {
+        tags(:rail).id    => 2,
+      },
+      articles(:asahi2).id => {
+        tags(:rail).id    => 1,
+        tags(:nonrail).id => 1,
+      },
+      articles(:asahi3).id => {
+        tags(:rail).id    => 1,
+        tags(:nonrail).id => 2,
+      },
+      articles(:mainichi1).id => {
+        Tag.get("新しいタグ").id => 1,
+      }
+    }
+    tag_ids = [tags(:rail).id, tags(:nonrail).id]
+    expected = {
+      articles(:asahi1).id    => [tags(:rail).id],
+      articles(:asahi2).id    => [tags(:rail).id],
+      articles(:asahi3).id    => [tags(:nonrail).id],
+      articles(:mainichi1).id => [],
+    }
+    assert_equal(
+      expected,
+      @klass.create_derive_tag_table(tag_table, tag_ids, 1))
+  end
+
+  test "create_derive_tag_table, limit 2" do
+    tag_table = {
+      articles(:asahi1).id => {
+        tags(:rail).id    => 2,
+      },
+      articles(:asahi2).id => {
+        tags(:rail).id    => 1,
+        tags(:nonrail).id => 1,
+      },
+      articles(:asahi3).id => {
+        tags(:rail).id    => 1,
+        tags(:nonrail).id => 2,
+      },
+    }
+    tag_ids = [tags(:rail).id, tags(:nonrail).id]
+    expected = {
+      articles(:asahi1).id => [tags(:rail).id],
+      articles(:asahi2).id => [tags(:rail).id, tags(:nonrail).id],
+      articles(:asahi3).id => [tags(:nonrail).id, tags(:rail).id],
+    }
+    assert_equal(
+      expected,
+      @klass.create_derive_tag_table(tag_table, tag_ids, 2))
+  end
 end
