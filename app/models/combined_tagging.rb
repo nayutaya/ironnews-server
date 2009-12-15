@@ -17,6 +17,7 @@
 # 合成タグ付け
 class CombinedTagging < ActiveRecord::Base
   belongs_to :article
+  belongs_to :division_tag, :class_name => "Tag"
 
   validates_presence_of :serial
   validates_presence_of :article_id

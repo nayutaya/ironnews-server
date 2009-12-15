@@ -23,6 +23,16 @@ class CombinedTaggingTest < ActiveSupport::TestCase
       combined_taggings(:asahi3).article)
   end
 
+  test "belongs_to :division_tag" do
+    assert_equal(
+      tags(:rail),
+      combined_taggings(:asahi1).division_tag)
+
+    assert_equal(
+      tags(:nonrail),
+      combined_taggings(:asahi3).division_tag)
+  end
+
   #
   # 検証
   #

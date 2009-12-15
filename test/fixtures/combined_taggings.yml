@@ -18,7 +18,7 @@ asahi1:
   created_at: 2009-01-01 00:00:00
   serial: 1
   article: asahi1
-  division_tag_id: 0 #rail
+  division_tag: rail
   category_tag_id1: null
   category_tag_id2: null
   area_tag_id1: null
@@ -28,7 +28,7 @@ asahi2:
   created_at: 2009-01-01 00:00:00
   serial: 2
   article: asahi2
-  division_tag_id: 0 #rail
+  division_tag: rail
   category_tag_id1: null
   category_tag_id2: null
   area_tag_id1: null
@@ -38,7 +38,7 @@ asahi3:
   created_at: 2009-01-01 00:00:00
   serial: 3
   article: asahi3
-  division_tag_id: 0 #nonrail
+  division_tag: nonrail
   category_tag_id1: null
   category_tag_id2: null
   area_tag_id1: null
