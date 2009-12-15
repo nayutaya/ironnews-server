@@ -14,10 +14,32 @@
 #  area_tag_id2     :integer       index_combined_taggings_on_area_tag_id2
 #
 
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+asahi1:
+  created_at: 2009-01-01 00:00:00
+  serial: 1
+  article_id: 0 #asahi1
+  division_tag_id: 0 #rail
+  category_tag_id1: null
+  category_tag_id2: null
+  area_tag_id1: null
+  area_tag_id2: null
 
-# one:
-#   column: value
-#
-# two:
-#   column: value
+asahi2:
+  created_at: 2009-01-01 00:00:00
+  serial: 2
+  article_id: 1 #asahi2
+  division_tag_id: 0 #rail
+  category_tag_id1: null
+  category_tag_id2: null
+  area_tag_id1: null
+  area_tag_id2: null
+
+asahi3:
+  created_at: 2009-01-01 00:00:00
+  serial: 3
+  article_id: 2 #asahi3
+  division_tag_id: 0 #nonrail
+  category_tag_id1: null
+  category_tag_id2: null
+  area_tag_id1: null
+  area_tag_id2: null
