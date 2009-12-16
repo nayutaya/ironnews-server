@@ -24,6 +24,10 @@ class CategoriesController < ApplicationController
     show_articles("車両")
   end
 
+  def event
+    show_articles("イベント")
+  end
+
   private
 
   def show_articles(category)
