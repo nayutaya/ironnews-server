@@ -17,7 +17,7 @@
 # 合成タグ付け
 class CombinedTagging < ActiveRecord::Base
   DivisionTags = %w[鉄道 非鉄].uniq
-  CategoryTags = %w[社会 事件事故 痴漢 政治経済 科学技術 車両].uniq
+  CategoryTags = %w[社会 事件事故 痴漢 政治経済 科学技術 車両 イベント].uniq
   AreaTags     = %w[北海道 東北 関東 中部 近畿 中国 四国 九州 沖縄 海外].uniq
 
   belongs_to :article
