@@ -1,2 +1,16 @@
-<h1>Articles#index</h1>
-<p>Find me in app/views/articles/index.html.erb</p>
+
+<h1>記事一覧</h1>
+
+<div><%= will_paginate(@articles) %></div>
+
+<ul class="articles">
+ <%- @articles.each { |article| -%>
+  <li class="article">
+   <%= link_to(h(article.title), article.url,
+         :id    => "article-#{article.id}",
+         :title => article.created_at.strftime("%Y年%m月%d日%H時%M分: ") + article.title) %>
+  </li>
+ <%- } -%>
+</ul>
+
+<div><%= will_paginate(@articles) %></div>
