@@ -48,6 +48,13 @@
  | <%= link_to(h("非鉄"), :controller => "divisions", :action => "nonrail") %>
  ]
 </div>
+<div>
+ タグ付けされていない記事
+ [ <%= link_to(h("区分"), :controller => "untagged_articles", :action => "division") %>
+ | <%= link_to(h("カテゴリ"), :controller => "untagged_articles", :action => "category") %>
+ | <%= link_to(h("地域"), :controller => "untagged_articles", :action => "area") %>
+ ]
+</div>
 
 <ul class="articles" style="width: 600px;">
  <%- @articles.each { |article| -%>

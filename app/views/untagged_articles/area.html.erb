@@ -1,0 +1,12 @@
+
+<h1>地域タグ付けされていない記事</h1>
+
+<ul class="articles" style="width: 600px;">
+ <%- @articles.each { |article| -%>
+  <li class="article">
+   <%= article_link(article) %>
+  </li>
+ <%- } -%>
+</ul>
+
+<%= javascript_include_tag("articles") %>
