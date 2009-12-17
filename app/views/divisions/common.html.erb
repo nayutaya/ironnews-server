@@ -1,0 +1,12 @@
+
+<h1>区分別: <%=h @division %></h1>
+
+<ul class="articles" style="width: 600px;">
+ <%- @articles.each { |article| -%>
+  <li class="article">
+   <%= article_link(article) %>
+  </li>
+ <%- } -%>
+</ul>
+
+<%= javascript_include_tag("articles") %>

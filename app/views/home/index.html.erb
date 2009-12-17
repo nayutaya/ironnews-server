@@ -43,6 +43,11 @@
  | <%= link_to(h("イベント"),   :controller => "categories", :action => "event") %>
  ]
 </div>
+<div>
+ [ <%= link_to(h("鉄道"), :controller => "divisions", :action => "rail") %>
+ | <%= link_to(h("非鉄"), :controller => "divisions", :action => "nonrail") %>
+ ]
+</div>
 
 <ul class="articles" style="width: 600px;">
  <%- @articles.each { |article| -%>
