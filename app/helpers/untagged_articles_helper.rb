@@ -1,0 +1,2 @@
+module UntaggedArticlesHelper
+end
