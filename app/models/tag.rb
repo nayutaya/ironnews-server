@@ -56,14 +56,13 @@ class Tag < ActiveRecord::Base
     normalized_names = names.map { |name| self.normalize(name) }
 
     exist_tags = self.find_all_by_name(normalized_names)
-    new_tags   = []
-
-    if create
-      new_tag_names = normalized_names - exist_tags.map(&:name)
-      new_tag_names.each { |name|
-        new_tags << self.create!(:name => name)
-      }
-    end
+    new_tags   =
+      if create
+        new_tag_names = normalized_names - exist_tags.map(&:name)
+        new_tag_names.map { |name| self.create!(:name => name) }
+      else
+        []
+      end
 
     return (exist_tags + new_tags).sort_by(&:id)
   end
