@@ -43,18 +43,15 @@ class CombinedTagging < ActiveRecord::Base
   end
 
   def self.get_division_tags
-    return Tag.get_by_names(DivisionTags).
-      sort_by { |tag| DivisionTags.index(tag.name) }
+    return Tag.get_by_names(DivisionTags)
   end
 
   def self.get_category_tags
-    return Tag.get_by_names(CategoryTags).
-      sort_by { |tag| CategoryTags.index(tag.name) }
+    return Tag.get_by_names(CategoryTags)
   end
 
   def self.get_area_tags
-    return Tag.get_by_names(AreaTags).
-      sort_by { |tag| AreaTags.index(tag.name) }
+    return Tag.get_by_names(AreaTags)
   end
 
   def self.create_tag_frequency_table(article_ids)
