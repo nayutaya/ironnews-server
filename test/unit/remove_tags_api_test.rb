@@ -18,6 +18,15 @@ class RemoveTagsApiTest < ActiveSupport::TestCase
     [
       [:article_id, nil, "1", 1],
       [:tag1,       nil, "1", "1"],
+      [:tag2,       nil, "1", "1"],
+      [:tag3,       nil, "1", "1"],
+      [:tag4,       nil, "1", "1"],
+      [:tag5,       nil, "1", "1"],
+      [:tag6,       nil, "1", "1"],
+      [:tag7,       nil, "1", "1"],
+      [:tag8,       nil, "1", "1"],
+      [:tag9,       nil, "1", "1"],
+      [:tag10,      nil, "1", "1"],
     ].each { |name, default, set_value, get_value|
       form = @klass.new
       assert_equal(default, form.__send__(name))

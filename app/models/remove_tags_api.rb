@@ -11,6 +11,15 @@
 class RemoveTagsApi < ApiBase
   column :article_id, :type => :integer
   column :tag1,       :type => :string
+  column :tag2,       :type => :string
+  column :tag3,       :type => :string
+  column :tag4,       :type => :string
+  column :tag5,       :type => :string
+  column :tag6,       :type => :string
+  column :tag7,       :type => :string
+  column :tag8,       :type => :string
+  column :tag9,       :type => :string
+  column :tag10,      :type => :string
 
   validates_presence_of :article_id
   validates_presence_of :tag1
