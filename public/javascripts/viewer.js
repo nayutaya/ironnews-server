@@ -81,10 +81,7 @@ viewer.addTagsToCurrentArticle = function(tags, success) {
 };
 
 viewer.removeTagsFromCurrentArticle = function(tags, success) {
-  // FIXME: まとめて削除する
-  $.each(tags, function(index, tag) {
-    api.removeTags(viewer.currentArticleId, tag, {success: success});
-  });
+  api.removeTags(viewer.currentArticleId, tags, {success: success});
 };
 
 $(function() {
