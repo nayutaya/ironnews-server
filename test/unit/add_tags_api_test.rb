@@ -126,7 +126,7 @@ class AddTagsApiTest < ActiveSupport::TestCase
       :success => true,
       :result  => {
         :article_id => article.id,
-        :tag1_id    => tag.id,
+        :tags       => [tag.name],
       },
     }
     assert_equal(expected, result)
@@ -157,7 +157,7 @@ class AddTagsApiTest < ActiveSupport::TestCase
       :success => true,
       :result  => {
         :article_id => article.id,
-        :tag1_id    => tag.id,
+        :tags       => [tag.name],
       },
     }
     assert_equal(expected, result)
@@ -182,7 +182,7 @@ class AddTagsApiTest < ActiveSupport::TestCase
       :success => true,
       :result  => {
         :article_id => article.id,
-        :tag1_id    => tag.id,
+        :tags       => [tag.name],
       },
     }
     assert_equal(expected, result)
@@ -215,18 +215,7 @@ class AddTagsApiTest < ActiveSupport::TestCase
       :success => true,
       :result  => {
         :article_id => article.id,
-        :tag1_id    => Tag.get("1").id,
-=begin
-        :tag2_id    => Tag.get("2").id,
-        :tag3_id    => Tag.get("3").id,
-        :tag4_id    => Tag.get("4").id,
-        :tag5_id    => Tag.get("5").id,
-        :tag6_id    => Tag.get("6").id,
-        :tag7_id    => Tag.get("7").id,
-        :tag8_id    => Tag.get("8").id,
-        :tag9_id    => Tag.get("9").id,
-        :tag10_id   => Tag.get("10").id,
-=end
+        :tags       => %w[1 2 3 4 5 6 7 8 9 10].sort,
       },
     }
     assert_equal(expected, result)

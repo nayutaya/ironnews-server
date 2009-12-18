@@ -33,29 +33,24 @@ class AddTagsApi < ApiBase
   end
 
   def execute(user_id)
-    tag_ids = self.tags.
+    tags = self.tags.
       sort.uniq.
       map { |tag| Tag.get(tag) }.
-      compact.
-      map(&:id)
+      compact
+    tag_ids = tags.map(&:id)
 
     unless tag_ids.empty?
-      tag_ids.each { |tag_id|
+      tag_ids.map { |tag_id|
         Tagging.find_or_create_by_user_id_and_article_id_and_tag_id(
           user_id, self.article_id, tag_id)
       }
     end
 
-    tag = Tag.get(self.tag1)
-
-    tagging = Tagging.find_or_create_by_user_id_and_article_id_and_tag_id(
-      user_id, self.article_id, tag.id)
-
     result = {
       :success => true,
       :result  => {
-        :article_id => tagging.article_id,
-        :tag1_id    => tagging.tag_id,
+        :article_id => self.article_id,
+        :tags       => tags.map(&:name).sort,
       },
     }
 
