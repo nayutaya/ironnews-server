@@ -18,6 +18,15 @@ class AddTagsApiTest < ActiveSupport::TestCase
     [
       [:article_id, nil, "1", 1],
       [:tag1,       nil, "1", "1"],
+      [:tag2,       nil, "1", "1"],
+      [:tag3,       nil, "1", "1"],
+      [:tag4,       nil, "1", "1"],
+      [:tag5,       nil, "1", "1"],
+      [:tag6,       nil, "1", "1"],
+      [:tag7,       nil, "1", "1"],
+      [:tag8,       nil, "1", "1"],
+      [:tag9,       nil, "1", "1"],
+      [:tag10,      nil, "1", "1"],
     ].each { |name, default, set_value, get_value|
       form = @klass.new
       assert_equal(default, form.__send__(name))
@@ -61,6 +70,38 @@ class AddTagsApiTest < ActiveSupport::TestCase
   # インスタンスメソッド
   #
 
+  test "tags, empty" do
+    assert_equal([], @form.tags)
+  end
+
+  test "tags, one" do
+    @form.tag1 = "a"
+    assert_equal(["a"], @form.tags)
+  end
+
+  test "tags, blanks" do
+    @form.tag1 = nil
+    @form.tag2 = ""
+    @form.tag3 = " "
+    assert_equal([], @form.tags)
+  end
+
+  test "tags, full" do
+    @form.tag1  = "1"
+    @form.tag2  = "2"
+    @form.tag3  = "3"
+    @form.tag4  = "4"
+    @form.tag5  = "5"
+    @form.tag6  = "6"
+    @form.tag7  = "7"
+    @form.tag8  = "8"
+    @form.tag9  = "9"
+    @form.tag10 = "10"
+    assert_equal(
+      %w[1 2 3 4 5 6 7 8 9 10],
+      @form.tags)
+  end
+
   test "execute, exist tag" do
     user    = users(:yuya)
     article = articles(:mainichi1)
@@ -85,7 +126,7 @@ class AddTagsApiTest < ActiveSupport::TestCase
       :success => true,
       :result  => {
         :article_id => article.id,
-        :tag1_id    => tag.id,
+        :tags       => [tag.name],
       },
     }
     assert_equal(expected, result)
@@ -116,7 +157,7 @@ class AddTagsApiTest < ActiveSupport::TestCase
       :success => true,
       :result  => {
         :article_id => article.id,
-        :tag1_id    => tag.id,
+        :tags       => [tag.name],
       },
     }
     assert_equal(expected, result)
@@ -141,7 +182,40 @@ class AddTagsApiTest < ActiveSupport::TestCase
       :success => true,
       :result  => {
         :article_id => article.id,
-        :tag1_id    => tag.id,
+        :tags       => [tag.name],
+      },
+    }
+    assert_equal(expected, result)
+  end
+
+  test "execute, multiple" do
+    user     = users(:yuya)
+    article  = articles(:asahi1)
+
+    @form.article_id = article.id
+    @form.tag1       = "1"
+    @form.tag2       = "2"
+    @form.tag3       = "3"
+    @form.tag4       = "4"
+    @form.tag5       = "5"
+    @form.tag6       = "6"
+    @form.tag7       = "7"
+    @form.tag8       = "8"
+    @form.tag9       = "9"
+    @form.tag10      = "10"
+
+    result = nil
+    assert_difference("Tag.count", +10) {
+      assert_difference("Tagging.count", +10) {
+        result = @form.execute(user.id)
+      }
+    }
+
+    expected = {
+      :success => true,
+      :result  => {
+        :article_id => article.id,
+        :tags       => %w[1 2 3 4 5 6 7 8 9 10].sort,
       },
     }
     assert_equal(expected, result)
