@@ -187,4 +187,48 @@ class AddTagsApiTest < ActiveSupport::TestCase
     }
     assert_equal(expected, result)
   end
+
+  test "execute, multiple" do
+    user     = users(:yuya)
+    article  = articles(:asahi1)
+
+    @form.article_id = article.id
+    @form.tag1       = "1"
+    @form.tag2       = "2"
+    @form.tag3       = "3"
+    @form.tag4       = "4"
+    @form.tag5       = "5"
+    @form.tag6       = "6"
+    @form.tag7       = "7"
+    @form.tag8       = "8"
+    @form.tag9       = "9"
+    @form.tag10      = "10"
+
+    result = nil
+    assert_difference("Tag.count", +10) {
+      assert_difference("Tagging.count", +10) {
+        result = @form.execute(user.id)
+      }
+    }
+
+    expected = {
+      :success => true,
+      :result  => {
+        :article_id => article.id,
+        :tag1_id    => Tag.get("1").id,
+=begin
+        :tag2_id    => Tag.get("2").id,
+        :tag3_id    => Tag.get("3").id,
+        :tag4_id    => Tag.get("4").id,
+        :tag5_id    => Tag.get("5").id,
+        :tag6_id    => Tag.get("6").id,
+        :tag7_id    => Tag.get("7").id,
+        :tag8_id    => Tag.get("8").id,
+        :tag9_id    => Tag.get("9").id,
+        :tag10_id   => Tag.get("10").id,
+=end
+      },
+    }
+    assert_equal(expected, result)
+  end
 end
