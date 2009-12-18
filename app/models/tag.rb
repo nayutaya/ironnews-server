@@ -55,12 +55,16 @@ class Tag < ActiveRecord::Base
 
     normalized_names = names.map { |name| self.normalize(name) }
 
-    return normalized_names.map { |normalized_name|
-      if create
-        self.find_or_create_by_name(normalized_name)
-      else
-        self.find_by_name(normalized_name)
-      end
-    }.compact
+    exist_tags = self.find_all_by_name(normalized_names)
+    new_tags   = []
+
+    if create
+      new_tag_names = normalized_names - exist_tags.map(&:name)
+      new_tag_names.each { |name|
+        new_tags << self.create!(:name => name)
+      }
+    end
+
+    return (exist_tags + new_tags).sort_by(&:id)
   end
 end

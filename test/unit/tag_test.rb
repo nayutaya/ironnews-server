@@ -198,11 +198,11 @@ class TagTest < ActiveSupport::TestCase
     expected = [
       tags(:rail),
       tags(:nonrail),
-    ]
+    ].sort_by(&:id)
     assert_difference("#{@klass}.count", 0) {
       assert_equal(
-        expected.sort_by(&:id),
-        @klass.get_by_names(names).sort_by(&:id))
+        expected,
+        @klass.get_by_names(names))
     }
   end
 
