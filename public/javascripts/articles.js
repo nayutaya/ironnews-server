@@ -54,6 +54,13 @@ manager.adjustScrollPosition = function() {
   }
 };
 
+manager.getAllArticles = function() {
+  return $("ul.articles li");
+};
+manager.getCurrentArticle = function() {
+  return $("ul.articles li.cursor:first");
+};
+
 $(function() {
   manager.setFavicon();
   manager.replaceLink();
@@ -64,71 +71,30 @@ $(function() {
   };
 
   (function() {
-    var articleList = $("ul.articles li");
-
-    var getCurrentArticleItemElement = function() {
-      return $("ul.articles li.cursor")[0];
-    };
-    var getCurrentAnchorElement = function() {
-      return $("ul.articles li.cursor a")[0];
-    };
-    var getArticleIndex = function(itemElement) {
-      var index = articleList.get().indexOf(itemElement);
-      return (index >= 0 ? index : null);
-    };
-    var getNextArticleItemElement = function(currentElement) {
-      var index = getArticleIndex(currentElement);
-      if ( index == null ) return null;
-      if ( index >= articleList.length - 1 ) return null;
-      return articleList[index + 1];
-    };
-    var getPrevArticleItemElement = function(currentElement) {
-      var index = getArticleIndex(currentElement);
-      if ( index == null ) return null;
-      if ( index <= 0 ) return null;
-      return articleList[index - 1];
-    };
-
     var moveToNextArticle = function() {
-/*
-      var current = getCurrentArticleItemElement();
-      var next    = getNextArticleItemElement(current);
-      if ( next != null )
-      {
-        manager.moveCursorTo(next);
-      }
-*/
-      var all  = $("ul.articles li");
-      var cur  = $("ul.articles li.cursor:first");
-      var next = all.get(all.index(cur) + 1);
+      var all     = manager.getAllArticles();
+      var current = manager.getCurrentArticle();
+      var next    = all.get(all.index(current) + 1);
       if ( next != null )
       {
         manager.moveCursorTo(next);
       }
     };
     var moveToPrevArticle = function() {
-/*
-      var current = getCurrentArticleItemElement();
-      var prev    = getPrevArticleItemElement(current);
-      if ( prev != null )
-      {
-        manager.moveCursorTo(prev);
-      }
-*/
-      var all  = $("ul.articles li");
-      var cur  = $("ul.articles li.cursor:first");
-      var prev = all.get(all.index(cur) - 1);
+      var all     = manager.getAllArticles();
+      var current = manager.getCurrentArticle();
+      var prev    = all.get(all.index(current) - 1);
       if ( prev != null )
       {
         manager.moveCursorTo(prev);
       }
     };
     var togglePinOfArticle = function() {
-      var current = getCurrentArticleItemElement();
-      $(current).toggleClass("pinned");
+      var current = manager.getCurrentArticle();
+      current.toggleClass("pinned");
     };
     var openCurrentArticle = function() {
-      var current   = getCurrentAnchorElement();
+      var current   = $("ul.articles li.cursor a")[0];
       var articleId = getArticleIdFromAnchorElement(current);
       var path = "/viewer#" + articleId;
       var win = window.open(path);
