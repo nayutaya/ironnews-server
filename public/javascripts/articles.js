@@ -1,4 +1,43 @@
 
+// [JavaScript][jQuery]ある要素が画面内に収まるようにスクロールするjQueryプラグイン
+// http://d.hatena.ne.jp/JJX/20090227/1235768010
+(function(){
+    jQuery.fn.isinwindow = function(){
+        var top    = $(window).scrollTop();
+        var bottom = $(window).height() + $(window).scrollTop();
+        var left   = $(window).scrollLeft();
+        var right  = $(window).width() + $(window).scrollLeft();
+
+        return this.offset().top  >= top   && this.offset().top  + this.height() <= bottom &&
+               this.offset().left >= left  && this.offset().left + this.width()  <= right;
+    };
+    jQuery.fn.inwindow = function(){
+        var top    = $(window).scrollTop();
+        var bottom = $(window).height() + $(window).scrollTop();
+        var left   = $(window).scrollLeft();
+        var right  = $(window).width() + $(window).scrollLeft();
+
+        if(!(this.offset().top  >= top)){
+            $(window).scrollTop(this.offset().top);
+        }
+        if(!(this.offset().top  + this.height() <= bottom)){
+            $(window).scrollTop(
+                $(window).scrollTop() + this.offset().top  + this.height() - bottom
+            );
+        }
+        if(!(this.offset().left  >= left)){
+            $(window).scrollLeft(this.offset().left);
+        }
+        if(!(this.offset().left  + this.width() <= right)){
+            $(window).scrollLeft(
+                $(window).scrollLeft() + this.offset().left  + this.width() - right
+            );
+        }
+        return this;
+    };
+})(jQuery);
+
+
 var manager = {};
 
 manager.setFavicon = function() {
@@ -68,6 +107,10 @@ $(function() {
       {
         $(current).removeClass("cursor");
         $(next).addClass("cursor");
+
+        //console.debug(next);
+        //console.debug($(next).isinwindow());
+        $(next).inwindow();
       }
     };
     var moveToPrevArticle = function() {
