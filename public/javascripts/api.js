@@ -32,16 +32,19 @@ api.addTags = function(article_id, tag1, options) {
   });
 };
 
-api.removeTags = function(article_id, tag1, options) {
+api.removeTags = function(article_id, tags, options) {
   if ( options == null ) options = {};
+
+  var params = {article_id: article_id};
+  for ( var i = 0; i <= 9; i++ )
+  {
+    params["tag" + (i + 1)] = (tags[i] || "");
+  }
 
   $.ajax({
     type: "GET",
     url: "/api/remove_tags",
-    data: {
-      article_id: article_id,
-      tag1: tag1//,
-    },
+    data: params,
     dataType: "jsonp",
     cache: true,
     success: options.success//,
