@@ -26,7 +26,7 @@ class RemoveTagsApi < ApiBase
   # FIXME: article_idの存在を検証
   # FIXME: tag1の長さを検証
 
-  def tags
+  def tag_names
     return (1..10).
       map { |i| self.__send__("tag#{i}") }.
       map { |tag| Tag.normalize(tag.to_s) }.
@@ -34,7 +34,7 @@ class RemoveTagsApi < ApiBase
   end
 
   def execute(user_id)
-    tags = self.tags.
+    tags = self.tag_names.
       map { |tag| Tag.get(tag, :create => false) }.
       compact
 
@@ -50,7 +50,7 @@ class RemoveTagsApi < ApiBase
       :success => true,
       :result  => {
         :article_id => self.article_id,
-        :tags       => self.tags.sort,
+        :tags       => self.tag_names,
       },
     }
   end

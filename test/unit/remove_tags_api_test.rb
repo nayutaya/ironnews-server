@@ -70,26 +70,26 @@ class RemoveTagsApiTest < ActiveSupport::TestCase
   # インスタンスメソッド
   #
 
-  test "tags, empty" do
-    assert_equal([], @form.tags)
+  test "tag_names, empty" do
+    assert_equal([], @form.tag_names)
   end
 
-  test "tags, normalize" do
+  test "tag_names, normalize" do
     @form.tag1 = " A "
     @form.tag2 = nil
     @form.tag3 = ""
     @form.tag4 = " "
-    assert_equal(["a"], @form.tags)
+    assert_equal(["a"], @form.tag_names)
   end
 
-  test "tags, sort and uniq" do
+  test "tag_names, sort and uniq" do
     @form.tag1 = "b"
     @form.tag2 = "a"
     @form.tag3 = "a"
-    assert_equal(%w[a b], @form.tags)
+    assert_equal(%w[a b], @form.tag_names)
   end
 
-  test "tags, full" do
+  test "tag_names, full" do
     @form.tag1  = "1"
     @form.tag2  = "2"
     @form.tag3  = "3"
@@ -102,7 +102,7 @@ class RemoveTagsApiTest < ActiveSupport::TestCase
     @form.tag10 = "10"
     assert_equal(
       %w[1 2 3 4 5 6 7 8 9 10].sort,
-      @form.tags)
+      @form.tag_names)
   end
 
   test "execute, exist tagging" do
