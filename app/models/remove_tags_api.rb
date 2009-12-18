@@ -33,25 +33,18 @@ class RemoveTagsApi < ApiBase
   end
 
   def execute(user_id)
-    tags = self.tags.map { |tag| Tag.get(tag, :create => false) }.compact
-    unless tags.empty?
-      #taggings = Tagging.find_all_by_user_id_and_article_id_and_tag_id(user_id, self.article_id, tags.map(&:id))
-      taggings = Tagging.all(
-        :conditions => [
-          "(taggings.user_id = :user_id) AND (taggings.article_id = :article_id) AND (taggings.tag_id IN (:tag_ids))",
-          {
-            :user_id    => user_id,
-            :article_id => self.article_id,
-            :tag_ids    => tags.map(&:id),
-          }
-        ])
-      taggings.each(&:destroy)
-    end
+    tag_ids = self.tags.
+      sort.uniq.
+      map { |tag| Tag.get(tag, :create => false) }.
+      compact.
+      map(&:id)
 
-    tag = Tag.get(self.tag1, :create => false)
-    if tag
-      tagging = Tagging.find_by_user_id_and_article_id_and_tag_id(user_id, self.article_id, tag.id)
-      tagging.destroy if tagging
+    unless tag_ids.empty?
+      Tagging.
+        scoped_by_user_id(user_id).
+        scoped_by_article_id(self.article_id).
+        scoped_by_tag_id(tag_ids).
+        each(&:destroy)
     end
 
     return {
