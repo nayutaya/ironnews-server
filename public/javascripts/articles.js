@@ -23,10 +23,16 @@ manager.getArticleIdFromAnchorElement = function(anchor) {
 };
 
 manager.initCursor = function() {
-  $($("ul.articles li")[0]).addClass("cursor");
+  $("ul.articles li:first").addClass("cursor");
 };
 
-manager.adjustCursor = function() {
+manager.moveCursorTo = function(target) {
+  $("ul.articles li.cursor").removeClass("cursor")
+  $(target).addClass("cursor");
+  manager.adjustScrollPosition();
+};
+
+manager.adjustScrollPosition = function() {
   var view        = $(window);
   var view_height = view.height();
   var view_top    = view.scrollTop();
@@ -46,7 +52,7 @@ manager.adjustCursor = function() {
   {
     view.scrollTop(target_bottom - view_height + margin);
   }
-}
+};
 
 $(function() {
   manager.setFavicon();
@@ -88,9 +94,7 @@ $(function() {
       var next    = getNextArticleItemElement(current);
       if ( next != null )
       {
-        $(current).removeClass("cursor");
-        $(next).addClass("cursor");
-        manager.adjustCursor();
+        manager.moveCursorTo(next);
       }
     };
     var moveToPrevArticle = function() {
@@ -98,9 +102,7 @@ $(function() {
       var prev    = getPrevArticleItemElement(current);
       if ( prev != null )
       {
-        $(current).removeClass("cursor");
-        $(prev).addClass("cursor");
-        manager.adjustCursor();
+        manager.moveCursorTo(prev);
       }
     };
     var togglePinOfArticle = function() {
