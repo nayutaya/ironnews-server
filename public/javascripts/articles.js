@@ -61,14 +61,14 @@ manager.getCurrentArticle = function() {
   return $("ul.articles li.cursor:first");
 };
 
+manager.getArticleId = function(id) {
+  return (/^article-(\d+)$/.exec(id) || [])[1];
+};
+
 $(function() {
   manager.setFavicon();
   manager.replaceLink();
   manager.initCursor();
-
-  var getArticleIdFromAnchorElement = function(anchor) {
-    return (/^article-(\d+)$/.exec(anchor.id) || [])[1];
-  };
 
   (function() {
     var moveToNextArticle = function() {
@@ -95,20 +95,18 @@ $(function() {
     };
     var openCurrentArticle = function() {
       var current   = $("ul.articles li.cursor a")[0];
-      var articleId = getArticleIdFromAnchorElement(current);
+      var articleId = manager.getArticleId(current.id);
       var path = "/viewer#" + articleId;
-      var win = window.open(path);
+      window.open(path);
     };
     var openPinnedArticles = function() {
-      var articleIds = [];
-      $("ul.articles li.pinned a").each(function() {
-        var articleId = getArticleIdFromAnchorElement(this);
-        articleIds.push(articleId);
+      var articleIds = $("ul.articles li.pinned a").map(function() {
+        return manager.getArticleId(this.id);
       });
       if ( articleIds.length > 0 )
       {
-        var path = "/viewer#" + articleIds.join(",");
-        var win = window.open(path);
+        var path = "/viewer#" + $.makeArray(articleIds).join(",");
+        window.open(path);
       }
     };
     var setPinOfAllArticles = function() {
