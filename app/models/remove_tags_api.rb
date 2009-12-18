@@ -34,10 +34,7 @@ class RemoveTagsApi < ApiBase
   end
 
   def execute(user_id)
-    tags = self.tag_names.
-      map { |tag| Tag.get(tag, :create => false) }.
-      compact
-
+    tags = Tag.get_by_names(self.tag_names, :create => false)
     unless tags.empty?
       Tagging.
         scoped_by_user_id(user_id).

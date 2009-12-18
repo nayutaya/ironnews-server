@@ -34,9 +34,7 @@ class AddTagsApi < ApiBase
   end
 
   def execute(user_id)
-    tags = self.tag_names.
-      map { |tag| Tag.get(tag) }
-
+    tags = Tag.get_by_names(self.tag_names)
     unless tags.empty?
       tags.map { |tag|
         Tagging.
@@ -46,14 +44,12 @@ class AddTagsApi < ApiBase
       }
     end
 
-    result = {
+    return {
       :success => true,
       :result  => {
         :article_id => self.article_id,
         :tags       => self.tag_names,
       },
     }
-
-    return result
   end
 end

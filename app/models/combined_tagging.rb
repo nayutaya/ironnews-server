@@ -42,19 +42,19 @@ class CombinedTagging < ActiveRecord::Base
       :limit      => limit)
   end
 
-  # FIXME: 1回のクエリでまとめて取得
   def self.get_division_tags
-    return DivisionTags.map { |name| Tag.get(name) }
+    return Tag.get_by_names(DivisionTags).
+      sort_by { |tag| DivisionTags.index(tag.name) }
   end
 
-  # FIXME: 1回のクエリでまとめて取得
   def self.get_category_tags
-    return CategoryTags.map { |name| Tag.get(name) }
+    return Tag.get_by_names(CategoryTags).
+      sort_by { |tag| CategoryTags.index(tag.name) }
   end
 
-  # FIXME: 1回のクエリでまとめて取得
   def self.get_area_tags
-    return AreaTags.map { |name| Tag.get(name) }
+    return Tag.get_by_names(AreaTags).
+      sort_by { |tag| AreaTags.index(tag.name) }
   end
 
   def self.create_tag_frequency_table(article_ids)
