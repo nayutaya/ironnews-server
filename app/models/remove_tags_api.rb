@@ -29,12 +29,12 @@ class RemoveTagsApi < ApiBase
   def tags
     return (1..10).
       map { |i| self.__send__("tag#{i}") }.
-      reject(&:blank?)
+      map { |tag| Tag.normalize(tag.to_s) }.
+      reject(&:blank?).sort.uniq
   end
 
   def execute(user_id)
     tags = self.tags.
-      sort.uniq.
       map { |tag| Tag.get(tag, :create => false) }.
       compact
 

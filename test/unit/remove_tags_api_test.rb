@@ -74,16 +74,19 @@ class RemoveTagsApiTest < ActiveSupport::TestCase
     assert_equal([], @form.tags)
   end
 
-  test "tags, one" do
-    @form.tag1 = "a"
+  test "tags, normalize" do
+    @form.tag1 = " A "
+    @form.tag2 = nil
+    @form.tag3 = ""
+    @form.tag4 = " "
     assert_equal(["a"], @form.tags)
   end
 
-  test "tags, blanks" do
-    @form.tag1 = nil
-    @form.tag2 = ""
-    @form.tag3 = " "
-    assert_equal([], @form.tags)
+  test "tags, sort and uniq" do
+    @form.tag1 = "b"
+    @form.tag2 = "a"
+    @form.tag3 = "a"
+    assert_equal(%w[a b], @form.tags)
   end
 
   test "tags, full" do
@@ -98,7 +101,7 @@ class RemoveTagsApiTest < ActiveSupport::TestCase
     @form.tag9  = "9"
     @form.tag10 = "10"
     assert_equal(
-      %w[1 2 3 4 5 6 7 8 9 10],
+      %w[1 2 3 4 5 6 7 8 9 10].sort,
       @form.tags)
   end
 
