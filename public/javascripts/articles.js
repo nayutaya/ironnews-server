@@ -8,13 +8,15 @@ manager.setFavicon = function() {
   });
 };
 
+manager.createViewerPath = function(articleIds) {
+  return "/viewer#" + articleIds.join(",");
+};
+
 manager.replaceLink = function() {
   $("ul.articles li a").each(function() {
     var articleId = manager.getArticleId(this.id);
-    if ( articleId != null )
-    {
-      this.href = "/viewer#" + articleId;
-    }
+    if ( articleId == null ) return;
+    this.href = manager.createViewerPath([articleId]);
   });
 };
 
@@ -65,19 +67,15 @@ manager.moveToNextArticle = function() {
   var all     = manager.getAllArticles();
   var current = manager.getCurrentArticle();
   var next    = all.get(all.index(current) + 1);
-  if ( next != null )
-  {
-    manager.moveCursorTo(next);
-  }
+  if ( next == null ) return;
+  manager.moveCursorTo(next);
 };
 manager.moveToPrevArticle = function() {
   var all     = manager.getAllArticles();
   var current = manager.getCurrentArticle();
   var prev    = all.get(all.index(current) - 1);
-  if ( prev != null )
-  {
-    manager.moveCursorTo(prev);
-  }
+  if ( prev == null ) return;
+  manager.moveCursorTo(prev);
 };
 manager.togglePinOfArticle = function() {
   var current = manager.getCurrentArticle();
@@ -86,7 +84,7 @@ manager.togglePinOfArticle = function() {
 manager.openCurrentArticle = function() {
   var current   = $("ul.articles li.cursor a")[0];
   var articleId = manager.getArticleId(current.id);
-  var path = "/viewer#" + articleId;
+  var path = manager.createViewerPath([articleId]);
   window.open(path);
 };
 manager.openPinnedArticles = function() {
@@ -95,7 +93,7 @@ manager.openPinnedArticles = function() {
   });
   if ( articleIds.length > 0 )
   {
-    var path = "/viewer#" + $.makeArray(articleIds).join(",");
+    var path = manager.createViewerPath($.makeArray(articleIds))
     window.open(path);
   }
 };
