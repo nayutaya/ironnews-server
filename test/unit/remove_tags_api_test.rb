@@ -119,7 +119,7 @@ class RemoveTagsApiTest < ActiveSupport::TestCase
 
     assert_equal(
       nil,
-      Tagging.find_by_user_id_and_article_id_and_tag_id(user.id, article.id, tag.id))
+      user.taggings.find_by_article_id_and_tag_id(article.id, tag.id))
 
     expected = {
       :success => true,
@@ -130,7 +130,7 @@ class RemoveTagsApiTest < ActiveSupport::TestCase
   test "execute, no exist tagging" do
     user     = users(:yuya)
     article  = articles(:asahi1)
-    tag_name = "非鉄"
+    tag_name = tags(:nonrail).name
 
     @form.article_id = article.id
     @form.tag1       = tag_name
