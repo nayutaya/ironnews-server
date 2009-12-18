@@ -28,9 +28,6 @@ class ApiController < ApplicationController
   def remove_tags
     api = RemoveTagsApi.from(params)
     render_json(api.execute(@user.id))
-
-    # FIXME: 実験用コード
-    CombinedTagging.incremental_update(10)
   end
 
   private
