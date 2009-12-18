@@ -47,4 +47,20 @@ class Tag < ActiveRecord::Base
     else raise(ArgumentError)
     end
   end
+
+  def self.get_by_names(names, options = {})
+    options = options.dup
+    create = (options.delete(:create) != false)
+    raise(ArgumentError) unless options.empty?
+
+    normalized_names = names.map { |name| self.normalize(name) }
+
+    return normalized_names.map { |normalized_name|
+      if create
+        self.find_or_create_by_name(normalized_name)
+      else
+        self.find_by_name(normalized_name)
+      end
+    }.compact
+  end
 end

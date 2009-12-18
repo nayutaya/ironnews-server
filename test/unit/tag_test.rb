@@ -189,4 +189,54 @@ class TagTest < ActiveSupport::TestCase
       @klass.get(:invalid)
     }
   end
+
+  test "self.get_by_names, exist tags" do
+    names = [
+      tags(:rail).name + " ",
+      tags(:nonrail).name + " ",
+    ]
+    expected = [
+      tags(:rail),
+      tags(:nonrail),
+    ]
+    assert_difference("#{@klass}.count", 0) {
+      assert_equal(
+        expected.sort_by(&:id),
+        @klass.get_by_names(names).sort_by(&:id))
+    }
+  end
+
+  test "self.get_by_names, include new tag" do
+    names = [
+      tags(:rail).name,
+      "新しいタグ",
+    ]
+    assert_difference("#{@klass}.count", +1) {
+      assert_equal(
+        names.sort,
+        @klass.get_by_names(names).map(&:name).sort)
+    }
+  end
+
+  test "self.get_by_names, include new tag but not create" do
+    names = [
+      tags(:rail).name,
+      "新しいタグ",
+    ]
+    assert_difference("#{@klass}.count", 0) {
+      assert_equal(
+        [tags(:rail).name],
+        @klass.get_by_names(names, :create => false).map(&:name).sort)
+    }
+  end
+
+  test "self.get_by_names, empty" do
+    assert_equal([], @klass.get_by_names([]))
+  end
+
+  test "self.get_by_names, invalid parameter" do
+    assert_raise(ArgumentError) {
+      @klass.get_by_names([], :invalid => true)
+    }
+  end
 end
