@@ -26,29 +26,29 @@ class RemoveTagsApi < ApiBase
   # FIXME: article_idの存在を検証
   # FIXME: tag1の長さを検証
 
-  def tags
+  def tag_names
     return (1..10).
       map { |i| self.__send__("tag#{i}") }.
-      reject(&:blank?)
+      map { |tag| Tag.normalize(tag.to_s) }.
+      reject(&:blank?).sort.uniq
   end
 
   def execute(user_id)
-    tag_ids = self.tags.
-      sort.uniq.
-      map { |tag| Tag.get(tag, :create => false) }.
-      compact.
-      map(&:id)
-
-    unless tag_ids.empty?
+    tags = Tag.get_by_names(self.tag_names, :create => false)
+    unless tags.empty?
       Tagging.
         scoped_by_user_id(user_id).
         scoped_by_article_id(self.article_id).
-        scoped_by_tag_id(tag_ids).
+        scoped_by_tag_id(tags.map(&:id)).
         each(&:destroy)
     end
 
     return {
       :success => true,
+      :result  => {
+        :article_id => self.article_id,
+        :tags       => self.tag_names,
+      },
     }
   end
 end

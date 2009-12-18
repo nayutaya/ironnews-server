@@ -26,18 +26,15 @@ class AddTagsApi < ApiBase
   # FIXME: article_idの存在を検証
   # FIXME: tagの長さを検証
 
-  def tags
+  def tag_names
     return (1..10).
       map { |i| self.__send__("tag#{i}") }.
-      reject(&:blank?)
+      map { |tag| Tag.normalize(tag.to_s) }.
+      reject(&:blank?).sort.uniq
   end
 
   def execute(user_id)
-    tags = self.tags.
-      sort.uniq.
-      map { |tag| Tag.get(tag) }.
-      compact
-
+    tags = Tag.get_by_names(self.tag_names)
     unless tags.empty?
       tags.map { |tag|
         Tagging.
@@ -47,14 +44,12 @@ class AddTagsApi < ApiBase
       }
     end
 
-    result = {
+    return {
       :success => true,
       :result  => {
         :article_id => self.article_id,
-        :tags       => tags.map(&:name).sort,
+        :tags       => self.tag_names,
       },
     }
-
-    return result
   end
 end

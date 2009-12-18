@@ -70,23 +70,11 @@ class RemoveTagsApiTest < ActiveSupport::TestCase
   # インスタンスメソッド
   #
 
-  test "tags, empty" do
-    assert_equal([], @form.tags)
+  test "tag_names, empty" do
+    assert_equal([], @form.tag_names)
   end
 
-  test "tags, one" do
-    @form.tag1 = "a"
-    assert_equal(["a"], @form.tags)
-  end
-
-  test "tags, blanks" do
-    @form.tag1 = nil
-    @form.tag2 = ""
-    @form.tag3 = " "
-    assert_equal([], @form.tags)
-  end
-
-  test "tags, full" do
+  test "tag_names, full" do
     @form.tag1  = "1"
     @form.tag2  = "2"
     @form.tag3  = "3"
@@ -98,8 +86,17 @@ class RemoveTagsApiTest < ActiveSupport::TestCase
     @form.tag9  = "9"
     @form.tag10 = "10"
     assert_equal(
-      %w[1 2 3 4 5 6 7 8 9 10],
-      @form.tags)
+      %w[1 2 3 4 5 6 7 8 9 10].sort,
+      @form.tag_names)
+  end
+
+  test "tag_names, normalize" do
+    @form.tag1 = "B"
+    @form.tag2 = "A"
+    @form.tag3 = nil
+    @form.tag4 = ""
+    @form.tag5 = " "
+    assert_equal(%w[a b], @form.tag_names)
   end
 
   test "execute, exist tagging" do
@@ -123,6 +120,10 @@ class RemoveTagsApiTest < ActiveSupport::TestCase
 
     expected = {
       :success => true,
+      :result  => {
+        :article_id => article.id,
+        :tags       => [tag.name],
+      },
     }
     assert_equal(expected, result)
   end
@@ -144,6 +145,10 @@ class RemoveTagsApiTest < ActiveSupport::TestCase
 
     expected = {
       :success => true,
+      :result  => {
+        :article_id => article.id,
+        :tags       => [tag_name],
+      },
     }
     assert_equal(expected, result)
   end
@@ -165,6 +170,10 @@ class RemoveTagsApiTest < ActiveSupport::TestCase
 
     expected = {
       :success => true,
+      :result  => {
+        :article_id => article.id,
+        :tags       => [tag_name],
+      },
     }
     assert_equal(expected, result)
   end
@@ -209,6 +218,10 @@ class RemoveTagsApiTest < ActiveSupport::TestCase
 
     expected = {
       :success => true,
+      :result  => {
+        :article_id => article.id,
+        :tags       => %w[1 2 3 4 5 6 7 8 9 10].sort,
+      },
     }
     assert_equal(expected, result)
   end
