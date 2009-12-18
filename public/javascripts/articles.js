@@ -65,6 +65,27 @@ manager.initCursor = function() {
   $($("ul.articles li")[0]).addClass("cursor");
 };
 
+// FIXME: 関数名を変更
+manager.showCursor = function() {
+  var view_height = $(window).height();
+  var view_top    = $(window).scrollTop();
+  var view_bottom = view_top + view_height;
+
+  var target = $("ul.articles li.cursor:first");
+  var target_top    = target.offset().top;
+  var target_bottom = target.offset().top + target.height();
+
+if ( target_top < view_top )
+{
+  $(window).scrollTop(target_top - 50);
+}
+if ( target_bottom > view_bottom )
+{
+  $(window).scrollTop(target_bottom - $(window).height() + 50);
+}
+
+}
+
 $(function() {
   manager.setFavicon();
   manager.replaceLink();
@@ -107,10 +128,7 @@ $(function() {
       {
         $(current).removeClass("cursor");
         $(next).addClass("cursor");
-
-        //console.debug(next);
-        //console.debug($(next).isinwindow());
-        $(next).inwindow();
+        manager.showCursor();
       }
     };
     var moveToPrevArticle = function() {
@@ -120,6 +138,7 @@ $(function() {
       {
         $(current).removeClass("cursor");
         $(prev).addClass("cursor");
+        manager.showCursor();
       }
     };
     var togglePinOfArticle = function() {
