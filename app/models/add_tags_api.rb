@@ -37,12 +37,13 @@ class AddTagsApi < ApiBase
       sort.uniq.
       map { |tag| Tag.get(tag) }.
       compact
-    tag_ids = tags.map(&:id)
 
-    unless tag_ids.empty?
-      tag_ids.map { |tag_id|
-        Tagging.find_or_create_by_user_id_and_article_id_and_tag_id(
-          user_id, self.article_id, tag_id)
+    unless tags.empty?
+      tags.map { |tag|
+        Tagging.
+          scoped_by_user_id(user_id).
+          scoped_by_article_id(self.article_id).
+          find_or_create_by_tag_id(tag.id)
       }
     end
 
