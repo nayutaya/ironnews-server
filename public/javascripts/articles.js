@@ -90,16 +90,34 @@ $(function() {
     };
 
     var moveToNextArticle = function() {
+/*
       var current = getCurrentArticleItemElement();
       var next    = getNextArticleItemElement(current);
       if ( next != null )
       {
         manager.moveCursorTo(next);
       }
+*/
+      var all  = $("ul.articles li");
+      var cur  = $("ul.articles li.cursor:first");
+      var next = all.get(all.index(cur) + 1);
+      if ( next != null )
+      {
+        manager.moveCursorTo(next);
+      }
     };
     var moveToPrevArticle = function() {
+/*
       var current = getCurrentArticleItemElement();
       var prev    = getPrevArticleItemElement(current);
+      if ( prev != null )
+      {
+        manager.moveCursorTo(prev);
+      }
+*/
+      var all  = $("ul.articles li");
+      var cur  = $("ul.articles li.cursor:first");
+      var prev = all.get(all.index(cur) - 1);
       if ( prev != null )
       {
         manager.moveCursorTo(prev);
