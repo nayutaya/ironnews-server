@@ -64,6 +64,7 @@ class Tag < ActiveRecord::Base
         []
       end
 
-    return (exist_tags + new_tags).sort_by(&:id)
+    return (exist_tags + new_tags).
+      sort_by { |tag| normalized_names.index(tag.name) }
   end
 end

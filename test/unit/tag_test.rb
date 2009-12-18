@@ -198,7 +198,7 @@ class TagTest < ActiveSupport::TestCase
     expected = [
       tags(:rail),
       tags(:nonrail),
-    ].sort_by(&:id)
+    ]
     assert_difference("#{@klass}.count", 0) {
       assert_equal(
         expected,
@@ -208,25 +208,33 @@ class TagTest < ActiveSupport::TestCase
 
   test "self.get_by_names, include new tag" do
     names = [
-      tags(:rail).name,
-      "新しいタグ",
+      "新しいタグA ",
+      tags(:rail).name + " ",
+      "新しいタグB ",
     ]
-    assert_difference("#{@klass}.count", +1) {
+    expected = [
+      "新しいタグa",
+      tags(:rail).name,
+      "新しいタグb",
+    ]
+    assert_difference("#{@klass}.count", +2) {
       assert_equal(
-        names.sort,
-        @klass.get_by_names(names).map(&:name).sort)
+        expected,
+        @klass.get_by_names(names).map(&:name))
     }
   end
 
   test "self.get_by_names, include new tag but not create" do
     names = [
+      "新しいタグA",
       tags(:rail).name,
-      "新しいタグ",
+      "新しいタグB",
     ]
+    expected = [tags(:rail).name]
     assert_difference("#{@klass}.count", 0) {
       assert_equal(
-        [tags(:rail).name],
-        @klass.get_by_names(names, :create => false).map(&:name).sort)
+        expected,
+        @klass.get_by_names(names, :create => false).map(&:name))
     }
   end
 
