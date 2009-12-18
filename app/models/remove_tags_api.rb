@@ -27,18 +27,9 @@ class RemoveTagsApi < ApiBase
   # FIXME: tag1の長さを検証
 
   def tags
-    result = []
-    result << self.tag1  unless self.tag1.blank?
-    result << self.tag2  unless self.tag2.blank?
-    result << self.tag3  unless self.tag3.blank?
-    result << self.tag4  unless self.tag4.blank?
-    result << self.tag5  unless self.tag5.blank?
-    result << self.tag6  unless self.tag6.blank?
-    result << self.tag7  unless self.tag7.blank?
-    result << self.tag8  unless self.tag8.blank?
-    result << self.tag9  unless self.tag9.blank?
-    result << self.tag10 unless self.tag10.blank?
-    return result
+    return (1..10).
+      map { |i| self.__send__("tag#{i}") }.
+      reject(&:blank?)
   end
 
   def execute(user_id)
