@@ -118,8 +118,9 @@ $(function() {
         var tag2 = $(this).text();
         if ( tag2 != add_tag ) remove_tags.push(tag2);
       });
-      viewer.removeTagsFromCurrentArticle(remove_tags, function() { /*nop*/ });
-      viewer.addTagsToCurrentArticle([add_tag], function() { /*nop*/ });
+      viewer.removeTagsFromCurrentArticle(remove_tags, function() {
+        viewer.addTagsToCurrentArticle([add_tag], function() { /*nop*/ });
+      });
     });
   });
 });
