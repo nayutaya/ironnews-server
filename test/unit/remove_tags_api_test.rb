@@ -123,6 +123,10 @@ class RemoveTagsApiTest < ActiveSupport::TestCase
 
     expected = {
       :success => true,
+      :result  => {
+        :article_id => article.id,
+        :tags       => [tag.name],
+      },
     }
     assert_equal(expected, result)
   end
@@ -144,6 +148,10 @@ class RemoveTagsApiTest < ActiveSupport::TestCase
 
     expected = {
       :success => true,
+      :result  => {
+        :article_id => article.id,
+        :tags       => [tag_name],
+      },
     }
     assert_equal(expected, result)
   end
@@ -165,6 +173,10 @@ class RemoveTagsApiTest < ActiveSupport::TestCase
 
     expected = {
       :success => true,
+      :result  => {
+        :article_id => article.id,
+        :tags       => [tag_name],
+      },
     }
     assert_equal(expected, result)
   end
@@ -209,6 +221,10 @@ class RemoveTagsApiTest < ActiveSupport::TestCase
 
     expected = {
       :success => true,
+      :result  => {
+        :article_id => article.id,
+        :tags       => %w[1 2 3 4 5 6 7 8 9 10].sort,
+      },
     }
     assert_equal(expected, result)
   end

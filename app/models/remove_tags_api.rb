@@ -33,22 +33,25 @@ class RemoveTagsApi < ApiBase
   end
 
   def execute(user_id)
-    tag_ids = self.tags.
+    tags = self.tags.
       sort.uniq.
       map { |tag| Tag.get(tag, :create => false) }.
-      compact.
-      map(&:id)
+      compact
 
-    unless tag_ids.empty?
+    unless tags.empty?
       Tagging.
         scoped_by_user_id(user_id).
         scoped_by_article_id(self.article_id).
-        scoped_by_tag_id(tag_ids).
+        scoped_by_tag_id(tags.map(&:id)).
         each(&:destroy)
     end
 
     return {
       :success => true,
+      :result  => {
+        :article_id => self.article_id,
+        :tags       => self.tags.sort,
+      },
     }
   end
 end
