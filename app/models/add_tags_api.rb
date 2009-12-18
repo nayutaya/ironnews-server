@@ -26,6 +26,12 @@ class AddTagsApi < ApiBase
   # FIXME: article_idの存在を検証
   # FIXME: tagの長さを検証
 
+  def tags
+    return (1..10).
+      map { |i| self.__send__("tag#{i}") }.
+      reject(&:blank?)
+  end
+
   def execute(user_id)
     tag = Tag.get(self.tag1)
 

@@ -70,6 +70,38 @@ class AddTagsApiTest < ActiveSupport::TestCase
   # インスタンスメソッド
   #
 
+  test "tags, empty" do
+    assert_equal([], @form.tags)
+  end
+
+  test "tags, one" do
+    @form.tag1 = "a"
+    assert_equal(["a"], @form.tags)
+  end
+
+  test "tags, blanks" do
+    @form.tag1 = nil
+    @form.tag2 = ""
+    @form.tag3 = " "
+    assert_equal([], @form.tags)
+  end
+
+  test "tags, full" do
+    @form.tag1  = "1"
+    @form.tag2  = "2"
+    @form.tag3  = "3"
+    @form.tag4  = "4"
+    @form.tag5  = "5"
+    @form.tag6  = "6"
+    @form.tag7  = "7"
+    @form.tag8  = "8"
+    @form.tag9  = "9"
+    @form.tag10 = "10"
+    assert_equal(
+      %w[1 2 3 4 5 6 7 8 9 10],
+      @form.tags)
+  end
+
   test "execute, exist tag" do
     user    = users(:yuya)
     article = articles(:mainichi1)
