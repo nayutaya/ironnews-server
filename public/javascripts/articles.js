@@ -1,43 +1,4 @@
 
-// [JavaScript][jQuery]ある要素が画面内に収まるようにスクロールするjQueryプラグイン
-// http://d.hatena.ne.jp/JJX/20090227/1235768010
-(function(){
-    jQuery.fn.isinwindow = function(){
-        var top    = $(window).scrollTop();
-        var bottom = $(window).height() + $(window).scrollTop();
-        var left   = $(window).scrollLeft();
-        var right  = $(window).width() + $(window).scrollLeft();
-
-        return this.offset().top  >= top   && this.offset().top  + this.height() <= bottom &&
-               this.offset().left >= left  && this.offset().left + this.width()  <= right;
-    };
-    jQuery.fn.inwindow = function(){
-        var top    = $(window).scrollTop();
-        var bottom = $(window).height() + $(window).scrollTop();
-        var left   = $(window).scrollLeft();
-        var right  = $(window).width() + $(window).scrollLeft();
-
-        if(!(this.offset().top  >= top)){
-            $(window).scrollTop(this.offset().top);
-        }
-        if(!(this.offset().top  + this.height() <= bottom)){
-            $(window).scrollTop(
-                $(window).scrollTop() + this.offset().top  + this.height() - bottom
-            );
-        }
-        if(!(this.offset().left  >= left)){
-            $(window).scrollLeft(this.offset().left);
-        }
-        if(!(this.offset().left  + this.width() <= right)){
-            $(window).scrollLeft(
-                $(window).scrollLeft() + this.offset().left  + this.width() - right
-            );
-        }
-        return this;
-    };
-})(jQuery);
-
-
 var manager = {};
 
 manager.setFavicon = function() {
@@ -65,25 +26,26 @@ manager.initCursor = function() {
   $($("ul.articles li")[0]).addClass("cursor");
 };
 
-// FIXME: 関数名を変更
-manager.showCursor = function() {
-  var view_height = $(window).height();
-  var view_top    = $(window).scrollTop();
+manager.adjustCursor = function() {
+  var view        = $(window);
+  var view_height = view.height();
+  var view_top    = view.scrollTop();
   var view_bottom = view_top + view_height;
 
-  var target = $("ul.articles li.cursor:first");
+  var target        = $("ul.articles li.cursor:first");
   var target_top    = target.offset().top;
-  var target_bottom = target.offset().top + target.height();
+  var target_bottom = target_top + target.height();
 
-if ( target_top < view_top )
-{
-  $(window).scrollTop(target_top - 50);
-}
-if ( target_bottom > view_bottom )
-{
-  $(window).scrollTop(target_bottom - $(window).height() + 50);
-}
+  var margin = 100;
 
+  if ( target_top < view_top )
+  {
+    view.scrollTop(target_top - margin);
+  }
+  else if ( target_bottom > view_bottom )
+  {
+    view.scrollTop(target_bottom - view_height + margin);
+  }
 }
 
 $(function() {
@@ -128,7 +90,7 @@ $(function() {
       {
         $(current).removeClass("cursor");
         $(next).addClass("cursor");
-        manager.showCursor();
+        manager.adjustCursor();
       }
     };
     var moveToPrevArticle = function() {
@@ -138,7 +100,7 @@ $(function() {
       {
         $(current).removeClass("cursor");
         $(prev).addClass("cursor");
-        manager.showCursor();
+        manager.adjustCursor();
       }
     };
     var togglePinOfArticle = function() {
