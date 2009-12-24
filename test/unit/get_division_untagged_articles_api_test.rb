@@ -4,6 +4,7 @@ require 'test_helper'
 class GetDivisionUntaggedArticlesApiTest < ActiveSupport::TestCase
   def setup
     @klass = GetDivisionUntaggedArticlesApi
+    @form  = @klass.new
     @basic = @klass.new(
       :page     => 1,
       :per_page => 10)
@@ -67,5 +68,40 @@ class GetDivisionUntaggedArticlesApiTest < ActiveSupport::TestCase
       @basic.per_page = value
       assert_equal(expected, @basic.valid?, value)
     }
+  end
+
+  #
+  # インスタンスメソッド
+  #
+
+  test "execute" do
+    @form.page     = 1
+    @form.per_page = 10
+
+    articles = Article.
+      division_untagged_by(users(:yuya).id).
+      paginate(
+        :order    => "articles.created_at DESC",
+        :page     => 1,
+        :per_page => 10)
+
+    expected = {
+      :success => true,
+      :result  => {
+        :page          => articles.current_page,
+        :per_page      => articles.per_page,
+        :total_entries => articles.total_entries,
+        :articles      => articles.map { |article|
+          {
+            :article_id => 1,
+            :title      => "x",
+            :url        => "y",
+          }
+        },
+      },
+    }
+    assert_equal(
+      expected,
+      @form.execute(users(:yuya).id))
   end
 end
