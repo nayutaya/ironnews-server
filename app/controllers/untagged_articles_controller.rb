@@ -3,60 +3,21 @@ class UntaggedArticlesController < ApplicationController
   before_filter :auth
 
   def division
-    target_tag_ids = CombinedTagging.get_division_tags.map(&:id).sort
-
-    recent_article_ids = Article.all(
-      :select => "articles.id",
-      :order  => "articles.created_at DESC",
-      :limit  => 500).map(&:id).sort
-
-    tagged_article_ids = @user.taggings.all(
-      :select     => "taggings.article_id",
-      :conditions => ["taggings.tag_id IN (?)", target_tag_ids]).map(&:article_id).sort.uniq
-
-    untagged_article_ids = recent_article_ids - tagged_article_ids
-
-    @articles = Article.all(
-      :conditions => ["articles.id IN (?)", untagged_article_ids],
-      :order      => "articles.created_at DESC")
+    @articles = Article.
+      division_untagged_by(@user.id).
+      all(:order => "articles.created_at DESC")
   end
 
   def category
-    target_tag_ids = CombinedTagging.get_category_tags.map(&:id).sort
-
-    recent_article_ids = Article.division("鉄道").all(
-      :select => "articles.id",
-      :order  => "articles.created_at DESC",
-      :limit  => 500).map(&:id).sort
-
-    tagged_article_ids = @user.taggings.all(
-      :select     => "taggings.article_id",
-      :conditions => ["taggings.tag_id IN (?)", target_tag_ids]).map(&:article_id).sort.uniq
-
-    untagged_article_ids = recent_article_ids - tagged_article_ids
-
-    @articles = Article.all(
-      :conditions => ["articles.id IN (?)", untagged_article_ids],
-      :order      => "articles.created_at DESC")
+    @articles = Article.
+      category_untagged_by(@user.id).
+      all(:order => "articles.created_at DESC")
   end
 
   def area
-    target_tag_ids = CombinedTagging.get_area_tags.map(&:id).sort
-
-    recent_article_ids = Article.division("鉄道").all(
-      :select => "articles.id",
-      :order  => "articles.created_at DESC",
-      :limit  => 500).map(&:id).sort
-
-    tagged_article_ids = @user.taggings.all(
-      :select     => "taggings.article_id",
-      :conditions => ["taggings.tag_id IN (?)", target_tag_ids]).map(&:article_id).sort.uniq
-
-    untagged_article_ids = recent_article_ids - tagged_article_ids
-
-    @articles = Article.all(
-      :conditions => ["articles.id IN (?)", untagged_article_ids],
-      :order      => "articles.created_at DESC")
+    @articles = Article.
+      area_untagged_by(@user.id).
+      all(:order => "articles.created_at DESC")
   end
 
   private
