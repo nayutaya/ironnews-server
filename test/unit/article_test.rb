@@ -189,6 +189,27 @@ class ArticleTest < ActiveSupport::TestCase
       @klass.category_tagged_by(users(:risa).id).all.sort_by(&:id))
   end
 
+  test "area_tagged_by, yuya" do
+    Tagging.delete_all(:user_id => users(:yuya).id)
+    Tagging.create!(:user => users(:yuya), :article => articles(:asahi1), :tag => CombinedTagging.get_area_tags[0])
+    Tagging.create!(:user => users(:yuya), :article => articles(:asahi2), :tag => CombinedTagging.get_area_tags[-1])
+
+    expected = [
+      articles(:asahi1),
+      articles(:asahi2),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.area_tagged_by(users(:yuya).id).all.sort_by(&:id))
+  end
+
+  test "area_tagged_by, risa" do
+    expected = []
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.area_tagged_by(users(:risa).id).all.sort_by(&:id))
+  end
+
   #
   # 検証
   #
