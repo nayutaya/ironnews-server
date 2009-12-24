@@ -32,7 +32,13 @@ class CategoriesController < ApplicationController
 
   def show_articles(category)
     @category = category
-    @articles = Article.division("鉄道").category(category).all(:order => "articles.created_at DESC")
+    @articles = Article.
+      division("鉄道").
+      category(category).
+      paginate(
+        :order    => "articles.created_at DESC",
+        :page     => params[:page],
+        :per_page => 100)
     render(:template => "categories/common")
   end
 end

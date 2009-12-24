@@ -12,7 +12,12 @@ class DivisionsController < ApplicationController
 
   def show_articles(division)
     @division = division
-    @articles = Article.division(division).all(:order => "articles.created_at DESC")
+    @articles = Article.
+      division(division).
+      paginate(
+        :order    => "articles.created_at DESC",
+        :page     => params[:page],
+        :per_page => 100)
     render(:template => "divisions/common")
   end
 end

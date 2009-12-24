@@ -44,7 +44,13 @@ class AreasController < ApplicationController
 
   def show_articles(area)
     @area     = area
-    @articles = Article.division("鉄道").area(area).all(:order => "articles.created_at DESC")
+    @articles = Article.
+      division("鉄道").
+      area(area).
+      paginate(
+        :order    => "articles.created_at DESC",
+        :page     => params[:page],
+        :per_page => 100)
     render(:template => "areas/common")
   end
 end
