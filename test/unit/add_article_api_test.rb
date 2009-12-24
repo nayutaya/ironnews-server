@@ -53,7 +53,7 @@ class AddArticleApiTest < ActiveSupport::TestCase
     url1   = "http://www.asahi.com/national/update/1202/SEB200912020015.html"
     title1 = "asahi.com（朝日新聞社）：母の故郷に１億円「ふるさと納税」　福岡の８０歳 - 社会"
 
-    @form.url1 = url1
+    @form.url1 = url1 + "?ref=rss"
 
     result = nil
     assert_difference("Article.count", +1) {
@@ -83,8 +83,8 @@ class AddArticleApiTest < ActiveSupport::TestCase
     url2   = "http://www.asahi.com/politics/update/1202/TKY200912020359.html"
     title2 = "asahi.com（朝日新聞社）：「連立３党合意に普天間入ってない」　官房長官、会見で - 政治"
 
-    @form.url1 = url1
-    @form.url2 = url2
+    @form.url1 = url1 + "?ref=rss"
+    @form.url2 = url2 + "?ref=rss"
 
     result = nil
     assert_difference("Article.count", +2) {
@@ -101,7 +101,7 @@ class AddArticleApiTest < ActiveSupport::TestCase
   end
 
   test "execute, already exist" do
-    @form.url1 = articles(:asahi1).url
+    @form.url1 = articles(:asahi1).url + "?ref=rss"
 
     result = nil
     assert_difference("Article.count", 0) {

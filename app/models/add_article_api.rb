@@ -30,23 +30,25 @@ class AddArticleApi < ApiBase
     }
 
     self.urls.each { |num, url|
-      article = Article.find_by_url(url)
+      canonical_url = BookmarkUtility.get_canonical_url(url)
+
+      article = Article.find_by_url(canonical_url)
 
       if article
         title = article.title
       else
-        title = self.class.get_title(url)
+        title = self.class.get_title(canonical_url)
       end
 
       unless article
         article = Article.create!(
           :title => title,
-          :url   => url)
+          :url   => canonical_url)
       end
 
       result[:result][num] = {
         :article_id => article.id,
-        :url        => url,
+        :url        => canonical_url,
         :title      => title,
       }
     }
