@@ -86,6 +86,15 @@ class Article < ActiveRecord::Base
       ],
     }
   }
+  named_scope :area_untagged_by, proc { |user_id|
+    {
+      :conditions => [
+        "NOT EXISTS (SELECT * FROM taggings WHERE (taggings.article_id = articles.id) AND (taggings.user_id = ?) AND (taggings.tag_id IN (?)))",
+        user_id,
+        CombinedTagging.get_area_tags.map(&:id),
+      ],
+    }
+  }
 
   validates_presence_of :title
   validates_presence_of :host
