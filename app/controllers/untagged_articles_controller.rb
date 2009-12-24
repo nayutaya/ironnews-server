@@ -5,19 +5,28 @@ class UntaggedArticlesController < ApplicationController
   def division
     @articles = Article.
       division_untagged_by(@user.id).
-      all(:order => "articles.created_at DESC")
+      paginate(
+        :order    => "articles.created_at DESC",
+        :page     => params[:page],
+        :per_page => 100)
   end
 
   def category
     @articles = Article.
       category_untagged_by(@user.id).
-      all(:order => "articles.created_at DESC")
+      paginate(
+        :order    => "articles.created_at DESC",
+        :page     => params[:page],
+        :per_page => 100)
   end
 
   def area
     @articles = Article.
       area_untagged_by(@user.id).
-      all(:order => "articles.created_at DESC")
+      paginate(
+        :order    => "articles.created_at DESC",
+        :page     => params[:page],
+        :per_page => 100)
   end
 
   private
