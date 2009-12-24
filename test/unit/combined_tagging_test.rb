@@ -165,10 +165,14 @@ class CombinedTaggingTest < ActiveSupport::TestCase
     expected = {
       articles(:asahi1).id => {
         tags(:rail).id    => 2,
+        tags(:social).id  => 1,
+        tags(:kanto).id   => 1,
       },
       articles(:asahi2).id => {
         tags(:rail).id    => 1,
         tags(:nonrail).id => 1,
+        tags(:economy).id => 1,
+        tags(:kinki).id   => 1,
       },
     }
     assert_equal(

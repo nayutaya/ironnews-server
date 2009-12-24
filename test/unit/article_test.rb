@@ -20,6 +20,8 @@ class ArticleTest < ActiveSupport::TestCase
   test "has_many :taggings" do
     expected = [
       taggings(:yuya_asahi1_rail),
+      taggings(:yuya_asahi1_social),
+      taggings(:yuya_asahi1_kanto),
       taggings(:risa_asahi1_rail),
     ]
     assert_equal(
@@ -28,6 +30,8 @@ class ArticleTest < ActiveSupport::TestCase
 
     expected = [
       taggings(:yuya_asahi2_rail),
+      taggings(:yuya_asahi2_economy),
+      taggings(:yuya_asahi2_kinki),
       taggings(:risa_asahi2_nonrail),
     ]
     assert_equal(
@@ -36,7 +40,7 @@ class ArticleTest < ActiveSupport::TestCase
   end
 
   test "has_many :taggings, :dependent => :destroy" do
-    assert_difference("Tagging.count", -2) {
+    assert_difference("Tagging.count", -4) {
       assert_difference("#{@klass}.count", -1) {
         articles(:asahi1).destroy
       }
@@ -145,6 +149,97 @@ class ArticleTest < ActiveSupport::TestCase
     assert_equal(
       expected.sort_by(&:id),
       @klass.area(tags(:kinki)).all.sort_by(&:id))
+  end
+
+  test "division_tagged_by, yuya" do
+    expected = [
+      articles(:asahi1),
+      articles(:asahi2),
+      articles(:asahi3),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.division_tagged_by(users(:yuya).id).all.sort_by(&:id))
+  end
+
+  test "division_tagged_by, risa" do
+    expected = [
+      articles(:asahi1),
+      articles(:asahi2),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.division_tagged_by(users(:risa).id).all.sort_by(&:id))
+  end
+
+  test "division_untagged_by, yuya" do
+    assert_equal(
+      (@klass.all - @klass.division_tagged_by(users(:yuya).id).all).sort_by(&:id),
+      @klass.division_untagged_by(users(:yuya).id).all.sort_by(&:id))
+  end
+
+  test "division_untagged_by, risa" do
+    assert_equal(
+      (@klass.all - @klass.division_tagged_by(users(:risa).id).all).sort_by(&:id),
+      @klass.division_untagged_by(users(:risa).id).all.sort_by(&:id))
+  end
+
+  test "category_tagged_by, yuya" do
+    expected = [
+      articles(:asahi1),
+      articles(:asahi2),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.category_tagged_by(users(:yuya).id).all.sort_by(&:id))
+  end
+
+  test "category_tagged_by, risa" do
+    expected = []
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.category_tagged_by(users(:risa).id).all.sort_by(&:id))
+  end
+
+  test "category_untagged_by, yuya" do
+    assert_equal(
+      (@klass.all - @klass.category_tagged_by(users(:yuya).id).all).sort_by(&:id),
+      @klass.category_untagged_by(users(:yuya).id).all.sort_by(&:id))
+  end
+
+  test "category_untagged_by, risa" do
+    assert_equal(
+      (@klass.all - @klass.category_tagged_by(users(:risa)).all).sort_by(&:id),
+      @klass.category_untagged_by(users(:risa)).all.sort_by(&:id))
+  end
+
+  test "area_tagged_by, yuya" do
+    expected = [
+      articles(:asahi1),
+      articles(:asahi2),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.area_tagged_by(users(:yuya).id).all.sort_by(&:id))
+  end
+
+  test "area_tagged_by, risa" do
+    expected = []
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.area_tagged_by(users(:risa).id).all.sort_by(&:id))
+  end
+
+  test "area_untagged_by, yuya" do
+    assert_equal(
+      (@klass.all - @klass.area_tagged_by(users(:yuya).id).all).sort_by(&:id),
+      @klass.area_untagged_by(users(:yuya).id).all.sort_by(&:id))
+  end
+
+  test "area_untagged_by, risa" do
+    assert_equal(
+      (@klass.all - @klass.area_tagged_by(users(:risa)).all).sort_by(&:id),
+      @klass.area_untagged_by(users(:risa)).all.sort_by(&:id))
   end
 
   #
