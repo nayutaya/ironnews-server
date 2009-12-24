@@ -147,6 +147,27 @@ class ArticleTest < ActiveSupport::TestCase
       @klass.area(tags(:kinki)).all.sort_by(&:id))
   end
 
+  test "division_tagged_by, yuya" do
+    expected = [
+      articles(:asahi1),
+      articles(:asahi2),
+      articles(:asahi3),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.division_tagged_by(users(:yuya).id).all.sort_by(&:id))
+  end
+
+  test "division_tagged_by, risa" do
+    expected = [
+      articles(:asahi1),
+      articles(:asahi2),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.division_tagged_by(users(:risa).id).all.sort_by(&:id))
+  end
+
   #
   # 検証
   #

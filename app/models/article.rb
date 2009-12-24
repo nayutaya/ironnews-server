@@ -41,6 +41,15 @@ class Article < ActiveRecord::Base
       :conditions => ["(combined_taggings.area_tag1_id = ?) OR (combined_taggings.area_tag2_id = ?)", tag_id, tag_id],
     }
   }
+  named_scope :division_tagged_by, proc { |user_id|
+    {
+      :conditions => [
+        "EXISTS (SELECT * FROM taggings WHERE (taggings.article_id = articles.id) AND (taggings.user_id = ?) AND (taggings.tag_id IN (?)))",
+        user_id,
+        CombinedTagging.get_division_tags.map(&:id),
+      ],
+    }
+  }
 
   validates_presence_of :title
   validates_presence_of :host
