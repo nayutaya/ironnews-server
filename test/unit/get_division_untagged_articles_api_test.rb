@@ -74,6 +74,22 @@ class GetDivisionUntaggedArticlesApiTest < ActiveSupport::TestCase
   # インスタンスメソッド
   #
 
+  test "search" do
+    @form.page     = 1
+    @form.per_page = 10
+
+    expected = [
+      articles(:mainichi1),
+      articles(:mainichi2),
+    ]
+    actual = @form.search(users(:yuya).id)
+    assert_equal( 1, actual.current_page)
+    assert_equal(10, actual.per_page)
+    assert_equal(
+      expected.sort_by { |article| [article.created_at.to_i, article.id] }.reverse,
+      actual)
+  end
+
   test "execute" do
     @form.page     = 1
     @form.per_page = 10
@@ -91,13 +107,15 @@ class GetDivisionUntaggedArticlesApiTest < ActiveSupport::TestCase
         :page          => articles.current_page,
         :per_page      => articles.per_page,
         :total_entries => articles.total_entries,
+=begin
         :articles      => articles.map { |article|
           {
-            :article_id => 1,
-            :title      => "x",
-            :url        => "y",
+            :article_id => article.id,
+            :title      => article.title,
+            :url        => article.url,
           }
         },
+=end
       },
     }
     assert_equal(

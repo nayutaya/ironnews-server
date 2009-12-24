@@ -9,6 +9,15 @@ class GetDivisionUntaggedArticlesApi < ApiBase
   validates_numericality_of :page, :greater_than_or_equal_to => 1, :only_integer => true
   validates_numericality_of :per_page, :greater_than_or_equal_to => 1, :less_than_or_equal_to => 100, :only_integer => true
 
+  def search(user_id)
+    return Article.
+      division_untagged_by(user_id).
+      paginate(
+        :order    => "articles.created_at DESC, articles.id DESC",
+        :page     => 1,
+        :per_page => 10)
+  end
+
   def execute(user_id)
     articles = Article.
       paginate(
@@ -22,6 +31,7 @@ class GetDivisionUntaggedArticlesApi < ApiBase
         :page          => 1,
         :per_page      => 10,
         :total_entries => 2,
+=begin
         :articles      => x.map {
           {
             :article_id => 1,
@@ -29,6 +39,7 @@ class GetDivisionUntaggedArticlesApi < ApiBase
             :url        => "y",
           }
         },
+=end
       },
     }
   end
