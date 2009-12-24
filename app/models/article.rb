@@ -18,7 +18,7 @@ class Article < ActiveRecord::Base
   HostPattern    = /\A[a-z\d\-]+(\.[a-z\d\-]+)*(:\d+)?\z/
 
   has_many :taggings, :dependent => :destroy
-  has_one :combined_tagging
+  has_one :combined_tagging, :dependent => :destroy
 
   named_scope :division, proc { |tag|
     tag_id = Tag.get(tag).id

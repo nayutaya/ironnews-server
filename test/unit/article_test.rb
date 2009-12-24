@@ -58,6 +58,19 @@ class ArticleTest < ActiveSupport::TestCase
       articles(:mainichi1).combined_tagging)
   end
 
+  test "has_one :combined_tagging, :dependent => :destroy" do
+    assert_difference("CombinedTagging.count", -1) {
+      assert_difference("#{@klass}.count", -1) {
+        articles(:asahi1).destroy
+      }
+    }
+    assert_difference("CombinedTagging.count", 0) {
+      assert_difference("#{@klass}.count", -1) {
+        articles(:mainichi1).destroy
+      }
+    }
+  end
+
   #
   # 名前付きスコープ
   #
