@@ -169,9 +169,11 @@ class ArticleTest < ActiveSupport::TestCase
   end
 
   test "category_tagged_by, yuya" do
-    Tagging.delete_all(:user_id => users(:yuya).id)
-    Tagging.create!(:user => users(:yuya), :article => articles(:asahi1), :tag => CombinedTagging.get_category_tags[0])
-    Tagging.create!(:user => users(:yuya), :article => articles(:asahi2), :tag => CombinedTagging.get_category_tags[-1])
+    yuya = users(:yuya)
+    tags = CombinedTagging.get_category_tags
+    Tagging.delete_all(:user_id => yuya.id)
+    Tagging.create!(:user => yuya, :article => articles(:asahi1), :tag => tags[0])
+    Tagging.create!(:user => yuya, :article => articles(:asahi2), :tag => tags[-1])
 
     expected = [
       articles(:asahi1),
@@ -179,7 +181,7 @@ class ArticleTest < ActiveSupport::TestCase
     ]
     assert_equal(
       expected.sort_by(&:id),
-      @klass.category_tagged_by(users(:yuya).id).all.sort_by(&:id))
+      @klass.category_tagged_by(yuya.id).all.sort_by(&:id))
   end
 
   test "category_tagged_by, risa" do
@@ -190,9 +192,11 @@ class ArticleTest < ActiveSupport::TestCase
   end
 
   test "area_tagged_by, yuya" do
-    Tagging.delete_all(:user_id => users(:yuya).id)
-    Tagging.create!(:user => users(:yuya), :article => articles(:asahi1), :tag => CombinedTagging.get_area_tags[0])
-    Tagging.create!(:user => users(:yuya), :article => articles(:asahi2), :tag => CombinedTagging.get_area_tags[-1])
+    yuya = users(:yuya)
+    tags = CombinedTagging.get_area_tags
+    Tagging.delete_all(:user_id => yuya.id)
+    Tagging.create!(:user => yuya, :article => articles(:asahi1), :tag => tags[0])
+    Tagging.create!(:user => yuya, :article => articles(:asahi2), :tag => tags[-1])
 
     expected = [
       articles(:asahi1),
@@ -200,7 +204,7 @@ class ArticleTest < ActiveSupport::TestCase
     ]
     assert_equal(
       expected.sort_by(&:id),
-      @klass.area_tagged_by(users(:yuya).id).all.sort_by(&:id))
+      @klass.area_tagged_by(yuya.id).all.sort_by(&:id))
   end
 
   test "area_tagged_by, risa" do
