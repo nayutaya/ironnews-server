@@ -90,24 +90,27 @@ class GetDivisionUntaggedArticlesApiTest < ActiveSupport::TestCase
       actual)
   end
 
+  test "search, paginate" do
+    @form.page     = 2
+    @form.per_page = 1
+
+    actual = @form.search(users(:yuya).id)
+    assert_equal(2, actual.current_page)
+    assert_equal(1, actual.per_page)
+  end
+
   test "execute" do
     @form.page     = 1
     @form.per_page = 10
 
-    articles = Article.
-      division_untagged_by(users(:yuya).id).
-      paginate(
-        :order    => "articles.created_at DESC",
-        :page     => 1,
-        :per_page => 10)
+    articles = @form.search(users(:yuya).id)
 
     expected = {
       :success => true,
       :result  => {
-        :page          => articles.current_page,
-        :per_page      => articles.per_page,
+        :page          => 1,
+        :per_page      => 10,
         :total_entries => articles.total_entries,
-=begin
         :articles      => articles.map { |article|
           {
             :article_id => article.id,
@@ -115,11 +118,24 @@ class GetDivisionUntaggedArticlesApiTest < ActiveSupport::TestCase
             :url        => article.url,
           }
         },
-=end
       },
     }
     assert_equal(
       expected,
       @form.execute(users(:yuya).id))
+  end
+
+  test "execute, paginate" do
+    @form.page     = 2
+    @form.per_page = 1
+
+    articles = @form.search(users(:risa).id)
+
+    actual = @form.execute(users(:risa).id)
+    assert_equal(2, actual[:result][:page])
+    assert_equal(1, actual[:result][:per_page])
+    assert_equal(
+      articles.total_entries,
+      actual[:result][:total_entries])
   end
 end

@@ -14,32 +14,26 @@ class GetDivisionUntaggedArticlesApi < ApiBase
       division_untagged_by(user_id).
       paginate(
         :order    => "articles.created_at DESC, articles.id DESC",
-        :page     => 1,
-        :per_page => 10)
+        :page     => self.page,
+        :per_page => self.per_page)
   end
 
   def execute(user_id)
-    articles = Article.
-      paginate(
-        :page => 1,
-        :per_page => 10)
-    x = (1..2)
+    articles = self.search(user_id)
 
     return {
       :success => true,
       :result  => {
-        :page          => 1,
-        :per_page      => 10,
-        :total_entries => 2,
-=begin
-        :articles      => x.map {
+        :page          => articles.current_page,
+        :per_page      => articles.per_page,
+        :total_entries => articles.total_entries,
+        :articles      => articles.map { |article|
           {
-            :article_id => 1,
-            :title      => "x",
-            :url        => "y",
+            :article_id => article.id,
+            :title      => article.title,
+            :url        => article.url,
           }
         },
-=end
       },
     }
   end
