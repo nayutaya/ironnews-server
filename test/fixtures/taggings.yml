@@ -16,11 +16,23 @@ yuya_asahi1_rail:
   article: asahi1
   tag: rail
 
+yuya_asahi1_social:
+  created_at: 2009-01-01 00:00:00
+  user: yuya
+  article: asahi1
+  tag: social
+
 yuya_asahi2_rail:
   created_at: 2009-01-01 00:00:00
   user: yuya
   article: asahi2
   tag: rail
+
+yuya_asahi2_economy:
+  created_at: 2009-01-01 00:00:00
+  user: yuya
+  article: asahi2
+  tag: economy
 
 yuya_asahi3_nonrail:
   created_at: 2009-01-01 00:00:00

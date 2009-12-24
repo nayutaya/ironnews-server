@@ -37,7 +37,9 @@ class UserTest < ActiveSupport::TestCase
   test "has_many :taggings" do
     expected = [
       taggings(:yuya_asahi1_rail),
+      taggings(:yuya_asahi1_social),
       taggings(:yuya_asahi2_rail),
+      taggings(:yuya_asahi2_economy),
       taggings(:yuya_asahi3_nonrail),
     ]
     assert_equal(
