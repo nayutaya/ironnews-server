@@ -12,8 +12,8 @@ class GetDivisionUntaggedArticlesApiTest < ActiveSupport::TestCase
 
   test "columns" do
     [
-      [:page,     nil, "1", 1],
-      [:per_page, nil, "1", 1],
+      [:page,      1, "1", 1],
+      [:per_page, 10, "1", 1],
     ].each { |name, default, set_value, get_value|
       form = @klass.new
       assert_equal(default, form.__send__(name))
