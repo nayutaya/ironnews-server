@@ -17,7 +17,7 @@ class Article < ActiveRecord::Base
   PathMaxLength  = 2000
   HostPattern    = /\A[a-z\d\-]+(\.[a-z\d\-]+)*(:\d+)?\z/
 
-  has_many :taggings
+  has_many :taggings, :dependent => :destroy
   has_one :combined_tagging
 
   named_scope :division, proc { |tag|

@@ -35,6 +35,19 @@ class ArticleTest < ActiveSupport::TestCase
       articles(:asahi2).taggings.sort_by(&:id))
   end
 
+  test "has_many :taggings, :dependent => :destroy" do
+    assert_difference("Tagging.count", -2) {
+      assert_difference("#{@klass}.count", -1) {
+        articles(:asahi1).destroy
+      }
+    }
+    assert_difference("Tagging.count", 0) {
+      assert_difference("#{@klass}.count", -1) {
+        articles(:mainichi1).destroy
+      }
+    }
+  end
+
   test "has_one :combined_tagging" do
     assert_equal(
       combined_taggings(:asahi1),
