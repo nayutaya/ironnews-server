@@ -173,27 +173,12 @@ class ArticleTest < ActiveSupport::TestCase
   end
 
   test "division_untagged_by, yuya" do
-    expected = [
-      articles(:mainichi1),
-      articles(:mainichi2),
-    ]
-    assert_equal(
-      expected.sort_by(&:id),
-      @klass.division_untagged_by(users(:yuya).id).all.sort_by(&:id))
     assert_equal(
       (@klass.all - @klass.division_tagged_by(users(:yuya).id).all).sort_by(&:id),
       @klass.division_untagged_by(users(:yuya).id).all.sort_by(&:id))
   end
 
   test "division_untagged_by, risa" do
-    expected = [
-      articles(:asahi3),
-      articles(:mainichi1),
-      articles(:mainichi2),
-    ]
-    assert_equal(
-      expected.sort_by(&:id),
-      @klass.division_untagged_by(users(:risa).id).all.sort_by(&:id))
     assert_equal(
       (@klass.all - @klass.division_tagged_by(users(:risa).id).all).sort_by(&:id),
       @klass.division_untagged_by(users(:risa).id).all.sort_by(&:id))
@@ -217,30 +202,12 @@ class ArticleTest < ActiveSupport::TestCase
   end
 
   test "category_untagged_by, yuya" do
-    expected = [
-      articles(:asahi3),
-      articles(:mainichi1),
-      articles(:mainichi2),
-    ]
-    assert_equal(
-      expected.sort_by(&:id),
-      @klass.category_untagged_by(users(:yuya).id).all.sort_by(&:id))
     assert_equal(
       (@klass.all - @klass.category_tagged_by(users(:yuya).id).all).sort_by(&:id),
       @klass.category_untagged_by(users(:yuya).id).all.sort_by(&:id))
   end
 
   test "category_untagged_by, risa" do
-    expected = [
-      articles(:asahi1),
-      articles(:asahi2),
-      articles(:asahi3),
-      articles(:mainichi1),
-      articles(:mainichi2),
-    ]
-    assert_equal(
-      expected.sort_by(&:id),
-      @klass.category_untagged_by(users(:risa).id).all.sort_by(&:id))
     assert_equal(
       (@klass.all - @klass.category_tagged_by(users(:risa)).all).sort_by(&:id),
       @klass.category_untagged_by(users(:risa)).all.sort_by(&:id))
@@ -264,30 +231,12 @@ class ArticleTest < ActiveSupport::TestCase
   end
 
   test "area_untagged_by, yuya" do
-    expected = [
-      articles(:asahi3),
-      articles(:mainichi1),
-      articles(:mainichi2),
-    ]
-    assert_equal(
-      expected.sort_by(&:id),
-      @klass.area_untagged_by(users(:yuya).id).all.sort_by(&:id))
     assert_equal(
       (@klass.all - @klass.area_tagged_by(users(:yuya).id).all).sort_by(&:id),
       @klass.area_untagged_by(users(:yuya).id).all.sort_by(&:id))
   end
 
   test "area_untagged_by, risa" do
-    expected = [
-      articles(:asahi1),
-      articles(:asahi2),
-      articles(:asahi3),
-      articles(:mainichi1),
-      articles(:mainichi2),
-    ]
-    assert_equal(
-      expected.sort_by(&:id),
-      @klass.area_untagged_by(users(:risa).id).all.sort_by(&:id))
     assert_equal(
       (@klass.all - @klass.area_tagged_by(users(:risa)).all).sort_by(&:id),
       @klass.area_untagged_by(users(:risa)).all.sort_by(&:id))
