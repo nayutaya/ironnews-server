@@ -21,6 +21,7 @@ class ArticleTest < ActiveSupport::TestCase
     expected = [
       taggings(:yuya_asahi1_rail),
       taggings(:yuya_asahi1_social),
+      taggings(:yuya_asahi1_kanto),
       taggings(:risa_asahi1_rail),
     ]
     assert_equal(
@@ -30,6 +31,7 @@ class ArticleTest < ActiveSupport::TestCase
     expected = [
       taggings(:yuya_asahi2_rail),
       taggings(:yuya_asahi2_economy),
+      taggings(:yuya_asahi2_kinki),
       taggings(:risa_asahi2_nonrail),
     ]
     assert_equal(
@@ -38,7 +40,7 @@ class ArticleTest < ActiveSupport::TestCase
   end
 
   test "has_many :taggings, :dependent => :destroy" do
-    assert_difference("Tagging.count", -3) {
+    assert_difference("Tagging.count", -4) {
       assert_difference("#{@klass}.count", -1) {
         articles(:asahi1).destroy
       }
@@ -245,19 +247,13 @@ class ArticleTest < ActiveSupport::TestCase
   end
 
   test "area_tagged_by, yuya" do
-    yuya = users(:yuya)
-    tags = CombinedTagging.get_area_tags
-    Tagging.delete_all(:user_id => yuya.id)
-    Tagging.create!(:user => yuya, :article => articles(:asahi1), :tag => tags[0])
-    Tagging.create!(:user => yuya, :article => articles(:asahi2), :tag => tags[-1])
-
     expected = [
       articles(:asahi1),
       articles(:asahi2),
     ]
     assert_equal(
       expected.sort_by(&:id),
-      @klass.area_tagged_by(yuya.id).all.sort_by(&:id))
+      @klass.area_tagged_by(users(:yuya).id).all.sort_by(&:id))
   end
 
   test "area_tagged_by, risa" do
@@ -268,12 +264,6 @@ class ArticleTest < ActiveSupport::TestCase
   end
 
   test "area_untagged_by, yuya" do
-    yuya = users(:yuya)
-    tags = CombinedTagging.get_area_tags
-    Tagging.delete_all(:user_id => yuya.id)
-    Tagging.create!(:user => yuya, :article => articles(:asahi1), :tag => tags[0])
-    Tagging.create!(:user => yuya, :article => articles(:asahi2), :tag => tags[-1])
-
     expected = [
       articles(:asahi3),
       articles(:mainichi1),
@@ -281,10 +271,10 @@ class ArticleTest < ActiveSupport::TestCase
     ]
     assert_equal(
       expected.sort_by(&:id),
-      @klass.area_untagged_by(yuya.id).all.sort_by(&:id))
+      @klass.area_untagged_by(users(:yuya).id).all.sort_by(&:id))
     assert_equal(
-      (@klass.all - @klass.area_tagged_by(yuya.id).all).sort_by(&:id),
-      @klass.area_untagged_by(yuya.id).all.sort_by(&:id))
+      (@klass.all - @klass.area_tagged_by(users(:yuya).id).all).sort_by(&:id),
+      @klass.area_untagged_by(users(:yuya).id).all.sort_by(&:id))
   end
 
   test "area_untagged_by, risa" do
