@@ -59,7 +59,7 @@ class Article < ActiveRecord::Base
     uri  = URI.parse(url)
     host = uri.host
     port = (uri.port == URI::HTTP.default_port ? "" : ":#{uri.port}")
-    path = uri.path
+    path = uri.request_uri
     return [host + port, path]
   end
 

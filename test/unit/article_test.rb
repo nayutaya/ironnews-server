@@ -202,10 +202,11 @@ class ArticleTest < ActiveSupport::TestCase
 
   test "self.join_host_path" do
     [
-      [["example.jp",       "/"],    "http://example.jp/"],
-      [["example.com",      "/foo"], "http://example.com/foo"],
-      [["example.org:80",   "/bar"], "http://example.org:80/bar"],
-      [["example.net:8080", "/baz"], "http://example.net:8080/baz"],
+      [["example.jp",       "/"],     "http://example.jp/"],
+      [["example.com",      "/foo"],  "http://example.com/foo"],
+      [["example.org:80",   "/bar"],  "http://example.org:80/bar"],
+      [["example.net:8080", "/baz"],  "http://example.net:8080/baz"],
+      [["example.jp",       "/?foo"], "http://example.jp/?foo"],
     ].each { |value, expected|
       assert_equal(
         expected,
@@ -219,6 +220,7 @@ class ArticleTest < ActiveSupport::TestCase
       ["http://example.com/foo",      ["example.com",      "/foo"]],
       ["http://example.org:80/bar",   ["example.org",      "/bar"]],
       ["http://example.net:8080/baz", ["example.net:8080", "/baz"]],
+      ["http://example.jp/?foo",      ["example.jp",       "/?foo"]],
     ].each { |value, expected|
       assert_equal(
         expected,
@@ -257,6 +259,7 @@ class ArticleTest < ActiveSupport::TestCase
       ["http://example.com/foo",      "example.com",      "/foo"],
       ["http://example.org:80/bar",   "example.org",      "/bar"],
       ["http://example.net:8080/baz", "example.net:8080", "/baz"],
+      ["http://example.jp/?foo",      "example.jp",       "/?foo"],
     ].each { |url, host, path|
       record = @klass.new
       record.url = url
