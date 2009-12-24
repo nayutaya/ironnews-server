@@ -50,6 +50,15 @@ class Article < ActiveRecord::Base
       ],
     }
   }
+  named_scope :division_untagged_by, proc { |user_id|
+    {
+      :conditions => [
+        "NOT EXISTS (SELECT * FROM taggings WHERE (taggings.article_id = articles.id) AND (taggings.user_id = ?) AND (taggings.tag_id IN (?)))",
+        user_id,
+        CombinedTagging.get_division_tags.map(&:id),
+      ],
+    }
+  }
   named_scope :category_tagged_by, proc { |user_id|
     {
       :conditions => [

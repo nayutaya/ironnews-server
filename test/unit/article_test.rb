@@ -168,6 +168,33 @@ class ArticleTest < ActiveSupport::TestCase
       @klass.division_tagged_by(users(:risa).id).all.sort_by(&:id))
   end
 
+  test "division_untagged_by, yuya" do
+    expected = [
+      articles(:mainichi1),
+      articles(:mainichi2),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.division_untagged_by(users(:yuya).id).all.sort_by(&:id))
+    assert_equal(
+      (@klass.all - @klass.division_tagged_by(users(:yuya).id).all).sort_by(&:id),
+      @klass.division_untagged_by(users(:yuya).id).all.sort_by(&:id))
+  end
+
+  test "division_untagged_by, risa" do
+    expected = [
+      articles(:asahi3),
+      articles(:mainichi1),
+      articles(:mainichi2),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.division_untagged_by(users(:risa).id).all.sort_by(&:id))
+    assert_equal(
+      (@klass.all - @klass.division_tagged_by(users(:risa).id).all).sort_by(&:id),
+      @klass.division_untagged_by(users(:risa).id).all.sort_by(&:id))
+  end
+
   test "category_tagged_by, yuya" do
     yuya = users(:yuya)
     tags = CombinedTagging.get_category_tags
