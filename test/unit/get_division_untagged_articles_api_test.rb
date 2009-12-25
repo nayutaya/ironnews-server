@@ -16,7 +16,7 @@ class GetDivisionUntaggedArticlesApiTest < ActiveSupport::TestCase
 
   test "columns" do
     [
-      [:page,      1, "1", 1],
+      [:page,     1,  "1", 1],
       [:per_page, 10, "1", 1],
     ].each { |name, default, set_value, get_value|
       form = @klass.new
@@ -74,91 +74,77 @@ class GetDivisionUntaggedArticlesApiTest < ActiveSupport::TestCase
   # クラスメソッド
   #
 
-  test "schema" do
+  test "self.schema" do
     assert_kind_of(Hash, @klass.schema)
   end
-  
+
   #
   # インスタンスメソッド
   #
 
-  test "search" do
-    @form.page     = 1
-    @form.per_page = 10
+  test "search, yuya" do
+    articles = @form.search(users(:yuya).id)
+    assert_equal( 1, articles.current_page)
+    assert_equal(10, articles.per_page)
 
     expected = [
       articles(:mainichi1),
       articles(:mainichi2),
     ]
-    actual = @form.search(users(:yuya).id)
-    assert_equal( 1, actual.current_page)
-    assert_equal(10, actual.per_page)
     assert_equal(
       expected.sort_by { |article| [article.created_at.to_i, article.id] }.reverse,
-      actual)
+      articles)
   end
 
   test "search, paginate" do
     @form.page     = 2
     @form.per_page = 1
 
-    actual = @form.search(users(:yuya).id)
-    assert_equal(2, actual.current_page)
-    assert_equal(1, actual.per_page)
+    articles = @form.search(users(:yuya).id)
+    assert_equal(2, articles.current_page)
+    assert_equal(1, articles.per_page)
   end
 
   test "execute" do
-    @form.page     = 1
-    @form.per_page = 10
-
-    articles = @form.search(users(:yuya).id)
-
-    expected = {
-      "success" => true,
-      "result"  => {
-        "total_entries"    => articles.total_entries,
-        "total_pages"      => articles.total_pages,
-        "current_page"     => 1,
-        "entries_per_page" => 10,
-        "articles"         => articles.map { |article|
-          {
-            "article_id" => article.id,
-            "title"      => article.title,
-            "url"        => article.url,
-          }
-        },
-      },
-    }
     actual = @form.execute(users(:yuya).id)
     assert_valid_json(@klass.schema, actual)
-    assert_equal(expected, actual)
+    assert_equal(true, actual["success"])
+    assert_equal(nil,  actual["errors"])
+
+    articles = @form.search(users(:yuya).id)
+    assert_equal(articles.total_entries, actual["result"]["total_entries"])
+    assert_equal(articles.total_pages,   actual["result"]["total_pages"])
+    assert_equal(articles.current_page,  actual["result"]["current_page"])
+    assert_equal(articles.per_page,      actual["result"]["entries_per_page"])
+
+    expected = articles.map { |article|
+      {
+        "article_id" => article.id,
+        "title"      => article.title,
+        "url"        => article.url,
+      }
+    }
+    assert_equal(expected, actual["result"]["articles"])
   end
 
   test "execute, paginate" do
     @form.page     = 2
     @form.per_page = 1
 
-    articles = @form.search(users(:risa).id)
-
     actual = @form.execute(users(:risa).id)
     assert_valid_json(@klass.schema, actual)
     assert_equal(2, actual["result"]["current_page"])
     assert_equal(1, actual["result"]["entries_per_page"])
-    assert_equal(
-      articles.total_entries,
-      actual["result"]["total_entries"])
   end
 
   test "execute, invalid" do
     @form.page = nil
     assert_equal(false, @form.valid?)
 
-    expected = {
-      "success" => false,
-      "errors"  => ["Page can't be blank"],
-    }
     actual = @form.execute(users(:yuya).id)
     assert_valid_json(@klass.schema, actual)
-    assert_equal(expected, actual)
+    assert_equal(false, actual["success"])
+    assert_equal(["Page can't be blank"], actual["errors"])
+    assert_equal(nil, actual["result"])
   end
 end

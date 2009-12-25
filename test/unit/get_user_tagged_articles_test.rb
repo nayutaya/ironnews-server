@@ -78,7 +78,7 @@ class GetUserTaggedArticlesTest < ActiveSupport::TestCase
   end
 
   #
-  #
+  # クラスメソッド
   #
 
   test "self.schema" do
@@ -137,8 +137,8 @@ class GetUserTaggedArticlesTest < ActiveSupport::TestCase
     articles = @form.search(users(:yuya).id)
     assert_equal(articles.total_entries, actual["result"]["total_entries"])
     assert_equal(articles.total_pages,   actual["result"]["total_pages"])
-    assert_equal( 1, actual["result"]["current_page"])
-    assert_equal(10, actual["result"]["entries_per_page"])
+    assert_equal(articles.current_page,  actual["result"]["current_page"])
+    assert_equal(articles.per_page,      actual["result"]["entries_per_page"])
 
     expected = articles.map { |article|
       {
@@ -148,6 +148,17 @@ class GetUserTaggedArticlesTest < ActiveSupport::TestCase
       }
     }
     assert_equal(expected, actual["result"]["articles"])
+  end
+
+  test "execute, paginate" do
+    @form.tag      = tags(:rail).name
+    @form.page     = 2
+    @form.per_page = 1
+
+    actual = @form.execute(users(:risa).id)
+    assert_valid_json(@klass.schema, actual)
+    assert_equal(2, actual["result"]["current_page"])
+    assert_equal(1, actual["result"]["entries_per_page"])
   end
 
   test "execute, invalid" do
