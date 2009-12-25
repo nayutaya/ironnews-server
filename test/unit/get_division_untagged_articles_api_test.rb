@@ -106,23 +106,26 @@ class GetDivisionUntaggedArticlesApiTest < ActiveSupport::TestCase
     articles = @form.search(users(:yuya).id)
 
     expected = {
-      :success => true,
-      :result  => {
-        :page          => 1,
-        :per_page      => 10,
-        :total_entries => articles.total_entries,
-        :articles      => articles.map { |article|
+      "success" => true,
+      "result"  => {
+        "total_entries"    => articles.total_entries,
+        "total_pages"      => articles.total_pages,
+        "current_page"     => 1,
+        "entries_per_page" => 10,
+        "articles"         => articles.map { |article|
           {
-            :article_id => article.id,
-            :title      => article.title,
-            :url        => article.url,
+            "article_id" => article.id,
+            "title"      => article.title,
+            "url"        => article.url,
           }
         },
       },
     }
-    assert_equal(
-      expected,
-      @form.execute(users(:yuya).id))
+    actual = @form.execute(users(:yuya).id)
+    assert_equal(expected, actual)
+=begin
+    JSON::Schema.validate(actual, @klass.schema)
+=end
   end
 
   test "execute, paginate" do
@@ -132,11 +135,11 @@ class GetDivisionUntaggedArticlesApiTest < ActiveSupport::TestCase
     articles = @form.search(users(:risa).id)
 
     actual = @form.execute(users(:risa).id)
-    assert_equal(2, actual[:result][:page])
-    assert_equal(1, actual[:result][:per_page])
+    assert_equal(2, actual["result"]["current_page"])
+    assert_equal(1, actual["result"]["entries_per_page"])
     assert_equal(
       articles.total_entries,
-      actual[:result][:total_entries])
+      actual["result"]["total_entries"])
   end
 
   test "execute, invalid" do
@@ -144,8 +147,8 @@ class GetDivisionUntaggedArticlesApiTest < ActiveSupport::TestCase
     assert_equal(false, @form.valid?)
 
     expected = {
-      :success => false,
-      :errors => ["Page can't be blank"],
+      "success" => false,
+      "errors"  => ["Page can't be blank"],
     }
     assert_equal(expected, @form.execute(users(:yuya).id))
   end

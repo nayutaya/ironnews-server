@@ -9,6 +9,17 @@ class GetDivisionUntaggedArticlesApi < ApiBase
   validates_numericality_of :page, :greater_than_or_equal_to => 1, :only_integer => true, :allow_blank => true
   validates_numericality_of :per_page, :greater_than_or_equal_to => 1, :less_than_or_equal_to => 100, :only_integer => true, :allow_blank => true
 
+=begin
+  def self.schema
+    return {
+      "type"       => "object",
+      "properties" => {
+        "success" => {"type" => "boolean"},
+      },
+    }
+  end
+=end
+
   def search(user_id)
     return Article.
       division_untagged_by(user_id).
@@ -21,24 +32,25 @@ class GetDivisionUntaggedArticlesApi < ApiBase
   def execute(user_id)
     unless self.valid?
       return {
-        :success => false,
-        :errors  => self.errors.full_messages,
+        "success" => false,
+        "errors"  => self.errors.full_messages,
       }
     end
 
     articles = self.search(user_id)
 
     return {
-      :success => true,
-      :result  => {
-        :page          => articles.current_page,
-        :per_page      => articles.per_page,
-        :total_entries => articles.total_entries,
-        :articles      => articles.map { |article|
+      "success" => true,
+      "result"  => {
+        "total_entries"    => articles.total_entries,
+        "total_pages"      => articles.total_pages,
+        "current_page"     => articles.current_page,
+        "entries_per_page" => articles.per_page,
+        "articles"         => articles.map { |article|
           {
-            :article_id => article.id,
-            :title      => article.title,
-            :url        => article.url,
+            "article_id" => article.id,
+            "title"      => article.title,
+            "url"        => article.url,
           }
         },
       },
