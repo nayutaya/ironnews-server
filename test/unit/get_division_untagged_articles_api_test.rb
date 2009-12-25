@@ -145,7 +145,7 @@ class GetDivisionUntaggedArticlesApiTest < ActiveSupport::TestCase
 
     expected = {
       :success => false,
-      :errors => ["Page can't be blank", "Page is not a number"],
+      :errors => ["Page can't be blank"],
     }
     assert_equal(expected, @form.execute(users(:yuya).id))
   end
