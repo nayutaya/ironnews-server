@@ -71,6 +71,14 @@ class GetDivisionUntaggedArticlesApiTest < ActiveSupport::TestCase
   end
 
   #
+  # クラスメソッド
+  #
+
+  test "schema" do
+    assert_kind_of(Hash, @klass.schema)
+  end
+  
+  #
   # インスタンスメソッド
   #
 
