@@ -78,6 +78,14 @@ class GetUserTaggedArticlesTest < ActiveSupport::TestCase
   end
 
   #
+  #
+  #
+
+  test "self.schema" do
+    assert_kind_of(Hash, @klass.schema)
+  end
+
+  #
   # インスタンスメソッド
   #
 
@@ -116,5 +124,49 @@ class GetUserTaggedArticlesTest < ActiveSupport::TestCase
     articles = @form.search(users(:yuya).id)
     assert_equal(2, articles.current_page)
     assert_equal(1, articles.per_page)
+  end
+
+  test "execute" do
+    @form.tag = tags(:rail).name
+
+    actual = @form.execute(users(:yuya).id)
+    assert_valid_json(@klass.schema, actual)
+    assert_equal(true, actual["success"])
+    assert_equal(nil,  actual["errors"])
+
+    articles = @form.search(users(:yuya).id)
+    assert_equal(articles.total_entries, actual["result"]["total_entries"])
+    assert_equal(articles.total_pages,   actual["result"]["total_pages"])
+    assert_equal( 1, actual["result"]["current_page"])
+    assert_equal(10, actual["result"]["entries_per_page"])
+
+    expected = articles.map { |article|
+      {
+        "article_id" => article.id,
+        "title"      => article.title,
+        "url"        => article.url,
+      }
+    }
+    assert_equal(expected, actual["result"]["articles"])
+  end
+
+  test "execute, invalid" do
+    @form.tag = nil
+    assert_equal(false, @form.valid?)
+
+    actual = @form.execute(users(:yuya).id)
+    assert_valid_json(@klass.schema, actual)
+    assert_equal(false, actual["success"])
+    assert_equal(["Tag can't be blank"], actual["errors"])
+    assert_equal(nil, actual["result"])
+  end
+
+  private
+
+  # FIXME: 共通コードに移動する
+  def assert_valid_json(schema, obj)
+    assert_nothing_raised {
+      JSON::Schema.validate(obj, schema)
+    }
   end
 end
