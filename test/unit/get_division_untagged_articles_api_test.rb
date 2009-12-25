@@ -122,9 +122,8 @@ class GetDivisionUntaggedArticlesApiTest < ActiveSupport::TestCase
       },
     }
     actual = @form.execute(users(:yuya).id)
+    assert_valid_json(@klass.schema, actual)
     assert_equal(expected, actual)
-
-    JSON::Schema.validate(actual, @klass.schema)
   end
 
   test "execute, paginate" do
@@ -134,13 +133,12 @@ class GetDivisionUntaggedArticlesApiTest < ActiveSupport::TestCase
     articles = @form.search(users(:risa).id)
 
     actual = @form.execute(users(:risa).id)
+    assert_valid_json(@klass.schema, actual)
     assert_equal(2, actual["result"]["current_page"])
     assert_equal(1, actual["result"]["entries_per_page"])
     assert_equal(
       articles.total_entries,
       actual["result"]["total_entries"])
-
-    JSON::Schema.validate(actual, @klass.schema)
   end
 
   test "execute, invalid" do
@@ -152,8 +150,15 @@ class GetDivisionUntaggedArticlesApiTest < ActiveSupport::TestCase
       "errors"  => ["Page can't be blank"],
     }
     actual = @form.execute(users(:yuya).id)
+    assert_valid_json(@klass.schema, actual)
     assert_equal(expected, actual)
+  end
 
-    JSON::Schema.validate(actual, @klass.schema)
+  private
+
+  def assert_valid_json(schema, obj)
+    assert_nothing_raised {
+      JSON::Schema.validate(obj, schema)
+    }
   end
 end
