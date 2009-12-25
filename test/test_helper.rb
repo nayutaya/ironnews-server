@@ -43,4 +43,12 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+
+  private
+
+  def assert_valid_json(schema, obj)
+    assert_nothing_raised {
+      JSON::Schema.validate(obj, schema)
+    }
+  end
 end

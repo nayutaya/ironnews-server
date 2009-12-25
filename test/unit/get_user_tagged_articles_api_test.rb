@@ -1,11 +1,12 @@
 
 require 'test_helper'
 
-class GetDivisionUntaggedArticlesApiTest < ActiveSupport::TestCase
+class GetUserTaggedArticlesApiTest < ActiveSupport::TestCase
   def setup
-    @klass = GetDivisionUntaggedArticlesApi
+    @klass = GetUserTaggedArticlesApi
     @form  = @klass.new
     @basic = @klass.new(
+      :tag      => "tag",
       :page     => 1,
       :per_page => 10)
   end
@@ -16,8 +17,9 @@ class GetDivisionUntaggedArticlesApiTest < ActiveSupport::TestCase
 
   test "columns" do
     [
-      [:page,     1,  "1", 1],
-      [:per_page, 10, "1", 1],
+      [:tag,      nil, "1", "1"],
+      [:page,     1,   "1", 1],
+      [:per_page, 10,  "1", 1],
     ].each { |name, default, set_value, get_value|
       form = @klass.new
       assert_equal(default, form.__send__(name))
@@ -32,6 +34,11 @@ class GetDivisionUntaggedArticlesApiTest < ActiveSupport::TestCase
 
   test "basic is valid" do
     assert_equal(true, @basic.valid?)
+  end
+
+  test "validates_presence_of :tag" do
+    @basic.tag = ""
+    assert_equal(false, @basic.valid?)
   end
 
   test "validates_presence_of :page" do
@@ -83,20 +90,34 @@ class GetDivisionUntaggedArticlesApiTest < ActiveSupport::TestCase
   #
 
   test "search, yuya" do
+    @form.tag = tags(:rail).name
+
     articles = @form.search(users(:yuya).id)
     assert_equal( 1, articles.current_page)
     assert_equal(10, articles.per_page)
 
     expected = [
-      articles(:mainichi1),
-      articles(:mainichi2),
+      articles(:asahi1),
+      articles(:asahi2),
     ]
     assert_equal(
       expected.sort_by { |article| [article.created_at.to_i, article.id] }.reverse,
       articles)
   end
 
+  test "search, risa" do
+    @form.tag = tags(:nonrail).name
+
+    expected = [
+      articles(:asahi2),
+    ]
+    assert_equal(
+      expected.sort_by { |article| [article.created_at.to_i, article.id] }.reverse,
+      @form.search(users(:risa).id))
+  end
+
   test "search, paginate" do
+    @form.tag      = tags(:rail).name
     @form.page     = 2
     @form.per_page = 1
 
@@ -106,6 +127,8 @@ class GetDivisionUntaggedArticlesApiTest < ActiveSupport::TestCase
   end
 
   test "execute" do
+    @form.tag = tags(:rail).name
+
     actual = @form.execute(users(:yuya).id)
     assert_valid_json(@klass.schema, actual)
     assert_equal(true, actual["success"])
@@ -128,6 +151,7 @@ class GetDivisionUntaggedArticlesApiTest < ActiveSupport::TestCase
   end
 
   test "execute, paginate" do
+    @form.tag      = tags(:rail).name
     @form.page     = 2
     @form.per_page = 1
 
@@ -138,13 +162,13 @@ class GetDivisionUntaggedArticlesApiTest < ActiveSupport::TestCase
   end
 
   test "execute, invalid" do
-    @form.page = nil
+    @form.tag = nil
     assert_equal(false, @form.valid?)
 
     actual = @form.execute(users(:yuya).id)
     assert_valid_json(@klass.schema, actual)
     assert_equal(false, actual["success"])
-    assert_equal(["Page can't be blank"], actual["errors"])
+    assert_equal(["Tag can't be blank"], actual["errors"])
     assert_equal(nil, actual["result"])
   end
 end
