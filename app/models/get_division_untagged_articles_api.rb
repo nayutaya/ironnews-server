@@ -23,7 +23,17 @@ class GetDivisionUntaggedArticlesApi < ApiBase
             "total_pages"      => {"type" => "integer"},
             "current_page"     => {"type" => "integer"},
             "entries_per_page" => {"type" => "integer"},
-            "articles"         => {"type" => "array"},
+            "articles"         => {
+              "type"  => "array",
+              "items" => {
+                "type" => "object",
+                "properties" => {
+                  "article_id" => {"type" => "integer"},
+                  "title"      => {"type" => "string"},
+                  "url"        => {"type" => "string"},
+                },
+              },
+            },
           },
         },
       },
