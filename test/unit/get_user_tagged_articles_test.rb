@@ -5,6 +5,7 @@ class GetUserTaggedArticlesTest < ActiveSupport::TestCase
   def setup
     @klass = GetUserTaggedArticles
     @basic = @klass.new(
+      :tag      => "tag",
       :page     => 1,
       :per_page => 10)
   end
@@ -15,8 +16,9 @@ class GetUserTaggedArticlesTest < ActiveSupport::TestCase
 
   test "columns" do
     [
-      [:page,      1, "1", 1],
-      [:per_page, 10, "1", 1],
+      [:tag,      nil, "1", "1"],
+      [:page,     1,   "1", 1],
+      [:per_page, 10,  "1", 1],
     ].each { |name, default, set_value, get_value|
       form = @klass.new
       assert_equal(default, form.__send__(name))
@@ -31,6 +33,11 @@ class GetUserTaggedArticlesTest < ActiveSupport::TestCase
 
   test "basic is valid" do
     assert_equal(true, @basic.valid?)
+  end
+
+  test "validates_presence_of :tag" do
+    @basic.tag = ""
+    assert_equal(false, @basic.valid?)
   end
 
   test "validates_presence_of :page" do
