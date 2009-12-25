@@ -161,12 +161,4 @@ class GetDivisionUntaggedArticlesApiTest < ActiveSupport::TestCase
     assert_valid_json(@klass.schema, actual)
     assert_equal(expected, actual)
   end
-
-  private
-
-  def assert_valid_json(schema, obj)
-    assert_nothing_raised {
-      JSON::Schema.validate(obj, schema)
-    }
-  end
 end

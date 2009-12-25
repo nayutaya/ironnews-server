@@ -160,13 +160,4 @@ class GetUserTaggedArticlesTest < ActiveSupport::TestCase
     assert_equal(["Tag can't be blank"], actual["errors"])
     assert_equal(nil, actual["result"])
   end
-
-  private
-
-  # FIXME: 共通コードに移動する
-  def assert_valid_json(schema, obj)
-    assert_nothing_raised {
-      JSON::Schema.validate(obj, schema)
-    }
-  end
 end
