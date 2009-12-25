@@ -138,4 +138,15 @@ class GetDivisionUntaggedArticlesApiTest < ActiveSupport::TestCase
       articles.total_entries,
       actual[:result][:total_entries])
   end
+
+  test "execute, invalid" do
+    @form.page = nil
+    assert_equal(false, @form.valid?)
+
+    expected = {
+      :success => false,
+      :errors => ["Page can't be blank", "Page is not a number"],
+    }
+    assert_equal(expected, @form.execute(users(:yuya).id))
+  end
 end

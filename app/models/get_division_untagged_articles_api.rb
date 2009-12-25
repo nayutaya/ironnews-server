@@ -19,6 +19,13 @@ class GetDivisionUntaggedArticlesApi < ApiBase
   end
 
   def execute(user_id)
+    unless self.valid?
+      return {
+        :success => false,
+        :errors  => self.errors.full_messages,
+      }
+    end
+
     articles = self.search(user_id)
 
     return {
