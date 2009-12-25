@@ -1,6 +1,6 @@
 
 # ユーザタグ設定済み記事取得API
-class GetUserTaggedArticles < ApiBase
+class GetUserTaggedArticlesApi < ApiBase
   column :tag,      :type => :text
   column :page,     :type => :integer, :default =>  1
   column :per_page, :type => :integer, :default => 10

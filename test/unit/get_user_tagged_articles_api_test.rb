@@ -1,9 +1,9 @@
 
 require 'test_helper'
 
-class GetUserTaggedArticlesTest < ActiveSupport::TestCase
+class GetUserTaggedArticlesApiTest < ActiveSupport::TestCase
   def setup
-    @klass = GetUserTaggedArticles
+    @klass = GetUserTaggedArticlesApi
     @form  = @klass.new
     @basic = @klass.new(
       :tag      => "tag",
