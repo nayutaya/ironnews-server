@@ -4,6 +4,7 @@ require 'test_helper'
 class GetUserTaggedArticlesTest < ActiveSupport::TestCase
   def setup
     @klass = GetUserTaggedArticles
+    @form  = @klass.new
     @basic = @klass.new(
       :tag      => "tag",
       :page     => 1,
@@ -74,5 +75,36 @@ class GetUserTaggedArticlesTest < ActiveSupport::TestCase
       @basic.per_page = value
       assert_equal(expected, @basic.valid?, value)
     }
+  end
+
+  #
+  # インスタンスメソッド
+  #
+
+  test "search, yuya" do
+    @form.tag = tags(:rail).name
+
+    articles = @form.search(users(:yuya).id)
+    assert_equal( 1, articles.current_page)
+    assert_equal(10, articles.per_page)
+
+    expected = [
+      articles(:asahi1),
+      articles(:asahi2),
+    ]
+    assert_equal(
+      expected.sort_by { |article| [article.created_at.to_i, article.id] }.reverse,
+      articles)
+  end
+
+  test "search, risa" do
+    @form.tag = tags(:nonrail).name
+
+    expected = [
+      articles(:asahi2),
+    ]
+    assert_equal(
+      expected.sort_by { |article| [article.created_at.to_i, article.id] }.reverse,
+      @form.search(users(:risa).id))
   end
 end

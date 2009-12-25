@@ -10,4 +10,21 @@ class GetUserTaggedArticles < ApiBase
   validates_presence_of :per_page
   validates_numericality_of :page, :greater_than_or_equal_to => 1, :only_integer => true, :allow_blank => true
   validates_numericality_of :per_page, :greater_than_or_equal_to => 1, :less_than_or_equal_to => 100, :only_integer => true, :allow_blank => true
+
+  def search(user_id)
+    tag_id = Tag.get(self.tag).id
+    scope = {
+      :conditions => [
+        "EXISTS (SELECT * FROM taggings WHERE (taggings.article_id = articles.id) AND (taggings.user_id = ?) AND (taggings.tag_id = ?))",
+        user_id,
+        tag_id,
+      ],
+    }
+    return Article.
+      scoped(scope).
+      paginate(
+        :order    => "articles.created_at DESC, articles.id DESC",
+        :page     => 1,
+        :per_page => 10)
+  end
 end
