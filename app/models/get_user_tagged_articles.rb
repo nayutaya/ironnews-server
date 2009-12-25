@@ -24,7 +24,7 @@ class GetUserTaggedArticles < ApiBase
       scoped(scope).
       paginate(
         :order    => "articles.created_at DESC, articles.id DESC",
-        :page     => 1,
-        :per_page => 10)
+        :page     => self.page,
+        :per_page => self.per_page)
   end
 end

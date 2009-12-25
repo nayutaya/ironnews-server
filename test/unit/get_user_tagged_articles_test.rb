@@ -107,4 +107,14 @@ class GetUserTaggedArticlesTest < ActiveSupport::TestCase
       expected.sort_by { |article| [article.created_at.to_i, article.id] }.reverse,
       @form.search(users(:risa).id))
   end
+
+  test "search, paginate" do
+    @form.tag      = tags(:rail).name
+    @form.page     = 2
+    @form.per_page = 1
+
+    articles = @form.search(users(:yuya).id)
+    assert_equal(2, articles.current_page)
+    assert_equal(1, articles.per_page)
+  end
 end
