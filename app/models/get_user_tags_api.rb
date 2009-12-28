@@ -50,11 +50,8 @@ class GetUserTagsApi < ApiBase
 
     # FIXME: まとめて取得する
     result = {}
-    self.parsed_article_ids.each { |article_id|
-      article = Article.find(article_id)
-      result[article_id.to_s] = article.taggings.all(
-        :conditions => ["taggings.user_id = ?", user_id],
-        :order      => "taggings.tag_id ASC").map(&:tag).map(&:name)
+    self.search(user_id).each { |article_id, tags|
+      result[article_id.to_s] = tags
     }
 
     return {
