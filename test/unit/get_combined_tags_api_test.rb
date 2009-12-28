@@ -4,6 +4,7 @@ require 'test_helper'
 class GetCombinedTagsApiTest < ActiveSupport::TestCase
   def setup
     @klass = GetCombinedTagsApi
+    @form  = @klass.new
     @basic = @klass.new(
       :article_ids => "1")
   end
@@ -62,4 +63,35 @@ class GetCombinedTagsApiTest < ActiveSupport::TestCase
     form = @klass.from(params)
     assert_equal("b", form.article_ids)
   end
+
+  #
+  # インスタンスメソッド
+  #
+
+  test "parsed_article_ids" do
+    @form.article_ids = ""
+    assert_equal([], @form.parsed_article_ids)
+    @form.article_ids = "1234567890"
+    assert_equal([1234567890], @form.parsed_article_ids)
+    @form.article_ids = "1,2,3"
+    assert_equal([1, 2, 3], @form.parsed_article_ids)
+  end
+
+=begin
+  test "search" do
+    @form.article_ids = [
+      articles(:asahi1),
+      articles(:asahi2),
+      articles(:mainichi1),
+    ].map(&:id).join(",")
+
+    expected = {
+      articles(:asahi1).id => [],
+      articles(:asahi2).id => [],
+      articles(:mainichi1).id => [],
+    }
+    actual = @form.search
+    assert_equal(expected, actual)
+  end
+=end
 end
