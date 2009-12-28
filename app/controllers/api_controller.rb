@@ -45,6 +45,11 @@ class ApiController < ApplicationController
     render_json(api.execute(@user.id))
   end
 
+  def get_combined_tags
+    api = GetCombinedTagsApi.from(params)
+    render_json(api.execute)
+  end
+
   private
 
   def authenticate_by_cookie
