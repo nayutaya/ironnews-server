@@ -49,4 +49,17 @@ class GetCombinedTagsApiTest < ActiveSupport::TestCase
       assert_equal(expected, @basic.valid?, value)
     }
   end
+
+  #
+  # クラスメソッド
+  #
+
+  test "self.from" do
+    params = {
+      :controller  => "a",
+      :article_ids => "b",
+    }
+    form = @klass.from(params)
+    assert_equal("b", form.article_ids)
+  end
 end
