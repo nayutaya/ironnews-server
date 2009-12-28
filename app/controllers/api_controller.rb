@@ -1,7 +1,7 @@
 
 # API
 class ApiController < ApplicationController
-  before_filter :authentication, :only => [:add_article, :add_tag, :add_tags, :remove_tags, :get_division_untagged_articles, :get_user_tagged_articles]
+  before_filter :authentication, :only => [:add_article, :add_tag, :add_tags, :remove_tags, :get_division_untagged_articles, :get_user_tagged_articles, :get_user_tags]
 
   def index
     redirect_to(:controller => "home")
@@ -37,6 +37,11 @@ class ApiController < ApplicationController
 
   def get_user_tagged_articles
     api = GetUserTaggedArticlesApi.from(params)
+    render_json(api.execute(@user.id))
+  end
+
+  def get_user_tags
+    api = GetUserTagsApi.from(params)
     render_json(api.execute(@user.id))
   end
 
