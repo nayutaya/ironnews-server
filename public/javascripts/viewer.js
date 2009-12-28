@@ -73,6 +73,21 @@ viewer.loadArticles = function() {
   });
 };
 
+viewer.loadUserTags = function() {
+  // FIXME: 実装せよ
+  var options = {
+    success: function(data) {
+      console.debug("user tags");
+      console.debug(data);
+    }//,
+  }
+  api.getUserTags(viewer.articleIds, options);
+};
+
+viewer.loadCombinedTags = function() {
+  // FIXME: 実装せよ
+};
+
 viewer.addTagsToCurrentArticle = function(tags, success) {
   // FIXME: まとめて追加する
   $.each(tags, function(index, tag) {
@@ -97,6 +112,8 @@ $(function() {
   viewer.articleIds = ids.split(",");
 
   viewer.loadArticles();
+  viewer.loadUserTags();
+  viewer.loadCombinedTags();
 
   $("#next-article").click(function() {
     var article_id = viewer.getNextArticleId();
