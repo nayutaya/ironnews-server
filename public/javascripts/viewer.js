@@ -74,9 +74,9 @@ viewer.loadArticles = function() {
 };
 
 viewer.loadUserTags = function() {
-  // FIXME: 実装せよ
   var options = {
     success: function(data) {
+      // FIXME: 実装せよ
       console.debug("user tags");
       console.debug(data);
     }//,
@@ -85,7 +85,14 @@ viewer.loadUserTags = function() {
 };
 
 viewer.loadCombinedTags = function() {
-  // FIXME: 実装せよ
+  var options = {
+    success: function(data) {
+      // FIXME: 実装せよ
+      console.debug("combined tags");
+      console.debug(data);
+    }//,
+  }
+  api.getCombinedTags(viewer.articleIds, options);
 };
 
 viewer.addTagsToCurrentArticle = function(tags, success) {
