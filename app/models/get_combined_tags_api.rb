@@ -8,10 +8,26 @@ class GetCombinedTagsApi < ApiBase
   validates_presence_of :article_ids
   validates_format_of :article_ids, :with => ArticleIdsFormat, :allow_blank => true
 
+  def self.schema
+    return {
+      "type"       => "object",
+      "properties" => {
+        "success" => {"type" => "boolean"},
+        "errors"  => {"type" => "array", "optional" => true},
+        "result"  => {
+          "type"       => "object",
+          "optional"   => true,
+          # FIXME: キーが可変の場合のスキーマの記述方法がわからない
+        },
+      },
+    }
+  end
+
   def parsed_article_ids
     return self.article_ids.split(/,/).map(&:to_i)
   end
 
+  # FIXME: まとめて取得
   def search
     result = self.parsed_article_ids.mash { |article_id|
       tags = []
@@ -29,5 +45,21 @@ class GetCombinedTagsApi < ApiBase
       [article_id, tags]
     }
     return result
+  end
+
+  def execute
+    unless self.valid?
+      return {
+        "success" => false,
+        "errors"  => self.errors.full_messages,
+      }
+    end
+
+    return {
+      "success" => true,
+      "result"  => self.search.mash { |article_id, tags|
+        [article_id.to_s, tags]
+      },
+    }
   end
 end

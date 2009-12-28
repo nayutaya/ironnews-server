@@ -64,6 +64,10 @@ class GetCombinedTagsApiTest < ActiveSupport::TestCase
     assert_equal("b", form.article_ids)
   end
 
+  test "self.schema" do
+    assert_kind_of(Hash, @klass.schema)
+  end
+
   #
   # インスタンスメソッド
   #
@@ -97,5 +101,43 @@ class GetCombinedTagsApiTest < ActiveSupport::TestCase
       articles(:mainichi1).id => [],
     }
     assert_equal(expected, @form.search)
+  end
+
+  test "execute" do
+    @form.article_ids = [
+      articles(:asahi1),
+      articles(:mainichi1),
+    ].map(&:id).join(",")
+
+    actual = @form.execute
+    assert_valid_json(@klass.schema, actual)
+    assert_equal(true, actual["success"])
+    assert_equal(nil,  actual["errors"])
+
+    expected = {
+      articles(:asahi1).id.to_s =>
+        [
+          tags(:rail),
+          tags(:social),
+          tags(:economy),
+          tags(:kanto),
+          tags(:kinki),
+        ].sort_by(&:id).map(&:name),
+      articles(:mainichi1).id.to_s => [],
+    }
+    assert_equal(expected, actual["result"])
+  end
+
+  test "execute, invalid" do
+    @form.article_ids = ""
+    assert_equal(false, @form.valid?)
+
+    actual = @form.execute
+    assert_valid_json(@klass.schema, actual)
+    assert_equal(false, actual["success"])
+    assert_equal(nil,   actual["result"])
+    assert_equal(
+      ["Article ids can't be blank"],
+      actual["errors"])
   end
 end
