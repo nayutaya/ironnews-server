@@ -64,6 +64,10 @@ class GetUserTagsApiTest < ActiveSupport::TestCase
     assert_equal("b", form.article_ids)
   end
 
+  test "self.schema" do
+    assert_kind_of(Hash, @klass.schema)
+  end
+
   #
   # インスタンスメソッド
   #
@@ -75,5 +79,25 @@ class GetUserTagsApiTest < ActiveSupport::TestCase
     assert_equal([1234567890], @form.parsed_article_ids)
     @form.article_ids = "1,2,3"
     assert_equal([1, 2, 3], @form.parsed_article_ids)
+  end
+
+  test "execute" do
+    @form.article_ids = "1"
+
+    actual = @form.execute(users(:yuya).id)
+    assert_valid_json(@klass.schema, actual)
+    assert_equal(true, actual["success"])
+  end
+
+  test "execute, invalid" do
+    @form.article_ids = ""
+    assert_equal(false, @form.valid?)
+
+    actual = @form.execute(users(:yuya).id)
+    assert_valid_json(@klass.schema, actual)
+    assert_equal(false, actual["success"])
+    assert_equal(
+      ["Article ids can't be blank"],
+      actual["errors"])
   end
 end
