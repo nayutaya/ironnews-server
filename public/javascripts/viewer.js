@@ -4,6 +4,8 @@ viewer.articleIds       = null;
 viewer.articleRecords   = null;
 viewer.currentArticleId = null;
 viewer.currentReadTimer = null;
+viewer.userTags         = {};
+viewer.combinedTags     = {};
 
 viewer.initLayout = function() {
   var container  = $("#container");
@@ -43,6 +45,8 @@ viewer.showArticle = function(article_id) {
   }, 3000);
 
   viewer.currentArticleId = article_id;
+
+  viewer.showTags();
 };
 
 viewer.getArticleIndex = function(article_id) {
@@ -76,9 +80,9 @@ viewer.loadArticles = function() {
 viewer.loadUserTags = function() {
   var options = {
     success: function(data) {
-      // FIXME: 実装せよ
-      console.debug("user tags");
-      console.debug(data);
+      // FIXME: 置換ではなくマージする
+      viewer.userTags = data["result"];
+      viewer.showTags();
     }//,
   }
   api.getUserTags(viewer.articleIds, options);
@@ -87,12 +91,30 @@ viewer.loadUserTags = function() {
 viewer.loadCombinedTags = function() {
   var options = {
     success: function(data) {
-      // FIXME: 実装せよ
-      console.debug("combined tags");
-      console.debug(data);
+      // FIXME: 置換ではなくマージする
+      viewer.combinedTags = data["result"];
+      viewer.showTags();
     }//,
   }
   api.getCombinedTags(viewer.articleIds, options);
+};
+
+viewer.showTags = function() {
+  if ( viewer.currentArticleId == null ) return;
+
+  console.debug("show tags");
+
+  var user_tags     = viewer.userTags[viewer.currentArticleId]     || [];
+  var combined_tags = viewer.combinedTags[viewer.currentArticleId] || [];
+
+  $("div.tags span").each(function() {
+    var target = $(this);
+    var tag = target.text();
+    var user_tagged     = (user_tags.indexOf(tag) >= 0);
+    var combined_tagged = (combined_tags.indexOf(tag) >= 0);
+    if ( user_tagged     ) { target.addClass("user")     } else { target.removeClass("user")     }
+    if ( combined_tagged ) { target.addClass("combined") } else { target.removeClass("combined") }
+  });
 };
 
 viewer.addTagsToCurrentArticle = function(tags, success) {

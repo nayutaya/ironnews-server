@@ -129,7 +129,15 @@ div.tags
 div.tags span
 {
   padding: 1px 2px;
-  border: solid 1px white;
+  border: solid 1px black;
   color: white;
   cursor: pointer;
+}
+div.tags span.user
+{
+  border-color: white;
+}
+div.tags span.combined
+{
+  background-color: gray;
 }
