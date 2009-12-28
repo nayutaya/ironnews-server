@@ -44,6 +44,7 @@ class GetUserTaggedArticlesApi < ApiBase
 
   def search(user_id)
     tag_id = Tag.get(self.tag).id
+    # FIXME: named_scope化する
     scope = {
       :conditions => [
         "EXISTS (SELECT * FROM taggings WHERE (taggings.article_id = articles.id) AND (taggings.user_id = ?) AND (taggings.tag_id = ?))",

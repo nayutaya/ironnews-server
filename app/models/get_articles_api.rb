@@ -19,17 +19,19 @@ class GetArticlesApi < ApiBase
     return self.article_ids.split(/,/).map(&:to_i)
   end
 
+  # FIXME: JSONスキーマを追加
+  # FIXME: 検証エラー時の結果に、エラーメッセージを追加
   def execute
     unless self.valid?
       return {:success => false}
     end
 
-    articles = Article.find_all_by_id(self.parsed_article_ids.sort.uniq).inject({}) { |memo, article|
-      memo[article.id] = {
+    # FIXME: 記事IDを文字列化
+    articles = Article.find_all_by_id(self.parsed_article_ids.sort.uniq).mash { |article|
+      [article.id, {
         :title => article.title,
         :url   => article.url,
-      }
-      memo
+      }]
     }
 
     return {

@@ -33,6 +33,8 @@ class AddTagsApi < ApiBase
       reject(&:blank?).sort.uniq
   end
 
+  # FIXME: JSONスキーマを追加
+  # FIXME: 検証処理を追加
   def execute(user_id)
     tags = Tag.get_by_names(self.tag_names)
     unless tags.empty?

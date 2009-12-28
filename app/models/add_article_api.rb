@@ -23,6 +23,8 @@ class AddArticleApi < ApiBase
     return obj["1"]["title"]
   end
 
+  # FIXME: JSONスキーマを追加
+  # FIXME: 検証処理を追加
   def execute
     result = {
       :success => true,

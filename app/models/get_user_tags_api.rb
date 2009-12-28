@@ -29,15 +29,13 @@ class GetUserTagsApi < ApiBase
 
   def search(user_id)
     # FIXME: まとめて取得する
-    result = {}
-    self.parsed_article_ids.each { |article_id|
+    return self.parsed_article_ids.mash { |article_id|
       article = Article.find(article_id)
-      result[article_id] = article.taggings.all(
+      tags = article.taggings.all(
         :conditions => ["taggings.user_id = ?", user_id],
         :order      => "taggings.tag_id ASC").map(&:tag).map(&:name)
+      [article_id, tags]
     }
-
-    return result
   end
 
   def execute(user_id)
