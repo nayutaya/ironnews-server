@@ -81,6 +81,46 @@ class GetUserTagsApiTest < ActiveSupport::TestCase
     assert_equal([1, 2, 3], @form.parsed_article_ids)
   end
 
+  test "search, yuya" do
+    @form.article_ids = [
+      articles(:asahi1),
+      articles(:asahi2),
+      articles(:mainichi1),
+    ].map(&:id).join(",")
+
+    expected = {
+      articles(:asahi1).id =>
+        [
+          tags(:rail),
+          tags(:social),
+          tags(:kanto),
+        ].sort_by(&:id).map(&:name),
+      articles(:asahi2).id =>
+        [
+          tags(:rail),
+          tags(:economy),
+          tags(:kinki),
+        ].sort_by(&:id).map(&:name),
+      articles(:mainichi1).id => [],
+    }
+    actual = @form.search(users(:yuya).id)
+    assert_equal(expected, actual)
+  end
+
+  test "search, risa" do
+    @form.article_ids = [
+      articles(:asahi1),
+      articles(:mainichi1),
+    ].map(&:id).join(",")
+
+    expected = {
+      articles(:asahi1).id    => [tags(:rail)].map(&:name),
+      articles(:mainichi1).id => [],
+    }
+    actual = @form.search(users(:risa).id)
+    assert_equal(expected, actual)
+  end
+
   test "execute, yuya" do
     @form.article_ids = [
       articles(:asahi1),
