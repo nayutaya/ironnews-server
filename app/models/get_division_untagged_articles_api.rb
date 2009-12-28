@@ -1,3 +1,11 @@
+# == Schema Information
+# Schema version: 20091215020439
+#
+# Table name: active_forms
+#
+#  page     :integer       default(1)
+#  per_page :integer       default(10)
+#
 
 # 区分タグ未設定記事取得APIフォーム
 class GetDivisionUntaggedArticlesApi < ApiBase

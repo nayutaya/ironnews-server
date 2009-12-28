@@ -1,3 +1,10 @@
+# == Schema Information
+# Schema version: 20091215020439
+#
+# Table name: active_forms
+#
+#  article_ids :text
+#
 
 # 合成タグ取得API
 class GetCombinedTagsApi < ApiBase

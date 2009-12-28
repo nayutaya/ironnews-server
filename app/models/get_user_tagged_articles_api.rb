@@ -1,3 +1,12 @@
+# == Schema Information
+# Schema version: 20091215020439
+#
+# Table name: active_forms
+#
+#  tag      :text
+#  page     :integer       default(1)
+#  per_page :integer       default(10)
+#
 
 # ユーザタグ設定済み記事取得API
 class GetUserTaggedArticlesApi < ApiBase

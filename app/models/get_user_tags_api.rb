@@ -1,3 +1,10 @@
+# == Schema Information
+# Schema version: 20091215020439
+#
+# Table name: active_forms
+#
+#  article_ids :text
+#
 
 # ユーザタグ取得API
 class GetUserTagsApi < ApiBase
