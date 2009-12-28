@@ -4,6 +4,8 @@ viewer.articleIds       = null;
 viewer.articleRecords   = null;
 viewer.currentArticleId = null;
 viewer.currentReadTimer = null;
+viewer.userTags         = {};
+viewer.combinedTags     = {};
 
 viewer.initLayout = function() {
   var container  = $("#container");
@@ -43,6 +45,8 @@ viewer.showArticle = function(article_id) {
   }, 3000);
 
   viewer.currentArticleId = article_id;
+
+  viewer.showTags();
 };
 
 viewer.getArticleIndex = function(article_id) {
@@ -73,6 +77,67 @@ viewer.loadArticles = function() {
   });
 };
 
+viewer.loadUserTags = function() {
+  var options = {
+    success: function(data) {
+      // FIXME: 置換ではなくマージする
+      viewer.userTags = data["result"];
+      viewer.showTags();
+    }//,
+  }
+  api.getUserTags(viewer.articleIds, options);
+};
+
+viewer.loadCombinedTags = function() {
+  var options = {
+    success: function(data) {
+      // FIXME: 置換ではなくマージする
+      viewer.combinedTags = data["result"];
+      viewer.showTags();
+    }//,
+  }
+  api.getCombinedTags(viewer.articleIds, options);
+};
+
+viewer.showTags = function() {
+  if ( viewer.currentArticleId == null ) return;
+
+  var user_tags     = viewer.userTags[viewer.currentArticleId]     || [];
+  var combined_tags = viewer.combinedTags[viewer.currentArticleId] || [];
+
+  $("div.tags span").each(function() {
+    var target = $(this);
+    var tag = target.text();
+    var user_tagged     = (user_tags.indexOf(tag) >= 0);
+    var combined_tagged = (combined_tags.indexOf(tag) >= 0);
+    if ( user_tagged     ) { target.addClass("user")     } else { target.removeClass("user")     }
+    if ( combined_tagged ) { target.addClass("combined") } else { target.removeClass("combined") }
+  });
+};
+
+viewer.addTagTo = function(table, article_id, tag) {
+  var article_tags = table[article_id];
+  if ( article_tags == null )
+  {
+    table[article_id] = article_tags = [];
+  }
+  if ( article_tags.indexOf(tag) < 0 )
+  {
+    article_tags.push(tag);
+  }
+};
+viewer.removeTagFrom = function(table, article_id, tag) {
+  var article_tags = table[article_id];
+  if ( article_tags )
+  {
+    var index = article_tags.indexOf(tag);
+    if ( index >= 0 )
+    {
+      article_tags.splice(index, 1);
+    }
+  }
+};
+
 viewer.addTagsToCurrentArticle = function(tags, success) {
   // FIXME: まとめて追加する
   $.each(tags, function(index, tag) {
@@ -97,6 +162,8 @@ $(function() {
   viewer.articleIds = ids.split(",");
 
   viewer.loadArticles();
+  viewer.loadUserTags();
+  viewer.loadCombinedTags();
 
   $("#next-article").click(function() {
     var article_id = viewer.getNextArticleId();
@@ -121,6 +188,12 @@ $(function() {
       viewer.removeTagsFromCurrentArticle(remove_tags, function() {
         viewer.addTagsToCurrentArticle([add_tag], function() { /*nop*/ });
       });
+
+      $.each(remove_tags, function(index, tag) {
+        viewer.removeTagFrom(viewer.userTags, viewer.currentArticleId, tag)
+      });
+      viewer.addTagTo(viewer.userTags, viewer.currentArticleId, add_tag)
+      viewer.showTags();
     });
   });
 });

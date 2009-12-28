@@ -16,6 +16,34 @@ api.getArticles = function(article_ids, options) {
   });
 };
 
+api.getUserTags = function(article_ids, options) {
+  if ( options == null ) options = {};
+
+  $.ajax({
+    type: "GET",
+    url: "/api/get_user_tags",
+    data: {
+      article_ids: article_ids.join(",")//,
+    },
+    dataType: "jsonp",
+    success: options.success//,
+  });  
+};
+
+api.getCombinedTags = function(article_ids, options) {
+  if ( options == null ) options = {};
+
+  $.ajax({
+    type: "GET",
+    url: "/api/get_combined_tags",
+    data: {
+      article_ids: article_ids.join(",")//,
+    },
+    dataType: "jsonp",
+    success: options.success//,
+  });
+};
+
 api.addTags = function(article_id, tag1, options) {
   if ( options == null ) options = {};
 

@@ -3,7 +3,7 @@
 class ApiBase < ActiveForm
   def self.suppress_parameter(params)
     params = params.dup
-    [:controller, :action, :commit, :authenticity_token, :callback].each { |key|
+    [:controller, :action, :commit, :authenticity_token, :callback, :_].each { |key|
       params.delete(key)
     }
     return params
