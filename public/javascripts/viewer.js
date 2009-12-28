@@ -102,8 +102,6 @@ viewer.loadCombinedTags = function() {
 viewer.showTags = function() {
   if ( viewer.currentArticleId == null ) return;
 
-  console.debug("show tags");
-
   var user_tags     = viewer.userTags[viewer.currentArticleId]     || [];
   var combined_tags = viewer.combinedTags[viewer.currentArticleId] || [];
 
@@ -115,6 +113,29 @@ viewer.showTags = function() {
     if ( user_tagged     ) { target.addClass("user")     } else { target.removeClass("user")     }
     if ( combined_tagged ) { target.addClass("combined") } else { target.removeClass("combined") }
   });
+};
+
+viewer.addTagTo = function(table, article_id, tag) {
+  var article_tags = table[article_id];
+  if ( article_tags == null )
+  {
+    table[article_id] = article_tags = [];
+  }
+  if ( article_tags.indexOf(tag) < 0 )
+  {
+    article_tags.push(tag);
+  }
+};
+viewer.removeTagFrom = function(table, article_id, tag) {
+  var article_tags = table[article_id];
+  if ( article_tags )
+  {
+    var index = article_tags.indexOf(tag);
+    if ( index >= 0 )
+    {
+      article_tags.splice(index, 1);
+    }
+  }
 };
 
 viewer.addTagsToCurrentArticle = function(tags, success) {
@@ -167,6 +188,12 @@ $(function() {
       viewer.removeTagsFromCurrentArticle(remove_tags, function() {
         viewer.addTagsToCurrentArticle([add_tag], function() { /*nop*/ });
       });
+
+      $.each(remove_tags, function(index, tag) {
+        viewer.removeTagFrom(viewer.userTags, viewer.currentArticleId, tag)
+      });
+      viewer.addTagTo(viewer.userTags, viewer.currentArticleId, add_tag)
+      viewer.showTags();
     });
   });
 });
