@@ -81,8 +81,12 @@ class GetUserTagsApiTest < ActiveSupport::TestCase
     assert_equal([1, 2, 3], @form.parsed_article_ids)
   end
 
-  test "execute" do
-    @form.article_ids = articles(:asahi1).id.to_s
+  test "execute, yuya" do
+    @form.article_ids = [
+      articles(:asahi1),
+      articles(:asahi2),
+      articles(:mainichi1),
+    ].map(&:id).join(",")
 
     actual = @form.execute(users(:yuya).id)
     assert_valid_json(@klass.schema, actual)
@@ -90,11 +94,35 @@ class GetUserTagsApiTest < ActiveSupport::TestCase
     assert_equal(nil,  actual["errors"])
 
     expected = {
-      articles(:asahi1).id.to_s => [
-        tags(:rail),
-        tags(:social),
-        tags(:kanto),
-      ].sort_by(&:id).map(&:name),
+      articles(:asahi1).id.to_s =>
+        [
+          tags(:rail),
+          tags(:social),
+          tags(:kanto),
+        ].sort_by(&:id).map(&:name),
+      articles(:asahi2).id.to_s =>
+        [
+          tags(:rail),
+          tags(:economy),
+          tags(:kinki),
+        ].sort_by(&:id).map(&:name),
+      articles(:mainichi1).id.to_s => [],
+    }
+    assert_equal(expected, actual["result"])
+  end
+
+  test "execute, risa" do
+    @form.article_ids = [
+      articles(:asahi1),
+      articles(:mainichi1),
+    ].map(&:id).join(",")
+
+    actual = @form.execute(users(:risa).id)
+    assert_valid_json(@klass.schema, actual)
+
+    expected = {
+      articles(:asahi1).id.to_s    => [tags(:rail)].map(&:name),
+      articles(:mainichi1).id.to_s => [],
     }
     assert_equal(expected, actual["result"])
   end
