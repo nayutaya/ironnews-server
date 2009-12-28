@@ -14,29 +14,11 @@ class GetUserTagsApi < ApiBase
       "properties" => {
         "success" => {"type" => "boolean"},
         "errors"  => {"type" => "array", "optional" => true},
-=begin
         "result"  => {
           "type"       => "object",
           "optional"   => true,
-          "properties" => {
-            "total_entries"    => {"type" => "integer"},
-            "total_pages"      => {"type" => "integer"},
-            "current_page"     => {"type" => "integer"},
-            "entries_per_page" => {"type" => "integer"},
-            "articles"         => {
-              "type"  => "array",
-              "items" => {
-                "type" => "object",
-                "properties" => {
-                  "article_id" => {"type" => "integer"},
-                  "title"      => {"type" => "string"},
-                  "url"        => {"type" => "string"},
-                },
-              },
-            },
-          },
+          # FIXME: キーが可変の場合のスキーマの記述方法がわからない
         },
-=end
       },
     }
   end
@@ -53,8 +35,18 @@ class GetUserTagsApi < ApiBase
       }
     end
 
+    # FIXME: まとめて取得する
+    result = {}
+    self.parsed_article_ids.each { |article_id|
+      article = Article.find(article_id)
+      result[article_id.to_s] = article.taggings.all(
+        :conditions => ["taggings.user_id = ?", user_id],
+        :order      => "taggings.tag_id ASC").map(&:tag).map(&:name)
+    }
+
     return {
       "success" => true,
+      "result"  => result,
     }
   end
 end

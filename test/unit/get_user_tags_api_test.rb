@@ -82,11 +82,21 @@ class GetUserTagsApiTest < ActiveSupport::TestCase
   end
 
   test "execute" do
-    @form.article_ids = "1"
+    @form.article_ids = articles(:asahi1).id.to_s
 
     actual = @form.execute(users(:yuya).id)
     assert_valid_json(@klass.schema, actual)
     assert_equal(true, actual["success"])
+    assert_equal(nil,  actual["errors"])
+
+    expected = {
+      articles(:asahi1).id.to_s => [
+        tags(:rail),
+        tags(:social),
+        tags(:kanto),
+      ].sort_by(&:id).map(&:name),
+    }
+    assert_equal(expected, actual["result"])
   end
 
   test "execute, invalid" do
@@ -96,6 +106,7 @@ class GetUserTagsApiTest < ActiveSupport::TestCase
     actual = @form.execute(users(:yuya).id)
     assert_valid_json(@klass.schema, actual)
     assert_equal(false, actual["success"])
+    assert_equal(nil,   actual["result"])
     assert_equal(
       ["Article ids can't be blank"],
       actual["errors"])
