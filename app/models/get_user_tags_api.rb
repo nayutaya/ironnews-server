@@ -48,15 +48,11 @@ class GetUserTagsApi < ApiBase
       }
     end
 
-    # FIXME: まとめて取得する
-    result = {}
-    self.search(user_id).each { |article_id, tags|
-      result[article_id.to_s] = tags
-    }
-
     return {
       "success" => true,
-      "result"  => result,
+      "result"  => self.search(user_id).mash { |article_id, tags|
+        [article_id.to_s, tags]
+      },
     }
   end
 end

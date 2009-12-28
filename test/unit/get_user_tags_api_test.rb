@@ -124,7 +124,6 @@ class GetUserTagsApiTest < ActiveSupport::TestCase
   test "execute, yuya" do
     @form.article_ids = [
       articles(:asahi1),
-      articles(:asahi2),
       articles(:mainichi1),
     ].map(&:id).join(",")
 
@@ -139,12 +138,6 @@ class GetUserTagsApiTest < ActiveSupport::TestCase
           tags(:rail),
           tags(:social),
           tags(:kanto),
-        ].sort_by(&:id).map(&:name),
-      articles(:asahi2).id.to_s =>
-        [
-          tags(:rail),
-          tags(:economy),
-          tags(:kinki),
         ].sort_by(&:id).map(&:name),
       articles(:mainichi1).id.to_s => [],
     }
