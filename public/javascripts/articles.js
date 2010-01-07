@@ -12,6 +12,18 @@ manager.createViewerPath = function(articleIds) {
   return "/viewer#" + articleIds.join(",");
 };
 
+manager.replaceTitle = function() {
+  $("ul.articles li a").each(function() {
+    var url = this.href;
+    var title = $(this).text();
+    var new_title = BookmarkUtility.cleanse_title(url, title);
+    if ( new_title != title )
+    {
+      $(this).text(new_title);
+    }
+  });
+};
+
 manager.replaceLink = function() {
   $("ul.articles li a").each(function() {
     var articleId = manager.getArticleId(this.id);
@@ -114,6 +126,7 @@ manager.unsetPinOfAllArticles = function() {
 
 $(function() {
   manager.setFavicon();
+  manager.replaceTitle();
   manager.replaceLink();
   manager.initCursor();
 
