@@ -6,7 +6,7 @@ class CombinedTaggingTest < ActiveSupport::TestCase
     @klass = CombinedTagging
     @basic = @klass.new(
       :serial     => 1,
-      :article_id => articles(:mainichi1).id)
+      :article_id => articles(:mainichi2).id)
   end
 
   #

@@ -43,3 +43,13 @@ asahi3:
   category_tag2: null
   area_tag1: null
   area_tag2: null
+
+mainichi1:
+  created_at: 2009-01-01 00:00:00
+  serial: 4
+  article: mainichi1
+  division_tag: rail
+  category_tag1: social
+  category_tag2: null
+  area_tag1: kanto
+  area_tag2: null
