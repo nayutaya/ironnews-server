@@ -47,7 +47,7 @@ class ArticleTest < ActiveSupport::TestCase
     }
     assert_difference("Tagging.count", 0) {
       assert_difference("#{@klass}.count", -1) {
-        articles(:mainichi1).destroy
+        articles(:mainichi2).destroy
       }
     }
   end
@@ -59,7 +59,7 @@ class ArticleTest < ActiveSupport::TestCase
 
     assert_equal(
       nil,
-      articles(:mainichi1).combined_tagging)
+      articles(:mainichi2).combined_tagging)
   end
 
   test "has_one :combined_tagging, :dependent => :destroy" do
@@ -70,7 +70,7 @@ class ArticleTest < ActiveSupport::TestCase
     }
     assert_difference("CombinedTagging.count", 0) {
       assert_difference("#{@klass}.count", -1) {
-        articles(:mainichi1).destroy
+        articles(:mainichi2).destroy
       }
     }
   end
@@ -82,6 +82,7 @@ class ArticleTest < ActiveSupport::TestCase
   test "division, rail" do
     expected = [
       articles(:asahi1),
+      articles(:mainichi1),
     ]
     assert_equal(
       expected.sort_by(&:id),
@@ -106,6 +107,7 @@ class ArticleTest < ActiveSupport::TestCase
   test "category, social" do
     expected = [
       articles(:asahi1),
+      articles(:mainichi1),
     ]
     assert_equal(
       expected.sort_by(&:id),
@@ -130,6 +132,7 @@ class ArticleTest < ActiveSupport::TestCase
   test "area, kanto" do
     expected = [
       articles(:asahi1),
+      articles(:mainichi1),
     ]
     assert_equal(
       expected.sort_by(&:id),

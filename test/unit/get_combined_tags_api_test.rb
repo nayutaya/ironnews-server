@@ -98,7 +98,12 @@ class GetCombinedTagsApiTest < ActiveSupport::TestCase
           tags(:kinki),
         ].sort_by(&:id).map(&:name),
       articles(:asahi2).id    => [],
-      articles(:mainichi1).id => [],
+      articles(:mainichi1).id =>
+        [
+          tags(:rail),
+          tags(:social),
+          tags(:kanto),
+        ].sort_by(&:id).map(&:name),
     }
     assert_equal(expected, @form.search)
   end
@@ -106,7 +111,7 @@ class GetCombinedTagsApiTest < ActiveSupport::TestCase
   test "execute" do
     @form.article_ids = [
       articles(:asahi1),
-      articles(:mainichi1),
+      articles(:mainichi2),
     ].map(&:id).join(",")
 
     actual = @form.execute
@@ -123,7 +128,7 @@ class GetCombinedTagsApiTest < ActiveSupport::TestCase
           tags(:kanto),
           tags(:kinki),
         ].sort_by(&:id).map(&:name),
-      articles(:mainichi1).id.to_s => [],
+      articles(:mainichi2).id.to_s => [],
     }
     assert_equal(expected, actual["result"])
   end
