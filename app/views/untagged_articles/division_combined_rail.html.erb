@@ -1,0 +1,16 @@
+
+<h1>区分タグ付けされていない記事（合成タグ：鉄道）</h1>
+
+<div><%= will_paginate(@articles) %></div>
+
+<ul class="articles" style="width: 600px;">
+ <%- @articles.each { |article| -%>
+  <li class="article">
+   <%= article_link(article) %>
+  </li>
+ <%- } -%>
+</ul>
+
+<div><%= will_paginate(@articles) %></div>
+
+<%= javascript_include_tag("articles") %>

@@ -49,10 +49,16 @@
  ]
 </div>
 <div>
- タグ付けされていない記事
+ タグしていない記事
  [ <%= link_to(h("区分"), :controller => "untagged_articles", :action => "division") %>
  | <%= link_to(h("カテゴリ"), :controller => "untagged_articles", :action => "category") %>
  | <%= link_to(h("地域"), :controller => "untagged_articles", :action => "area") %>
+ ]
+</div>
+<div>
+ 合成タグあり、かつタグしていない記事
+ [ <%= link_to(h("鉄道"), :controller => "untagged_articles", :action => "division_combined_rail") %>
+ | <%= link_to(h("非鉄"), :controller => "untagged_articles", :action => "division_combined_nonrail") %>
  ]
 </div>
 

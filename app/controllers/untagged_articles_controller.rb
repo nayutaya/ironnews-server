@@ -11,6 +11,26 @@ class UntaggedArticlesController < ApplicationController
         :per_page => 100)
   end
 
+  def division_combined_rail
+    @articles = Article.
+      division("鉄道").
+      division_untagged_by(@user.id).
+      paginate(
+        :order    => "articles.created_at DESC",
+        :page     => params[:page],
+        :per_page => 100)
+  end
+
+  def division_combined_nonrail
+    @articles = Article.
+      division("非鉄").
+      division_untagged_by(@user.id).
+      paginate(
+        :order    => "articles.created_at DESC",
+        :page     => params[:page],
+        :per_page => 100)
+  end
+
   def category
     @articles = Article.
       division("鉄道").
