@@ -123,4 +123,40 @@ class GetCombinedTaggedArticlesApiTest < ActiveSupport::TestCase
       expected.sort_by { |article| [article.created_at.to_i, article.id] }.reverse,
       @form.search)
   end
+
+  test "search, area, kanto" do
+    @form.area_tag = tags(:kanto).name
+
+    expected = [
+      articles(:asahi1),
+      articles(:mainichi1),
+    ]
+    assert_equal(
+      expected.sort_by { |article| [article.created_at.to_i, article.id] }.reverse,
+      @form.search)
+  end
+
+  test "search, area, kinki" do
+    @form.area_tag = tags(:kinki).name
+
+    expected = [
+      articles(:asahi1),
+    ]
+    assert_equal(
+      expected.sort_by { |article| [article.created_at.to_i, article.id] }.reverse,
+      @form.search)
+  end
+
+  test "search, complex" do
+    @form.division_tag = tags(:rail).name
+    @form.category_tag = tags(:economy).name
+    @form.area_tag     = tags(:kinki).name
+
+    expected = [
+      articles(:asahi1),
+    ]
+    assert_equal(
+      expected.sort_by { |article| [article.created_at.to_i, article.id] }.reverse,
+      @form.search)
+  end
 end

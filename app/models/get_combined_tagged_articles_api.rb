@@ -21,6 +21,9 @@ class GetCombinedTaggedArticlesApi < ApiBase
     unless self.category_tag.blank?
       articles = articles.category(self.category_tag)
     end
+    unless self.area_tag.blank?
+      articles = articles.area(self.area_tag)
+    end
 
     return articles.all(
       :order => "articles.created_at DESC, articles.id DESC")
