@@ -61,4 +61,32 @@ class GetCombinedTaggedArticlesApi < ApiBase
       :page     => self.page,
       :per_page => self.per_page)
   end
+
+  def execute
+    unless self.valid?
+      return {
+        "success" => false,
+        "errors"  => self.errors.full_messages,
+      }
+    end
+
+    articles = self.search
+
+    return {
+      "success" => true,
+      "result"  => {
+        "total_entries"    => articles.total_entries,
+        "total_pages"      => articles.total_pages,
+        "current_page"     => articles.current_page,
+        "entries_per_page" => articles.per_page,
+        "articles"         => articles.map { |article|
+          {
+            "article_id" => article.id,
+            "title"      => article.title,
+            "url"        => article.url,
+          }
+        },
+      },
+    }
+  end
 end
