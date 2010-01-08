@@ -25,7 +25,9 @@ class GetCombinedTaggedArticlesApi < ApiBase
       articles = articles.area(self.area_tag)
     end
 
-    return articles.all(
-      :order => "articles.created_at DESC, articles.id DESC")
+    return articles.paginate(
+      :order    => "articles.created_at DESC, articles.id DESC",
+      :page     => self.page,
+      :per_page => self.per_page)
   end
 end
