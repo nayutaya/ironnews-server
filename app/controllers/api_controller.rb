@@ -30,6 +30,11 @@ class ApiController < ApplicationController
     render_json(api.execute(@user.id))
   end
 
+  def get_combined_tagged_articles
+    api = GetCombinedTaggedArticlesApi.from(params)
+    render_json(api.execute)
+  end
+
   def get_division_untagged_articles
     api = GetDivisionUntaggedArticlesApi.from(params)
     render_json(api.execute(@user.id))
