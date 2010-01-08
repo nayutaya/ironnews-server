@@ -100,4 +100,27 @@ class GetCombinedTaggedArticlesApiTest < ActiveSupport::TestCase
       expected.sort_by { |article| [article.created_at.to_i, article.id] }.reverse,
       @form.search)
   end
+
+  test "search, category, social" do
+    @form.category_tag = tags(:social).name
+
+    expected = [
+      articles(:asahi1),
+      articles(:mainichi1),
+    ]
+    assert_equal(
+      expected.sort_by { |article| [article.created_at.to_i, article.id] }.reverse,
+      @form.search)
+  end
+
+  test "search, category, economy" do
+    @form.category_tag = tags(:economy).name
+
+    expected = [
+      articles(:asahi1),
+    ]
+    assert_equal(
+      expected.sort_by { |article| [article.created_at.to_i, article.id] }.reverse,
+      @form.search)
+  end
 end

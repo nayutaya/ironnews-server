@@ -13,9 +13,16 @@ class GetCombinedTaggedArticlesApi < ApiBase
   validates_numericality_of :per_page, :greater_than_or_equal_to => 1, :less_than_or_equal_to => 100, :only_integer => true, :allow_blank => true
 
   def search
-    return Article.
-      division(self.division_tag).
-      all(
-        :order => "articles.created_at DESC, articles.id DESC")
+    articles = Article
+
+    unless self.division_tag.blank?
+      articles = articles.division(self.division_tag)
+    end
+    unless self.category_tag.blank?
+      articles = articles.category(self.category_tag)
+    end
+
+    return articles.all(
+      :order => "articles.created_at DESC, articles.id DESC")
   end
 end
