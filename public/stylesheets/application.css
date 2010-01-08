@@ -28,5 +28,9 @@ ul.articles li a
 }
 ul.articles li.pinned a
 {
-  background-color: #F0F0FF;
+  background-color: #E6E6FA;
+}
+ul.articles li a:hover
+{
+  background-color: #FAF0E6;
 }
