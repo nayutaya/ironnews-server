@@ -4,6 +4,7 @@ require 'test_helper'
 class GetCombinedTaggedArticlesApiTest < ActiveSupport::TestCase
   def setup
     @klass = GetCombinedTaggedArticlesApi
+    @form  = @klass.new
     @basic = @klass.new(
       :division_tag => "tag",
       :page         => 1,
@@ -36,13 +37,6 @@ class GetCombinedTaggedArticlesApiTest < ActiveSupport::TestCase
   test "basic is valid" do
     assert_equal(true, @basic.valid?)
   end
-
-=begin
-  test "validates_presence_of :tag" do
-    @basic.tag = ""
-    assert_equal(false, @basic.valid?)
-  end
-=end
 
   test "validates_presence_of :page" do
     @basic.page = ""
@@ -78,5 +72,32 @@ class GetCombinedTaggedArticlesApiTest < ActiveSupport::TestCase
       @basic.per_page = value
       assert_equal(expected, @basic.valid?, value)
     }
+  end
+
+  #
+  # インスタンスメソッド
+  #
+
+  test "search, division, rail" do
+    @form.division_tag = tags(:rail).name
+
+    expected = [
+      articles(:asahi1),
+      articles(:mainichi1),
+    ]
+    assert_equal(
+      expected.sort_by { |article| [article.created_at.to_i, article.id] }.reverse,
+      @form.search)
+  end
+
+  test "search, division, nonrail" do
+    @form.division_tag = tags(:nonrail).name
+
+    expected = [
+      articles(:asahi3),
+    ]
+    assert_equal(
+      expected.sort_by { |article| [article.created_at.to_i, article.id] }.reverse,
+      @form.search)
   end
 end
