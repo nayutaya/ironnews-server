@@ -198,10 +198,10 @@ $(function() {
   });
 
   $(document).bind("keydown", {combi: "t", disableInInput: true}, function() {
-    alert("t");
+    $("div.tags span:contains('鉄道')").click();
   });
   $(document).bind("keydown", {combi: "h", disableInInput: true}, function() {
-    alert("h");
+    $("div.tags span:contains('非鉄')").click();
   });
   $(document).bind("keydown", {combi: "n", disableInInput: true}, function() {
     alert("n");
