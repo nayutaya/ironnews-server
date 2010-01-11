@@ -204,10 +204,10 @@ $(function() {
     $("div.tags span:contains('非鉄')").click();
   });
   $(document).bind("keydown", {combi: "n", disableInInput: true}, function() {
-    alert("n");
+    $("#next-article").click();
   });
   $(document).bind("keydown", {combi: "p", disableInInput: true}, function() {
-    alert("p");
+    $("#prev-article").click();
   });
 
 });
