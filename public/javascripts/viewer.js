@@ -196,4 +196,18 @@ $(function() {
       viewer.showTags();
     });
   });
+
+  $(document).bind("keydown", {combi: "t", disableInInput: true}, function() {
+    alert("t");
+  });
+  $(document).bind("keydown", {combi: "h", disableInInput: true}, function() {
+    alert("h");
+  });
+  $(document).bind("keydown", {combi: "n", disableInInput: true}, function() {
+    alert("n");
+  });
+  $(document).bind("keydown", {combi: "p", disableInInput: true}, function() {
+    alert("p");
+  });
+
 });
