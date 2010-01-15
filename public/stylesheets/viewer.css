@@ -84,6 +84,12 @@ body
   font-size: 12px;
 }
 
+#title
+{
+  color: #FFFFFF;
+  font-size: 12px;
+}
+
 #tag-box
 {
   position: absolute;

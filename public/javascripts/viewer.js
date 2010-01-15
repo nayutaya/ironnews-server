@@ -34,6 +34,7 @@ viewer.showArticle = function(article_id) {
 
   $("#browser").attr("src", url);
   $("#url").text(url);
+  $("#title").text(title);
   document.title = title;
 
   if ( viewer.currentReadTimer != null )
