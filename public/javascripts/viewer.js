@@ -180,15 +180,14 @@ $(function() {
 
   $("div.tags span").each(function() {
     var add_tag = $(this).text();
+    var remove_tags = [];
+    $("span", $(this).parent()).each(function() {
+      var tag = $(this).text();
+      if ( tag != add_tag ) remove_tags.push(tag);
+    });
     $(this).click(function() {
-      var remove_tags = [];
-      $("span", $(this).parent()).each(function() {
-        var tag2 = $(this).text();
-        if ( tag2 != add_tag ) remove_tags.push(tag2);
-      });
-      viewer.removeTagsFromCurrentArticle(remove_tags, function() {
-        viewer.addTagsToCurrentArticle([add_tag], function() { /*nop*/ });
-      });
+      viewer.removeTagsFromCurrentArticle(remove_tags, function() { /*nop*/ });
+      viewer.addTagsToCurrentArticle([add_tag], function() { /*nop*/ });
 
       $.each(remove_tags, function(index, tag) {
         viewer.removeTagFrom(viewer.userTags, viewer.currentArticleId, tag)
