@@ -16,7 +16,7 @@ manager.replaceTitle = function() {
   $("ul.articles li a").each(function() {
     var url = this.href;
     var title = $(this).text();
-    var new_title = BookmarkUtility.cleanse_title(url, title);
+    var new_title = IronnewsUtility.cleanse_title(url, title);
     if ( new_title != title )
     {
       $(this).text(new_title);
