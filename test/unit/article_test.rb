@@ -3,8 +3,9 @@ require 'test_helper'
 
 class ArticleTest < ActiveSupport::TestCase
   def setup
-    @klass = Article
-    @basic = @klass.new(
+    @klass  = Article
+    @record = @klass.new
+    @basic  = @klass.new(
       :title => "title",
       :host  => "host",
       :path  => "path")
@@ -423,5 +424,11 @@ class ArticleTest < ActiveSupport::TestCase
       assert_equal(host, record.host, url)
       assert_equal(path, record.path, url)
     }
+  end
+
+  test "normalize_title!" do
+    @record.title = " 　a\t\n\rb　 "
+    @record.normalize_title!
+    assert_equal("a b", @record.title)
   end
 end
