@@ -305,6 +305,20 @@ class ArticleTest < ActiveSupport::TestCase
     }
   end
 
+  test "validates_format_of :title" do
+    [
+      ["abc",  true ],
+      [" abc", false],
+      ["abc ", false],
+      ["a\tb", false],
+      ["a\nb", false],
+      ["a\rb", false],
+    ].each { |value, expected|
+      @basic.title = value
+      assert_equal(expected, @basic.valid?, value)
+    }
+  end
+
   test "validates_format_of :host" do
     [
       ["www.asahi.com", true ],
