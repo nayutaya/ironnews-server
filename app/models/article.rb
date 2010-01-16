@@ -123,7 +123,8 @@ class Article < ActiveRecord::Base
 
   def self.normalize_title(title)
     return title.to_s.
-      gsub(/[\t\n\r]+/, " ").
+      gsub(/[\s]+/, " ").
+      gsub(/　+/, "　").
       gsub(/\A[ 　]+/, "").
       gsub(/[ 　]+\z/, "")
   end

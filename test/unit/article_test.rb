@@ -378,13 +378,11 @@ class ArticleTest < ActiveSupport::TestCase
 
   test "self.normalize_title" do
     [
-      ["",  ""],
-      [nil, ""],
-      ["ab",     "ab"],
-      ["  ab",   "ab"], # 文頭に半角スペース
-      ["　　ab", "ab"], # 文頭に全角スペース
-      ["ab  ",   "ab"], # 文末に半角スペース
-      ["ab　　", "ab"], # 文末に全角スペース
+      ["",   ""],
+      [nil,  ""],
+      ["ab", "ab"],
+      ["  a  b  ", "a b"],
+      ["　　a　　b　　", "a　b"],
       ["\ta\tb\t", "a b"],
       ["\na\nb\n", "a b"],
       ["\ra\rb\r", "a b"],
