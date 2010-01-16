@@ -16,7 +16,7 @@ IronnewsUtility.CleanseTitleTable = {
   "news24.jp": [[/^(.+) \| 日テレNEWS24$/, "$1"]],
   "osaka.yomiuri.co.jp": [[/^(.+) : 関西発 : YOMIURI ONLINE（読売新聞）$/, "$1"]],
   "response.jp": [[/^(.+) \| レスポンス自動車ニュース（Response.jp）$/, "$1"]],
-  "sankei.jp.msn.com": [[/^(.+) - MSN産経ニュース$/, "$1"],[/^(.+)  \(\d+\/\d+ページ\)$/, "$1"]],
+  "sankei.jp.msn.com": [[/^(.+) - MSN産経ニュース$/, "$1"],[/^(.+) \(\d+\/\d+ページ\)$/, "$1"]],
   "slashdot.jp": [[/^(.+) - スラッシュドット・ジャパン$/, "$1"]],
   "svr.sanyo.oni.co.jp": [[/^(.+) - 山陽新聞地域ニュース$/, "$1"]],
   "techon.nikkeibp.co.jp": [[/^(.+) - Tech-On！$/, "$1"]],
