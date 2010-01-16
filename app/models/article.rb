@@ -108,11 +108,10 @@ class Article < ActiveRecord::Base
   }
 
   def self.normalize_title(title)
-    title = title.to_s.dup
-    title.gsub!(/[\t\n\r]+/, " ")
-    title.gsub!(/\A[ 　]+/, "")
-    title.gsub!(/[ 　]+\z/, "")
-    return title
+    return title.to_s.
+      gsub(/[\t\n\r]+/, " ").
+      gsub(/\A[ 　]+/, "").
+      gsub(/[ 　]+\z/, "")
   end
 
   def self.join_host_path(host, path)
