@@ -307,9 +307,11 @@ class ArticleTest < ActiveSupport::TestCase
 
   test "validates_format_of :title" do
     [
-      ["abc",  true ],
-      [" abc", false],
-      ["abc ", false],
+      ["ab",   true ],
+      [" ab",  false], # 文頭に半角スペース
+      ["　ab", false], # 文頭に全角スペース
+      ["ab ",  false], # 文末に半角スペース
+      ["ab　", false], # 文末に全角スペース
       ["a\tb", false],
       ["a\nb", false],
       ["a\rb", false],
