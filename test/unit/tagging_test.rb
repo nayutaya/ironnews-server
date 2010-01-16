@@ -11,40 +11,6 @@ class TaggingTest < ActiveSupport::TestCase
   end
 
   #
-  # 関連
-  #
-
-  test "belongs_to :user" do
-    assert_equal(
-      users(:yuya),
-      taggings(:yuya_asahi1_rail).user)
-
-    assert_equal(
-      users(:risa),
-      taggings(:risa_asahi2_nonrail).user)
-  end
-
-  test "belongs_to :article" do
-    assert_equal(
-      articles(:asahi1),
-      taggings(:yuya_asahi1_rail).article)
-
-    assert_equal(
-      articles(:asahi2),
-      taggings(:risa_asahi2_nonrail).article)
-  end
-
-  test "belongs_to :tag" do
-    assert_equal(
-      tags(:rail),
-      taggings(:yuya_asahi1_rail).tag)
-
-    assert_equal(
-      tags(:nonrail),
-      taggings(:risa_asahi2_nonrail).tag)
-  end
-
-  #
   # 検証
   #
 
@@ -99,6 +65,40 @@ class TaggingTest < ActiveSupport::TestCase
       taggings.tag     = tag
       assert_equal(expected, taggings.valid?, index.to_s)
     }
+  end
+
+  #
+  # 関連
+  #
+
+  test "belongs_to :user" do
+    assert_equal(
+      users(:yuya),
+      taggings(:yuya_asahi1_rail).user)
+
+    assert_equal(
+      users(:risa),
+      taggings(:risa_asahi2_nonrail).user)
+  end
+
+  test "belongs_to :article" do
+    assert_equal(
+      articles(:asahi1),
+      taggings(:yuya_asahi1_rail).article)
+
+    assert_equal(
+      articles(:asahi2),
+      taggings(:risa_asahi2_nonrail).article)
+  end
+
+  test "belongs_to :tag" do
+    assert_equal(
+      tags(:rail),
+      taggings(:yuya_asahi1_rail).tag)
+
+    assert_equal(
+      tags(:nonrail),
+      taggings(:risa_asahi2_nonrail).tag)
   end
 
   #

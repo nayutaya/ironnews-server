@@ -14,11 +14,11 @@
 class OpenIdCredential < ActiveRecord::Base
   IdentityUrlMaxLength = 200
 
-  belongs_to :user
-
   validates_presence_of :user_id
   validates_presence_of :identity_url
   validates_length_of :identity_url, :maximum => IdentityUrlMaxLength, :allow_nil => true
   validates_format_of :identity_url, :with => URI.regexp(%w[http https]), :allow_nil => true
   validates_uniqueness_of :identity_url
+
+  belongs_to :user
 end

@@ -21,16 +21,16 @@ class CombinedTagging < ActiveRecord::Base
   CategoryTags = %w[社会 事件事故 痴漢 政治経済 科学技術 車両 イベント].freeze
   AreaTags     = %w[北海道 東北 関東 中部 近畿 中国 四国 九州 沖縄 海外].freeze
 
+  validates_presence_of :serial
+  validates_presence_of :article_id
+  validates_uniqueness_of :article_id
+
   belongs_to :article
   belongs_to :division_tag, :class_name => "Tag"
   belongs_to :category_tag1, :class_name => "Tag"
   belongs_to :category_tag2, :class_name => "Tag"
   belongs_to :area_tag1, :class_name => "Tag"
   belongs_to :area_tag2, :class_name => "Tag"
-
-  validates_presence_of :serial
-  validates_presence_of :article_id
-  validates_uniqueness_of :article_id
 
   def self.get_current_serial
     return self.maximum(:serial) || 1

@@ -13,20 +13,6 @@ class OpenIdCredentialTest < ActiveSupport::TestCase
   end
 
   #
-  # 関連
-  #
-
-  test "belongs_to :user" do
-    assert_equal(
-      users(:yuya),
-      @yuya_livedoor.user)
-
-    assert_equal(
-      users(:shinya),
-      @shinya_example.user)
-  end
-
-  #
   # 検証
   #
 
@@ -78,5 +64,19 @@ class OpenIdCredentialTest < ActiveSupport::TestCase
   test "validates_uniqueness_of :identity_url, on update" do
     @yuya_livedoor.identity_url = @shinya_example.identity_url
     assert_equal(false, @yuya_livedoor.valid?)
+  end
+
+  #
+  # 関連
+  #
+
+  test "belongs_to :user" do
+    assert_equal(
+      users(:yuya),
+      @yuya_livedoor.user)
+
+    assert_equal(
+      users(:shinya),
+      @shinya_example.user)
   end
 end

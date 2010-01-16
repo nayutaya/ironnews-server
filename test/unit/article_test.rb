@@ -14,6 +14,97 @@ class ArticleTest < ActiveSupport::TestCase
   end
 
   #
+  # 検証
+  #
+
+  test "all fixtures are valid" do
+    assert_equal(true, @klass.all.all?(&:valid?))
+  end
+
+  test "basic is valid" do
+    assert_equal(true, @basic.valid?)
+  end
+
+  test "validates_presence_of :title" do
+    @basic.title = ""
+    assert_equal(false, @basic.valid?)
+  end
+
+  test "validates_presence_of :host" do
+    @basic.host = ""
+    assert_equal(false, @basic.valid?)
+  end
+
+  test "validates_presence_of :path" do
+    @basic.path = ""
+    assert_equal(false, @basic.valid?)
+  end
+
+  test "validates_length_of :title" do
+    [
+      ["あ" *   1, true ],
+      ["あ" * 200, true ],
+      ["あ" * 201, false],
+    ].each { |value, expected|
+      @basic.title = value
+      assert_equal(expected, @basic.valid?, value.chars.to_a.size)
+    }
+  end
+
+  test "validates_length_of :host" do
+    [
+      ["a" *   1, true ],
+      ["a" * 100, true ],
+      ["a" * 101, false],
+    ].each { |value, expected|
+      @basic.host = value
+      assert_equal(expected, @basic.valid?, value.chars.to_a.size)
+    }
+  end
+
+  test "validates_length_of :path" do
+    [
+      ["a" *    1, true ],
+      ["a" * 2000, true ],
+      ["a" * 2001, false],
+    ].each { |value, expected|
+      @basic.path = value
+      assert_equal(expected, @basic.valid?, value.chars.to_a.size)
+    }
+  end
+
+  test "validates_format_of :title" do
+    [
+      ["ab",   true ],
+      [" ab",  false], # 文頭に半角スペース
+      ["　ab", false], # 文頭に全角スペース
+      ["ab ",  false], # 文末に半角スペース
+      ["ab　", false], # 文末に全角スペース
+      ["a\tb", false],
+      ["a\nb", false],
+      ["a\rb", false],
+    ].each { |value, expected|
+      @basic.title = value
+      assert_equal(expected, @basic.valid?, value)
+    }
+  end
+
+  test "validates_format_of :host" do
+    [
+      ["www.asahi.com", true ],
+      ["mainichi.jp",   true ],
+      ["www.47news.jp", true ],
+      ["abcdef-ghijklm.nopqrst-uvwxyz",    true ],
+      ["nopqrs-tuvwxyz.abcdefg-hijklm",    true ],
+      ["0123456789.0123456789:0123456789", true ],
+      ["WWW.ASAHI.COM", false],
+    ].each { |value, expected|
+      @basic.host = value
+      assert_equal(expected, @basic.valid?, value)
+    }
+  end
+
+  #
   # 関連
   #
 
@@ -243,97 +334,6 @@ class ArticleTest < ActiveSupport::TestCase
     assert_equal(
       (@klass.all - @klass.area_tagged_by(users(:risa)).all).sort_by(&:id),
       @klass.area_untagged_by(users(:risa)).all.sort_by(&:id))
-  end
-
-  #
-  # 検証
-  #
-
-  test "all fixtures are valid" do
-    assert_equal(true, @klass.all.all?(&:valid?))
-  end
-
-  test "basic is valid" do
-    assert_equal(true, @basic.valid?)
-  end
-
-  test "validates_presence_of :title" do
-    @basic.title = ""
-    assert_equal(false, @basic.valid?)
-  end
-
-  test "validates_presence_of :host" do
-    @basic.host = ""
-    assert_equal(false, @basic.valid?)
-  end
-
-  test "validates_presence_of :path" do
-    @basic.path = ""
-    assert_equal(false, @basic.valid?)
-  end
-
-  test "validates_length_of :title" do
-    [
-      ["あ" *   1, true ],
-      ["あ" * 200, true ],
-      ["あ" * 201, false],
-    ].each { |value, expected|
-      @basic.title = value
-      assert_equal(expected, @basic.valid?, value.chars.to_a.size)
-    }
-  end
-
-  test "validates_length_of :host" do
-    [
-      ["a" *   1, true ],
-      ["a" * 100, true ],
-      ["a" * 101, false],
-    ].each { |value, expected|
-      @basic.host = value
-      assert_equal(expected, @basic.valid?, value.chars.to_a.size)
-    }
-  end
-
-  test "validates_length_of :path" do
-    [
-      ["a" *    1, true ],
-      ["a" * 2000, true ],
-      ["a" * 2001, false],
-    ].each { |value, expected|
-      @basic.path = value
-      assert_equal(expected, @basic.valid?, value.chars.to_a.size)
-    }
-  end
-
-  test "validates_format_of :title" do
-    [
-      ["ab",   true ],
-      [" ab",  false], # 文頭に半角スペース
-      ["　ab", false], # 文頭に全角スペース
-      ["ab ",  false], # 文末に半角スペース
-      ["ab　", false], # 文末に全角スペース
-      ["a\tb", false],
-      ["a\nb", false],
-      ["a\rb", false],
-    ].each { |value, expected|
-      @basic.title = value
-      assert_equal(expected, @basic.valid?, value)
-    }
-  end
-
-  test "validates_format_of :host" do
-    [
-      ["www.asahi.com", true ],
-      ["mainichi.jp",   true ],
-      ["www.47news.jp", true ],
-      ["abcdef-ghijklm.nopqrst-uvwxyz",    true ],
-      ["nopqrs-tuvwxyz.abcdefg-hijklm",    true ],
-      ["0123456789.0123456789:0123456789", true ],
-      ["WWW.ASAHI.COM", false],
-    ].each { |value, expected|
-      @basic.host = value
-      assert_equal(expected, @basic.valid?, value)
-    }
   end
 
   #

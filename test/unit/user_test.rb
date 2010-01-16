@@ -14,50 +14,6 @@ class UserTest < ActiveSupport::TestCase
   end
 
   #
-  # 関連
-  #
-
-  test "has_many :open_id_credentials" do
-    expected = [
-      open_id_credentials(:yuya_livedoor),
-      open_id_credentials(:yuya_mixi),
-    ]
-    assert_equal(
-      expected.sort_by(&:id),
-      @yuya.open_id_credentials.sort_by(&:id))
-
-    expected = [
-      open_id_credentials(:shinya_example),
-    ]
-    assert_equal(
-      expected.sort_by(&:id),
-      @shinya.open_id_credentials.sort_by(&:id))
-  end
-
-  test "has_many :taggings" do
-    expected = [
-      taggings(:yuya_asahi1_rail),
-      taggings(:yuya_asahi1_social),
-      taggings(:yuya_asahi1_kanto),
-      taggings(:yuya_asahi2_rail),
-      taggings(:yuya_asahi2_economy),
-      taggings(:yuya_asahi2_kinki),
-      taggings(:yuya_asahi3_nonrail),
-    ]
-    assert_equal(
-      expected.sort_by(&:id),
-      @yuya.taggings.sort_by(&:id))
-
-    expected = [
-      taggings(:risa_asahi1_rail),
-      taggings(:risa_asahi2_nonrail),
-    ]
-    assert_equal(
-      expected.sort_by(&:id),
-      @risa.taggings.sort_by(&:id))
-  end
-
-  #
   # 検証
   #
 
@@ -119,6 +75,50 @@ class UserTest < ActiveSupport::TestCase
       @basic.api_token = value
       assert_equal(expected, @basic.valid?, value)
     }
+  end
+
+  #
+  # 関連
+  #
+
+  test "has_many :open_id_credentials" do
+    expected = [
+      open_id_credentials(:yuya_livedoor),
+      open_id_credentials(:yuya_mixi),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @yuya.open_id_credentials.sort_by(&:id))
+
+    expected = [
+      open_id_credentials(:shinya_example),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @shinya.open_id_credentials.sort_by(&:id))
+  end
+
+  test "has_many :taggings" do
+    expected = [
+      taggings(:yuya_asahi1_rail),
+      taggings(:yuya_asahi1_social),
+      taggings(:yuya_asahi1_kanto),
+      taggings(:yuya_asahi2_rail),
+      taggings(:yuya_asahi2_economy),
+      taggings(:yuya_asahi2_kinki),
+      taggings(:yuya_asahi3_nonrail),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @yuya.taggings.sort_by(&:id))
+
+    expected = [
+      taggings(:risa_asahi1_rail),
+      taggings(:risa_asahi2_nonrail),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @risa.taggings.sort_by(&:id))
   end
 
   #

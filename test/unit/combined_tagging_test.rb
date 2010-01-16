@@ -10,6 +10,39 @@ class CombinedTaggingTest < ActiveSupport::TestCase
   end
 
   #
+  # 検証
+  #
+
+  test "all fixtures are valid" do
+    assert_equal(true, @klass.all.all?(&:valid?))
+  end
+
+  test "basic is valid" do
+    assert_equal(true, @basic.valid?)
+  end
+
+  test "validates_presence_of :serial" do
+    @basic.serial = nil
+    assert_equal(false, @basic.valid?)
+  end
+
+  test "validates_presence_of :article_id" do
+    @basic.article_id = nil
+    assert_equal(false, @basic.valid?)
+  end
+
+  test "validates_uniqueness_of :article_id, on create" do
+    @basic.article_id = articles(:asahi1).id
+    assert_equal(false, @basic.valid?)
+  end
+
+  test "validates_uniqueness_of :article_id, on update" do
+    record = combined_taggings(:asahi1)
+    record.article_id = articles(:asahi2).id
+    assert_equal(false, record.valid?)
+  end
+
+  #
   # 関連
   #
 
@@ -71,39 +104,6 @@ class CombinedTaggingTest < ActiveSupport::TestCase
     assert_equal(
       nil,
       combined_taggings(:asahi3).area_tag2)
-  end
-
-  #
-  # 検証
-  #
-
-  test "all fixtures are valid" do
-    assert_equal(true, @klass.all.all?(&:valid?))
-  end
-
-  test "basic is valid" do
-    assert_equal(true, @basic.valid?)
-  end
-
-  test "validates_presence_of :serial" do
-    @basic.serial = nil
-    assert_equal(false, @basic.valid?)
-  end
-
-  test "validates_presence_of :article_id" do
-    @basic.article_id = nil
-    assert_equal(false, @basic.valid?)
-  end
-
-  test "validates_uniqueness_of :article_id, on create" do
-    @basic.article_id = articles(:asahi1).id
-    assert_equal(false, @basic.valid?)
-  end
-
-  test "validates_uniqueness_of :article_id, on update" do
-    record = combined_taggings(:asahi1)
-    record.article_id = articles(:asahi2).id
-    assert_equal(false, record.valid?)
   end
 
   #

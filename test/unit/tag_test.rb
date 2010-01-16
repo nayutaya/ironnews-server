@@ -12,29 +12,6 @@ class TagTest < ActiveSupport::TestCase
   end
 
   #
-  # 関連
-  #
-
-  test "has_many :taggings" do
-    expected = [
-      taggings(:yuya_asahi1_rail),
-      taggings(:yuya_asahi2_rail),
-      taggings(:risa_asahi1_rail),
-    ]
-    assert_equal(
-      expected.sort_by(&:id),
-      @rail.taggings.sort_by(&:id))
-
-    expected = [
-      taggings(:yuya_asahi3_nonrail),
-      taggings(:risa_asahi2_nonrail),
-    ]
-    assert_equal(
-      expected.sort_by(&:id),
-      @nonrail.taggings.sort_by(&:id))
-  end
-
-  #
   # 検証
   #
 
@@ -88,6 +65,29 @@ class TagTest < ActiveSupport::TestCase
 
     @rail.name = name
     assert_equal(false, @rail.valid?)
+  end
+
+  #
+  # 関連
+  #
+
+  test "has_many :taggings" do
+    expected = [
+      taggings(:yuya_asahi1_rail),
+      taggings(:yuya_asahi2_rail),
+      taggings(:risa_asahi1_rail),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @rail.taggings.sort_by(&:id))
+
+    expected = [
+      taggings(:yuya_asahi3_nonrail),
+      taggings(:risa_asahi2_nonrail),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @nonrail.taggings.sort_by(&:id))
   end
 
   #

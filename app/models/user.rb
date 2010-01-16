@@ -18,9 +18,6 @@ class User < ActiveRecord::Base
   ApiTokenLength  = 32
   ApiTokenPattern = /\A[0-9a-f]{#{ApiTokenLength}}\z/
 
-  has_many :open_id_credentials
-  has_many :taggings
-
   validates_presence_of :name
   validates_presence_of :api_token
   validates_length_of :name, :in => NameLength, :allow_blank => true
@@ -29,6 +26,9 @@ class User < ActiveRecord::Base
   validates_format_of :api_token, :with => ApiTokenPattern, :allow_blank => true
   # FIXME: nameの一意性を検証
   # FIXME: api_tokenの一意性を検証
+
+  has_many :open_id_credentials
+  has_many :taggings
 
   def self.create_api_token
     return 32.times.map { rand(16).to_s(16) }.join

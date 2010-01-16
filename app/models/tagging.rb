@@ -12,14 +12,14 @@
 
 # 記事タグ
 class Tagging < ActiveRecord::Base
-  belongs_to :user
-  belongs_to :article
-  belongs_to :tag
-
   validates_presence_of :user_id
   validates_presence_of :article_id
   validates_presence_of :tag_id
   validates_uniqueness_of :tag_id, :scope => [:user_id, :article_id]
+
+  belongs_to :user
+  belongs_to :article
+  belongs_to :tag
 
   def self.create_tag_frequency_table
     return self.all.inject({}) { |memo, tagging|

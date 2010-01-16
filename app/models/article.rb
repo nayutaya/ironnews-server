@@ -17,6 +17,17 @@ class Article < ActiveRecord::Base
   PathMaxLength  = 2000
   HostPattern    = /\A[a-z\d\-]+(\.[a-z\d\-]+)*(:\d+)?\z/
 
+  validates_presence_of :title
+  validates_presence_of :host
+  validates_presence_of :path
+  validates_length_of :title, :maximum => TitleMaxLength, :allow_blank => true
+  validates_length_of :host,  :maximum => HostMaxLength,  :allow_blank => true
+  validates_length_of :path,  :maximum => PathMaxLength,  :allow_blank => true
+  validates_format_of :title, :with => /\A[^ 　]/, :allow_blank => true
+  validates_format_of :title, :with => /[^ 　]\z/, :allow_blank => true
+  validates_format_of :title, :with => /\A[^\t\n\r]*\z/, :allow_blank => true
+  validates_format_of :host, :with => HostPattern, :allow_blank => true
+
   has_many :taggings, :dependent => :destroy
   has_one :combined_tagging, :dependent => :destroy
 
@@ -95,17 +106,6 @@ class Article < ActiveRecord::Base
       ],
     }
   }
-
-  validates_presence_of :title
-  validates_presence_of :host
-  validates_presence_of :path
-  validates_length_of :title, :maximum => TitleMaxLength, :allow_blank => true
-  validates_length_of :host,  :maximum => HostMaxLength,  :allow_blank => true
-  validates_length_of :path,  :maximum => PathMaxLength,  :allow_blank => true
-  validates_format_of :title, :with => /\A[^ 　]/, :allow_blank => true
-  validates_format_of :title, :with => /[^ 　]\z/, :allow_blank => true
-  validates_format_of :title, :with => /\A[^\t\n\r]*\z/, :allow_blank => true
-  validates_format_of :host, :with => HostPattern, :allow_blank => true
 
   def self.join_host_path(host, path)
     return "http://" + host + path
