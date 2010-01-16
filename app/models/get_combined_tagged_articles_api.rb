@@ -1,3 +1,14 @@
+# == Schema Information
+# Schema version: 20091215020439
+#
+# Table name: active_forms
+#
+#  division_tag :text
+#  category_tag :text
+#  area_tag     :text
+#  page         :integer       default(1)
+#  per_page     :integer       default(10)
+#
 
 # 合成タグ設定済み記事取得API
 class GetCombinedTaggedArticlesApi < ApiBase
