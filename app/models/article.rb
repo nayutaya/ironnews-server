@@ -107,6 +107,10 @@ class Article < ActiveRecord::Base
     }
   }
 
+  before_validation { |record|
+    record.title = record.class.normalize_title(record.title)
+  }
+
   def self.normalize_title(title)
     return title.to_s.
       gsub(/[\t\n\r]+/, " ").

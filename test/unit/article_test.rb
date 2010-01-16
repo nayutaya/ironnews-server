@@ -75,18 +75,22 @@ class ArticleTest < ActiveSupport::TestCase
   end
 
   test "validates_format_of :title" do
-    [
-      ["ab",   true ],
-      [" ab",  false], # 文頭に半角スペース
-      ["　ab", false], # 文頭に全角スペース
-      ["ab ",  false], # 文末に半角スペース
-      ["ab　", false], # 文末に全角スペース
-      ["a\tb", false],
-      ["a\nb", false],
-      ["a\rb", false],
-    ].each { |value, expected|
-      @basic.title = value
-      assert_equal(expected, @basic.valid?, value)
+    @musha = Kagemusha.new(@klass)
+    @musha.defs(:normalize_title) { |title| title }
+    @musha.swap {
+      [
+        ["ab",   true ],
+        [" ab",  false], # 文頭に半角スペース
+        ["　ab", false], # 文頭に全角スペース
+        ["ab ",  false], # 文末に半角スペース
+        ["ab　", false], # 文末に全角スペース
+        ["a\tb", false],
+        ["a\nb", false],
+        ["a\rb", false],
+      ].each { |value, expected|
+          @basic.title = value
+          assert_equal(expected, @basic.valid?, value)
+      }
     }
   end
 
@@ -335,6 +339,16 @@ class ArticleTest < ActiveSupport::TestCase
     assert_equal(
       (@klass.all - @klass.area_tagged_by(users(:risa)).all).sort_by(&:id),
       @klass.area_untagged_by(users(:risa)).all.sort_by(&:id))
+  end
+
+  #
+  # フック
+  #
+
+  test "before_validation" do
+    @record.title = " 　a\t\n\rb　 "
+    @record.valid?
+    assert_equal("a b", @record.title)
   end
 
   #
