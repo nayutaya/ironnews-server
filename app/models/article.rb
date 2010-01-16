@@ -106,6 +106,16 @@ class Article < ActiveRecord::Base
       ],
     }
   }
+  named_scope :user_tagged, proc { |user_id, tag|
+    tag_id = Tag.get(tag).id
+    {
+      :conditions => [
+        "EXISTS (SELECT * FROM taggings WHERE (taggings.article_id = articles.id) AND (taggings.user_id = ?) AND (taggings.tag_id = ?))",
+        user_id,
+        tag_id,
+      ],
+    }
+  }
 
   before_validation { |record|
     record.title = record.class.normalize_title(record.title)

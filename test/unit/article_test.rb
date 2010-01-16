@@ -341,6 +341,25 @@ class ArticleTest < ActiveSupport::TestCase
       @klass.area_untagged_by(users(:risa)).all.sort_by(&:id))
   end
 
+  test "user_tagged, yuya, rail" do
+    expected = [
+      articles(:asahi1),
+      articles(:asahi2),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.user_tagged(users(:yuya).id, tags(:rail).name).all.sort_by(&:id))
+  end
+
+  test "user_tagged, risa, nonrail" do
+    expected = [
+      articles(:asahi2),
+    ]
+    assert_equal(
+      expected.sort_by(&:id),
+      @klass.user_tagged(users(:risa).id, tags(:nonrail).name).all.sort_by(&:id))
+  end
+
   #
   # フック
   #
