@@ -340,6 +340,23 @@ class ArticleTest < ActiveSupport::TestCase
   # クラスメソッド
   #
 
+  test "self.normalize_title" do
+    [
+      ["",  ""],
+      [nil, ""],
+      ["ab",     "ab"],
+      ["  ab",   "ab"], # 文頭に半角スペース
+      ["　　ab", "ab"], # 文頭に全角スペース
+      ["ab  ",   "ab"], # 文末に半角スペース
+      ["ab　　", "ab"], # 文末に全角スペース
+      ["\ta\tb\t", "a b"],
+      ["\na\nb\n", "a b"],
+      ["\ra\rb\r", "a b"],
+    ].each { |value, expected|
+      assert_equal(expected, @klass.normalize_title(value), value)
+    }
+  end
+
   test "self.join_host_path" do
     [
       [["example.jp",       "/"],     "http://example.jp/"],
