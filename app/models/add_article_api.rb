@@ -32,7 +32,7 @@ class AddArticleApi < ApiBase
     }
 
     self.urls.each { |num, url|
-      canonical_url = BookmarkUtility.get_canonical_url(url)
+      canonical_url = IronnewsUtility.get_canonical_url(url)
 
       article = Article.find_by_url(canonical_url)
 
