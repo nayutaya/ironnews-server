@@ -33,7 +33,7 @@ class UntaggedArticlesController < ApplicationController
 
   def category
     @articles = Article.
-      division("鉄道").
+      user_tagged(@user.id, "鉄道").
       category_untagged_by(@user.id).
       paginate(
         :order    => "articles.created_at DESC",
@@ -43,7 +43,7 @@ class UntaggedArticlesController < ApplicationController
 
   def area
     @articles = Article.
-      division("鉄道").
+      user_tagged(@user.id, "鉄道").
       area_untagged_by(@user.id).
       paginate(
         :order    => "articles.created_at DESC",
