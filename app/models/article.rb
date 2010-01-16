@@ -144,8 +144,4 @@ class Article < ActiveRecord::Base
     self.host, self.path = self.class.split_host_path(value)
     return value
   end
-
-  def normalize_title!
-    self.title = self.class.normalize_title(self.title)
-  end
 end

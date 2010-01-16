@@ -439,10 +439,4 @@ class ArticleTest < ActiveSupport::TestCase
       assert_equal(path, record.path, url)
     }
   end
-
-  test "normalize_title!" do
-    @record.title = " 　a\t\n\rb　 "
-    @record.normalize_title!
-    assert_equal("a b", @record.title)
-  end
 end
