@@ -10,6 +10,8 @@ class ArticleTest < ActiveSupport::TestCase
       :host  => "host",
       :path  => "path")
 
+    @yuya = users(:yuya)
+    @risa = users(:risa)
     @asahi1    = articles(:asahi1)
     @mainichi1 = articles(:mainichi1)
   end
@@ -258,7 +260,7 @@ class ArticleTest < ActiveSupport::TestCase
     ]
     assert_equal(
       expected.sort_by(&:id),
-      @klass.division_tagged_by(users(:yuya).id).all.sort_by(&:id))
+      @klass.division_tagged_by(@yuya.id).all.sort_by(&:id))
   end
 
   test "division_tagged_by, risa" do
@@ -268,19 +270,19 @@ class ArticleTest < ActiveSupport::TestCase
     ]
     assert_equal(
       expected.sort_by(&:id),
-      @klass.division_tagged_by(users(:risa).id).all.sort_by(&:id))
+      @klass.division_tagged_by(@risa.id).all.sort_by(&:id))
   end
 
   test "division_untagged_by, yuya" do
     assert_equal(
-      (@klass.all - @klass.division_tagged_by(users(:yuya).id).all).sort_by(&:id),
-      @klass.division_untagged_by(users(:yuya).id).all.sort_by(&:id))
+      (@klass.all - @klass.division_tagged_by(@yuya.id).all).sort_by(&:id),
+      @klass.division_untagged_by(@yuya.id).all.sort_by(&:id))
   end
 
   test "division_untagged_by, risa" do
     assert_equal(
-      (@klass.all - @klass.division_tagged_by(users(:risa).id).all).sort_by(&:id),
-      @klass.division_untagged_by(users(:risa).id).all.sort_by(&:id))
+      (@klass.all - @klass.division_tagged_by(@risa.id).all).sort_by(&:id),
+      @klass.division_untagged_by(@risa.id).all.sort_by(&:id))
   end
 
   test "category_tagged_by, yuya" do
@@ -290,26 +292,26 @@ class ArticleTest < ActiveSupport::TestCase
     ]
     assert_equal(
       expected.sort_by(&:id),
-      @klass.category_tagged_by(users(:yuya).id).all.sort_by(&:id))
+      @klass.category_tagged_by(@yuya.id).all.sort_by(&:id))
   end
 
   test "category_tagged_by, risa" do
     expected = []
     assert_equal(
       expected.sort_by(&:id),
-      @klass.category_tagged_by(users(:risa).id).all.sort_by(&:id))
+      @klass.category_tagged_by(@risa.id).all.sort_by(&:id))
   end
 
   test "category_untagged_by, yuya" do
     assert_equal(
-      (@klass.all - @klass.category_tagged_by(users(:yuya).id).all).sort_by(&:id),
-      @klass.category_untagged_by(users(:yuya).id).all.sort_by(&:id))
+      (@klass.all - @klass.category_tagged_by(@yuya.id).all).sort_by(&:id),
+      @klass.category_untagged_by(@yuya.id).all.sort_by(&:id))
   end
 
   test "category_untagged_by, risa" do
     assert_equal(
-      (@klass.all - @klass.category_tagged_by(users(:risa)).all).sort_by(&:id),
-      @klass.category_untagged_by(users(:risa)).all.sort_by(&:id))
+      (@klass.all - @klass.category_tagged_by(@risa.id).all).sort_by(&:id),
+      @klass.category_untagged_by(@risa.id).all.sort_by(&:id))
   end
 
   test "area_tagged_by, yuya" do
@@ -319,26 +321,26 @@ class ArticleTest < ActiveSupport::TestCase
     ]
     assert_equal(
       expected.sort_by(&:id),
-      @klass.area_tagged_by(users(:yuya).id).all.sort_by(&:id))
+      @klass.area_tagged_by(@yuya.id).all.sort_by(&:id))
   end
 
   test "area_tagged_by, risa" do
     expected = []
     assert_equal(
       expected.sort_by(&:id),
-      @klass.area_tagged_by(users(:risa).id).all.sort_by(&:id))
+      @klass.area_tagged_by(@risa.id).all.sort_by(&:id))
   end
 
   test "area_untagged_by, yuya" do
     assert_equal(
-      (@klass.all - @klass.area_tagged_by(users(:yuya).id).all).sort_by(&:id),
-      @klass.area_untagged_by(users(:yuya).id).all.sort_by(&:id))
+      (@klass.all - @klass.area_tagged_by(@yuya.id).all).sort_by(&:id),
+      @klass.area_untagged_by(@yuya.id).all.sort_by(&:id))
   end
 
   test "area_untagged_by, risa" do
     assert_equal(
-      (@klass.all - @klass.area_tagged_by(users(:risa)).all).sort_by(&:id),
-      @klass.area_untagged_by(users(:risa)).all.sort_by(&:id))
+      (@klass.all - @klass.area_tagged_by(@risa.id).all).sort_by(&:id),
+      @klass.area_untagged_by(@risa.id).all.sort_by(&:id))
   end
 
   test "user_tagged, yuya, rail" do
@@ -348,7 +350,7 @@ class ArticleTest < ActiveSupport::TestCase
     ]
     assert_equal(
       expected.sort_by(&:id),
-      @klass.user_tagged(users(:yuya).id, tags(:rail).name).all.sort_by(&:id))
+      @klass.user_tagged(@yuya.id, tags(:rail).name).all.sort_by(&:id))
   end
 
   test "user_tagged, risa, nonrail" do
@@ -357,7 +359,7 @@ class ArticleTest < ActiveSupport::TestCase
     ]
     assert_equal(
       expected.sort_by(&:id),
-      @klass.user_tagged(users(:risa).id, tags(:nonrail).name).all.sort_by(&:id))
+      @klass.user_tagged(@risa.id, tags(:nonrail).name).all.sort_by(&:id))
   end
 
   #
