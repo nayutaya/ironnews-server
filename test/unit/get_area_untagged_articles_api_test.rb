@@ -105,4 +105,47 @@ class GetAreaUntaggedArticlesApiTest < ActiveSupport::TestCase
     assert_equal(2, articles.current_page)
     assert_equal(1, articles.per_page)
   end
+
+  test "execute" do
+    actual = @form.execute(users(:yuya).id)
+    assert_valid_json(@klass.schema, actual)
+    assert_equal(true, actual["success"])
+    assert_equal(nil,  actual["errors"])
+
+    articles = @form.search(users(:yuya).id)
+    assert_equal(articles.total_entries, actual["result"]["total_entries"])
+    assert_equal(articles.total_pages,   actual["result"]["total_pages"])
+    assert_equal(articles.current_page,  actual["result"]["current_page"])
+    assert_equal(articles.per_page,      actual["result"]["entries_per_page"])
+
+    expected = articles.map { |article|
+      {
+        "article_id" => article.id,
+        "title"      => article.title,
+        "url"        => article.url,
+      }
+    }
+    assert_equal(expected, actual["result"]["articles"])
+  end
+
+  test "execute, paginate" do
+    @form.page     = 2
+    @form.per_page = 1
+
+    actual = @form.execute(users(:risa).id)
+    assert_valid_json(@klass.schema, actual)
+    assert_equal(2, actual["result"]["current_page"])
+    assert_equal(1, actual["result"]["entries_per_page"])
+  end
+
+  test "execute, invalid" do
+    @form.page = nil
+    assert_equal(false, @form.valid?)
+
+    actual = @form.execute(users(:yuya).id)
+    assert_valid_json(@klass.schema, actual)
+    assert_equal(false, actual["success"])
+    assert_equal(["Page can't be blank"], actual["errors"])
+    assert_equal(nil, actual["result"])
+  end
 end
