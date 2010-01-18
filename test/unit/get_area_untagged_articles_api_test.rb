@@ -68,4 +68,12 @@ class GetAreaUntaggedArticlesApiTest < ActiveSupport::TestCase
       assert_equal(expected, @basic.valid?, value)
     }
   end
+
+  #
+  # クラスメソッド
+  #
+
+  test "self.schema" do
+    assert_kind_of(Hash, @klass.schema)
+  end
 end

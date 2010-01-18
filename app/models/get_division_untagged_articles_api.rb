@@ -34,7 +34,7 @@ class GetDivisionUntaggedArticlesApi < ApiBase
             "articles"         => {
               "type"  => "array",
               "items" => {
-                "type" => "object",
+                "type"       => "object",
                 "properties" => {
                   "article_id" => {"type" => "integer"},
                   "title"      => {"type" => "string"},
