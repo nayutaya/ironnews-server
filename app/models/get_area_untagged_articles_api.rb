@@ -1,14 +1,6 @@
-# == Schema Information
-# Schema version: 20091215020439
-#
-# Table name: active_forms
-#
-#  page     :integer       default(1)
-#  per_page :integer       default(10)
-#
 
-# 区分タグ未設定記事取得APIフォーム
-class GetDivisionUntaggedArticlesApi < ApiBase
+# 地域タグ未設定記事取得APIフォーム
+class GetAreaUntaggedArticlesApi < ApiBase
   column :page,     :type => :integer, :default =>  1
   column :per_page, :type => :integer, :default => 10
 
@@ -50,7 +42,7 @@ class GetDivisionUntaggedArticlesApi < ApiBase
 
   def search(user_id)
     return Article.
-      division_untagged_by(user_id).
+      area_untagged_by(user_id).
       paginate(
         :order    => "articles.created_at DESC, articles.id DESC",
         :page     => self.page,
