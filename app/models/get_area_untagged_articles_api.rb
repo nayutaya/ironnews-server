@@ -39,4 +39,13 @@ class GetAreaUntaggedArticlesApi < ApiBase
       },
     }
   end
+
+  def search(user_id)
+    return Article.
+      area_untagged_by(user_id).
+      paginate(
+        :order    => "articles.created_at DESC, articles.id DESC",
+        :page     => self.page,
+        :per_page => self.per_page)
+  end
 end

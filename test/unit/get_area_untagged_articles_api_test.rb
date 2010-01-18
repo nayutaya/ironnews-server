@@ -4,6 +4,7 @@ require 'test_helper'
 class GetAreaUntaggedArticlesApiTest < ActiveSupport::TestCase
   def setup
     @klass = GetAreaUntaggedArticlesApi
+    @form  = @klass.new
     @basic = @klass.new(
       :page     => 1,
       :per_page => 10)
@@ -75,5 +76,33 @@ class GetAreaUntaggedArticlesApiTest < ActiveSupport::TestCase
 
   test "self.schema" do
     assert_kind_of(Hash, @klass.schema)
+  end
+
+  #
+  # インスタンスメソッド
+  #
+
+  test "search, yuya" do
+    articles = @form.search(users(:yuya).id)
+    assert_equal( 1, articles.current_page)
+    assert_equal(10, articles.per_page)
+
+    expected = [
+      articles(:asahi3),
+      articles(:mainichi1),
+      articles(:mainichi2),
+    ]
+    assert_equal(
+      expected.sort_by { |article| [article.created_at.to_i, article.id] }.reverse,
+      articles)
+  end
+
+  test "search, paginate" do
+    @form.page     = 2
+    @form.per_page = 1
+
+    articles = @form.search(users(:yuya).id)
+    assert_equal(2, articles.current_page)
+    assert_equal(1, articles.per_page)
   end
 end
